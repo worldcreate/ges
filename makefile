@@ -15,9 +15,8 @@ debug: DEBUG=-g -DDEBUG
 
 debug: $(TARGET)
 
-useMP: DEBUG= -fopenmp
-
-useMP: $(TARGET)
+test: 
+	./$(TARGET) -T
 
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(DEBUG) -o $@ $(OBJS) $(LIBS) 
