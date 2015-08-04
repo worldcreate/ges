@@ -13,12 +13,17 @@ Ges	.\Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 Ges	.\Ges.h	/^class Ges{$/;"	c
 JobPair	.\JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	.\JobPair.h	/^class JobPair{$/;"	c
+Node	.\Node.h	/^	Node(){$/;"	f	class:Node
+Node	.\Node.h	/^	Node(const JobPair* jobpair){$/;"	f	class:Node
+Node	.\Node.h	/^class Node{$/;"	c
 Test	.\Test.cpp	/^Test::Test(){$/;"	f	class:Test
 Test	.\Test.h	/^class Test{$/;"	c
 _FILEREADER_H_	.\FileReader.h	2;"	d
 _GES_H_	.\Ges.h	2;"	d
 _JOBPAIR_H_	.\JobPair.h	2;"	d
+_NODE_H_	.\Node.h	2;"	d
 _TEST_H_	.\Test.h	2;"	d
+addNode	.\Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
 check	.\JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
 checked	.\JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
@@ -31,16 +36,23 @@ jobIndex	.\JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
 mTable	.\FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
 m_EP	.\Ges.h	/^	stack<JobPair> m_EP;$/;"	m	class:Ges
 m_FileName	.\Ges.h	/^	const char* m_FileName;$/;"	m	class:Ges
+m_Index	.\Node.h	/^	int m_Index;$/;"	m	class:Node
 m_Iter	.\Ges.h	/^	int m_Iter;$/;"	m	class:Ges
+m_Jobpair	.\Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
 m_MaxIter	.\Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
+m_Next	.\Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
 m_Penalty	.\Ges.h	/^	list<int> m_Penalty;$/;"	m	class:Ges
 m_SettingTable	.\Ges.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:Ges
+m_Solution	.\Ges.h	/^	vector<vector<JobPair> > m_Solution; \/\/ 縦Machine 横Jobの配列$/;"	m	class:Ges
 machine	.\JobPair.h	/^	int machine;$/;"	m	class:JobPair
 main	.\main.cpp	/^int main(int argc,char *argv[]){$/;"	f
+makeGraph	.\Ges.cpp	/^Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
 next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
+operator =	.\JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 prev	.\JobPair.h	/^	int prev;$/;"	m	class:JobPair
-solution	.\Ges.h	/^	vector<vector<JobPair> > solution; \/\/ 縦Job 横Machineの配列$/;"	m	class:Ges
+print	.\Node.h	/^	void print(){$/;"	f	class:Node
 split	.\FileReader.cpp	/^vector<string> FileReader::split(const string &str, char delim){$/;"	f	class:FileReader
 test	.\Test.cpp	/^void Test::test(){$/;"	f	class:Test
 time	.\JobPair.h	/^	int time;$/;"	m	class:JobPair
 ~Ges	.\Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
+~Node	.\Node.h	/^	~Node(){$/;"	f	class:Node
