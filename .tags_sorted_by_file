@@ -9,6 +9,9 @@ execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 getMakespan	Ges.cpp	/^int Ges::getMakespan(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
 initialSolution	Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
 makeGraph	Ges.cpp	/^Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
+setLongestPath	Ges.cpp	/^void Ges::setLongestPath(Node* root){$/;"	f	class:Ges
+topologicalSort	Ges.cpp	/^vector<Node*> Ges::topologicalSort(Node* root){$/;"	f	class:Ges
+visit	Ges.cpp	/^void Ges::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Ges
 ~Ges	Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 Ges	Ges.h	/^class Ges{$/;"	c
 _GES_H_	Ges.h	2;"	d
@@ -32,15 +35,26 @@ next	JobPair.h	/^	int next;$/;"	m	class:JobPair
 operator =	JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
-Node	Node.h	/^	Node(){$/;"	f	class:Node
-Node	Node.h	/^	Node(const JobPair* jobpair){$/;"	f	class:Node
+Node	Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	Node.h	/^class Node{$/;"	c
 _NODE_H_	Node.h	2;"	d
 addNode	Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
+addPrev	Node.h	/^	void addPrev(Node* node){$/;"	f	class:Node
+check	Node.h	/^	void check(){$/;"	f	class:Node
+isCheck	Node.h	/^	bool isCheck(){$/;"	f	class:Node
+m_Checked	Node.h	/^	bool m_Checked;$/;"	m	class:Node
 m_Index	Node.h	/^	int m_Index;$/;"	m	class:Node
 m_Jobpair	Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
 m_Next	Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
+m_Prev	Node.h	/^	vector<Node*> m_Prev;$/;"	m	class:Node
+m_Q	Node.h	/^	int m_Q;$/;"	m	class:Node
+m_R	Node.h	/^	int m_R;$/;"	m	class:Node
 print	Node.h	/^	void print(){$/;"	f	class:Node
+printAll	Node.h	/^	void printAll(){$/;"	f	class:Node
+reset	Node.h	/^	void reset(){$/;"	f	class:Node
+resetChild	Node.h	/^	void resetChild(){$/;"	f	class:Node
+setIndex	Node.h	/^	void setIndex(int a_Index){$/;"	f	class:Node
 ~Node	Node.h	/^	~Node(){$/;"	f	class:Node
 Test	Test.cpp	/^Test::Test(){$/;"	f	class:Test
 test	Test.cpp	/^void Test::test(){$/;"	f	class:Test

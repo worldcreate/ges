@@ -13,8 +13,8 @@ Ges	.\Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 Ges	.\Ges.h	/^class Ges{$/;"	c
 JobPair	.\JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	.\JobPair.h	/^class JobPair{$/;"	c
-Node	.\Node.h	/^	Node(){$/;"	f	class:Node
-Node	.\Node.h	/^	Node(const JobPair* jobpair){$/;"	f	class:Node
+Node	.\Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^class Node{$/;"	c
 Test	.\Test.cpp	/^Test::Test(){$/;"	f	class:Test
 Test	.\Test.h	/^class Test{$/;"	c
@@ -24,7 +24,9 @@ _JOBPAIR_H_	.\JobPair.h	2;"	d
 _NODE_H_	.\Node.h	2;"	d
 _TEST_H_	.\Test.h	2;"	d
 addNode	.\Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
+addPrev	.\Node.h	/^	void addPrev(Node* node){$/;"	f	class:Node
 check	.\JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
+check	.\Node.h	/^	void check(){$/;"	f	class:Node
 checked	.\JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
 execute	.\Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
@@ -32,8 +34,10 @@ getMakespan	.\Ges.cpp	/^int Ges::getMakespan(const vector<vector<JobPair> > &sol
 getTable	.\FileReader.cpp	/^vector<vector<JobPair> >& FileReader::getTable(){$/;"	f	class:FileReader
 initialSolution	.\Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
 isCheck	.\JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
+isCheck	.\Node.h	/^	bool isCheck(){$/;"	f	class:Node
 jobIndex	.\JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
 mTable	.\FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
+m_Checked	.\Node.h	/^	bool m_Checked;$/;"	m	class:Node
 m_EP	.\Ges.h	/^	stack<JobPair> m_EP;$/;"	m	class:Ges
 m_FileName	.\Ges.h	/^	const char* m_FileName;$/;"	m	class:Ges
 m_Index	.\Node.h	/^	int m_Index;$/;"	m	class:Node
@@ -42,6 +46,9 @@ m_Jobpair	.\Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
 m_MaxIter	.\Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
 m_Next	.\Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
 m_Penalty	.\Ges.h	/^	list<int> m_Penalty;$/;"	m	class:Ges
+m_Prev	.\Node.h	/^	vector<Node*> m_Prev;$/;"	m	class:Node
+m_Q	.\Node.h	/^	int m_Q;$/;"	m	class:Node
+m_R	.\Node.h	/^	int m_R;$/;"	m	class:Node
 m_SettingTable	.\Ges.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:Ges
 m_Solution	.\Ges.h	/^	vector<vector<JobPair> > m_Solution; \/\/ 縦Machine 横Jobの配列$/;"	m	class:Ges
 machine	.\JobPair.h	/^	int machine;$/;"	m	class:JobPair
@@ -51,8 +58,15 @@ next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
 operator =	.\JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 prev	.\JobPair.h	/^	int prev;$/;"	m	class:JobPair
 print	.\Node.h	/^	void print(){$/;"	f	class:Node
+printAll	.\Node.h	/^	void printAll(){$/;"	f	class:Node
+reset	.\Node.h	/^	void reset(){$/;"	f	class:Node
+resetChild	.\Node.h	/^	void resetChild(){$/;"	f	class:Node
+setIndex	.\Node.h	/^	void setIndex(int a_Index){$/;"	f	class:Node
+setLongestPath	.\Ges.cpp	/^void Ges::setLongestPath(Node* root){$/;"	f	class:Ges
 split	.\FileReader.cpp	/^vector<string> FileReader::split(const string &str, char delim){$/;"	f	class:FileReader
 test	.\Test.cpp	/^void Test::test(){$/;"	f	class:Test
 time	.\JobPair.h	/^	int time;$/;"	m	class:JobPair
+topologicalSort	.\Ges.cpp	/^vector<Node*> Ges::topologicalSort(Node* root){$/;"	f	class:Ges
+visit	.\Ges.cpp	/^void Ges::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Ges
 ~Ges	.\Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 ~Node	.\Node.h	/^	~Node(){$/;"	f	class:Node

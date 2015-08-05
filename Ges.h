@@ -19,6 +19,8 @@ private:
 	int getMakespan(const vector<vector<JobPair> >&);
 	Node* makeGraph(const vector<vector<JobPair> >&);
 	void setLongestPath(Node*);
+	vector<Node*> topologicalSort(Node*);
+	void visit(Node*,stack<Node*>&);
 
 	int m_Iter;
 	int m_MaxIter;

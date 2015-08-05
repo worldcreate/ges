@@ -59,11 +59,14 @@ Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){
 	Node* root=new Node();
 	Node* leaf=new Node();
 	Node* now=root;
+	vector<Node*> array;
+	array.push_back(root);
 	for(int i=0;i<solution.size();i++){
 		now=root;
 		for(int j=0;j<solution[i].size();j++){
 			Node* node=new Node(&solution[i][j]);
-			now->addNode(node);
+			array.push_back(node);
+			now->addNode(array.size()-1);
 			now=node;
 		}
 		now->addNode(leaf);
@@ -92,35 +95,54 @@ Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){
 }
 
 void Ges::setLongestPath(Node* root){
-	queue<Node*> search;
-	search.push(root);
-	while(!search.empty()){
-		Node* node=search.front();
-		search.pop();
-		if(node->isCheck())
-			continue;
+	vector<Node*> sort=topologicalSort(root);
+	for(int i=0;i<sort.size();i++){
 		int max=0;
-		for(int i=0;i<node->m_Prev.size();i++){
-			if(max<node->m_Prev[i]->m_R){
-				max=node->m_Prev[i]->m_R;
+		for(int j=0;j<sort[i]->m_Prev.size();j++){
+			if(max<sort[i]->m_Prev[j]->m_R){
+				max=sort[i]->m_Prev[j]->m_R;
 			}
 		}
-		node->m_R=max+node->m_Jobpair->time;
-		for(int i=0;i<node->m_Next.size();i++){
-			search.push(node->m_Next[i]);
-		}
-		node->check();
+		sort[i]->m_R=max+sort[i]->m_Jobpair->time;
 	}
+	for(int i=sort.size()-1;i>=0;i--){
+		int max=0;
+		for(int j=0;j<sort[i]->m_Next.size();j++){
+			if(max<sort[i]->m_Next[j]->m_Q){
+				max=sort[i]->m_Next[j]->m_Q;
+			}
+		}
+		sort[i]->m_Q=max+sort[i]->m_Jobpair->time;
+	}
+}
+
+vector<Node*> Ges::topologicalSort(Node* root){
+	stack<Node*> sort;
+	visit(root,sort);
+	vector<Node*> sortVector;
+	while(!sort.empty()){
+		sortVector.push_back(sort.top());
+		sortVector[sortVector.size()-1]->setIndex(sortVector.size()-1);
+		sort.pop();
+	}
+	return sortVector;
+}
+
+void Ges::visit(Node* node,stack<Node*>& sort){
+	if(node->isCheck())
+		return;
+	node->check();
+	for(int i=0;i<node->m_Next.size();i++){
+		visit(node->m_Next[i],sort);
+	}
+	sort.push(node);
 }
 
 int Ges::getMakespan(const vector<vector<JobPair> > &solution){
 	Node *root=makeGraph(solution);
 	setLongestPath(root);
-	for(int i=0;i<3;i++){
-		root->m_Next[i]->print();
-		cout<<endl;
-	}
-	return 0;
+	delete(root);
+	return root->m_Q;
 }
 
 Ges::~Ges(){
