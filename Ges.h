@@ -5,6 +5,7 @@
 #include <vector>
 #include <stack>
 #include "JobPair.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -16,11 +17,13 @@ public:
 	~Ges();
 private:
 	int getMakespan(const vector<vector<JobPair> >&);
+	Node* makeGraph(const vector<vector<JobPair> >&);
+	void setLongestPath(Node*);
 
 	int m_Iter;
 	int m_MaxIter;
 	list<int> m_Penalty;
-	vector<vector<JobPair> > solution; // 縦Machine 横Jobの配列
+	vector<vector<JobPair> > m_Solution; // 縦Machine 横Jobの配列
 	stack<JobPair> m_EP;
 	const char* m_FileName;
 	vector<vector<JobPair> > m_SettingTable;

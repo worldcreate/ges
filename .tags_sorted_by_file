@@ -8,6 +8,7 @@ Ges	Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 getMakespan	Ges.cpp	/^int Ges::getMakespan(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
 initialSolution	Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
+makeGraph	Ges.cpp	/^Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
 ~Ges	Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 Ges	Ges.h	/^class Ges{$/;"	c
 _GES_H_	Ges.h	2;"	d
@@ -17,7 +18,7 @@ m_Iter	Ges.h	/^	int m_Iter;$/;"	m	class:Ges
 m_MaxIter	Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
 m_Penalty	Ges.h	/^	list<int> m_Penalty;$/;"	m	class:Ges
 m_SettingTable	Ges.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:Ges
-solution	Ges.h	/^	vector<vector<JobPair> > solution; \/\/ 縦Job 横Machineの配列$/;"	m	class:Ges
+m_Solution	Ges.h	/^	vector<vector<JobPair> > m_Solution; \/\/ 縦Machine 横Jobの配列$/;"	m	class:Ges
 JobPair	JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	JobPair.h	/^class JobPair{$/;"	c
 _JOBPAIR_H_	JobPair.h	2;"	d
@@ -28,8 +29,19 @@ isCheck	JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
 jobIndex	JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
 machine	JobPair.h	/^	int machine;$/;"	m	class:JobPair
 next	JobPair.h	/^	int next;$/;"	m	class:JobPair
+operator =	JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
+Node	Node.h	/^	Node(){$/;"	f	class:Node
+Node	Node.h	/^	Node(const JobPair* jobpair){$/;"	f	class:Node
+Node	Node.h	/^class Node{$/;"	c
+_NODE_H_	Node.h	2;"	d
+addNode	Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
+m_Index	Node.h	/^	int m_Index;$/;"	m	class:Node
+m_Jobpair	Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
+m_Next	Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
+print	Node.h	/^	void print(){$/;"	f	class:Node
+~Node	Node.h	/^	~Node(){$/;"	f	class:Node
 Test	Test.cpp	/^Test::Test(){$/;"	f	class:Test
 test	Test.cpp	/^void Test::test(){$/;"	f	class:Test
 Test	Test.h	/^class Test{$/;"	c

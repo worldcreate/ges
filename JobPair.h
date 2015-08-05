@@ -12,6 +12,15 @@ public:
 		prev=-1;
 		next=-1;
 	}
+	JobPair& operator=(const JobPair& dst){
+		machine=dst.machine;
+		time=dst.time;
+		endTime=dst.endTime;
+		jobIndex=dst.jobIndex;
+		checked=dst.checked;
+		prev=dst.prev;
+		next=dst.next;
+	}
 	int machine;
 	int prev;
 	int next;
