@@ -45,14 +45,9 @@ Ges::Ges(int argc,char **argv){
 }
 
 void Ges::initialSolution(){
-	solution.resize(m_SettingTable.size());
-	for(int i=0;i<solution.size();i++){
-		solution[i].resize(m_SettingTable[i].size());
-		for(int j=0;j<solution[i].size();j++){
-			solution[i][j]=m_SettingTable[i][j];
-		}
-		random_shuffle(solution[i].begin(),solution[i].end());
-	}
+	solution.resize(m_SettingTable[0].size());
+
+	
 }
 
 void Ges::execute(){
@@ -60,6 +55,7 @@ void Ges::execute(){
 	int L=getMakespan(_solution)-1;
 	while(m_Iter<m_MaxIter){
 
+		m_Iter++;
 	}
 }
 

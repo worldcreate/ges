@@ -20,7 +20,7 @@ private:
 	int m_Iter;
 	int m_MaxIter;
 	list<int> m_Penalty;
-	vector<vector<JobPair> > solution; // 縦Job 横Machineの配列
+	vector<vector<JobPair> > solution; // 縦Machine 横Jobの配列
 	stack<JobPair> m_EP;
 	const char* m_FileName;
 	vector<vector<JobPair> > m_SettingTable;
