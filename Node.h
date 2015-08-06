@@ -17,8 +17,8 @@ public:
 		m_Jobpair=new JobPair();
 		(*m_Jobpair)=(*jobpair);
 	}
-	void addNode(int idx){
-		m_Next.push_back(idx);
+	void addNode(Node* node){
+		m_Next.push_back(node);
 		node->addPrev(this);
 	}
 	void addPrev(Node* node){
@@ -61,8 +61,8 @@ public:
 		delete m_Jobpair;
 	}
 	JobPair *m_Jobpair;
-	vector<int> m_Next;
-	vector<int> m_Prev;
+	vector<Node*> m_Next;
+	vector<Node*> m_Prev;
 	int m_R;
 	int m_Q;
 private:
