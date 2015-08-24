@@ -7,36 +7,67 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8J2	//
+Ejection	.\Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,int L){$/;"	f	class:Ges
 FileReader	.\FileReader.cpp	/^FileReader::FileReader(const char *file){$/;"	f	class:FileReader
 FileReader	.\FileReader.h	/^class FileReader{$/;"	c
 Ges	.\Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 Ges	.\Ges.h	/^class Ges{$/;"	c
+Graph	.\Graph.cpp	/^Graph::Graph(){$/;"	f	class:Graph
+Graph	.\Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
+Graph	.\Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution){$/;"	f	class:Graph
+Graph	.\Graph.h	/^class Graph{$/;"	c
+Gt	.\Gt.cpp	/^Gt::Gt():mFix(false){$/;"	f	class:Gt
+Gt	.\Gt.cpp	/^Gt::Gt(const char* filename):mFix(false){$/;"	f	class:Gt
+Gt	.\Gt.h	/^class Gt{$/;"	c
 JobPair	.\JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	.\JobPair.h	/^class JobPair{$/;"	c
+NEXTJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
+NOWJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
+NULL	.\Gt.cpp	8;"	d	file:
 Node	.\Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	.\Node.h	/^	Node(const Node& node){$/;"	f	class:Node
 Node	.\Node.h	/^class Node{$/;"	c
+PREVJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
+Table	.\Gt.h	/^	typedef vector<vector<JobPair> > Table;$/;"	t	class:Gt
 Test	.\Test.cpp	/^Test::Test(){$/;"	f	class:Test
 Test	.\Test.h	/^class Test{$/;"	c
+Util	.\Util.h	/^class Util{$/;"	c
 _FILEREADER_H_	.\FileReader.h	2;"	d
 _GES_H_	.\Ges.h	2;"	d
+_GRAPH_H_	.\Graph.h	2;"	d
+_GT_H_	.\Gt.h	2;"	d
 _JOBPAIR_H_	.\JobPair.h	2;"	d
 _NODE_H_	.\Node.h	2;"	d
 _TEST_H_	.\Test.h	2;"	d
+_UTIL_H_	.\Util.h	2;"	d
 addNode	.\Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
 addPrev	.\Node.h	/^	void addPrev(Node* node){$/;"	f	class:Node
+array	.\Graph.h	/^	vector<Node*> array;$/;"	m	class:Graph
 check	.\JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
 check	.\Node.h	/^	void check(){$/;"	f	class:Node
+checkConflict	.\Gt.cpp	/^bool Gt::checkConflict(int index,int machine,pair<int,int> &T){$/;"	f	class:Gt
 checked	.\JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
 execute	.\Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
-getMakespan	.\Ges.cpp	/^int Ges::getMakespan(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
+execute	.\Gt.cpp	/^void Gt::execute(){$/;"	f	class:Gt
+getIndex	.\Node.h	/^	int getIndex() const{$/;"	f	class:Node
+getMakespan	.\Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
+getMinTimeOverT	.\Gt.cpp	/^int Gt::getMinTimeOverT(const vector<vector<int> > &index,pair<int,int> &T){$/;"	f	class:Gt
+getRand	.\Util.cpp	/^int Util::getRand(int min,int max){$/;"	f	class:Util
 getTable	.\FileReader.cpp	/^vector<vector<JobPair> >& FileReader::getTable(){$/;"	f	class:FileReader
+includeVector	.\Util.h	/^	static bool includeVector(const vector<T>& vec,T value){$/;"	f	class:Util
 initialSolution	.\Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
 isCheck	.\JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
-isCheck	.\Node.h	/^	bool isCheck(){$/;"	f	class:Node
+isCheck	.\Node.h	/^	bool isCheck() const{$/;"	f	class:Node
 jobIndex	.\JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
+mCreateTable	.\Gt.h	/^	vector<vector<vector<int> > > mCreateTable;$/;"	m	class:Gt
+mFix	.\Gt.h	/^	bool mFix;$/;"	m	class:Gt
+mJobNum	.\Gt.h	/^	int mJobNum;$/;"	m	class:Gt
+mMachineNum	.\Gt.h	/^	int mMachineNum;$/;"	m	class:Gt
+mMatrix	.\Gt.h	/^	vector<vector<JobPair> > mMatrix;$/;"	m	class:Gt
 mTable	.\FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
+mTable	.\Gt.h	/^	Table mTable;$/;"	m	class:Gt
 m_Checked	.\Node.h	/^	bool m_Checked;$/;"	m	class:Node
 m_EP	.\Ges.h	/^	stack<JobPair> m_EP;$/;"	m	class:Ges
 m_FileName	.\Ges.h	/^	const char* m_FileName;$/;"	m	class:Ges
@@ -51,22 +82,29 @@ m_Q	.\Node.h	/^	int m_Q;$/;"	m	class:Node
 m_R	.\Node.h	/^	int m_R;$/;"	m	class:Node
 m_SettingTable	.\Ges.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:Ges
 m_Solution	.\Ges.h	/^	vector<vector<JobPair> > m_Solution; \/\/ 縦Machine 横Jobの配列$/;"	m	class:Ges
+m_kMax	.\Ges.h	/^	int m_kMax;$/;"	m	class:Ges
 machine	.\JobPair.h	/^	int machine;$/;"	m	class:JobPair
 main	.\main.cpp	/^int main(int argc,char *argv[]){$/;"	f
-makeGraph	.\Ges.cpp	/^Node* Ges::makeGraph(const vector<vector<JobPair> > &solution){$/;"	f	class:Ges
 next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
 operator =	.\JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
+operator []	.\Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
 prev	.\JobPair.h	/^	int prev;$/;"	m	class:JobPair
 print	.\Node.h	/^	void print(){$/;"	f	class:Node
 printAll	.\Node.h	/^	void printAll(){$/;"	f	class:Node
+removeNode	.\Graph.cpp	/^void Graph::removeNode(int index){$/;"	f	class:Graph
+removeVector	.\Util.h	/^	static void removeVector(vector<T>& vec,int index){$/;"	f	class:Util
 reset	.\Node.h	/^	void reset(){$/;"	f	class:Node
 resetChild	.\Node.h	/^	void resetChild(){$/;"	f	class:Node
 setIndex	.\Node.h	/^	void setIndex(int a_Index){$/;"	f	class:Node
-setLongestPath	.\Ges.cpp	/^void Ges::setLongestPath(Node* root){$/;"	f	class:Ges
+setLongestPath	.\Graph.cpp	/^void Graph::setLongestPath(){$/;"	f	class:Graph
+setSeed	.\Util.cpp	/^void Util::setSeed(int n){$/;"	f	class:Util
+setTable	.\Gt.cpp	/^void Gt::setTable(Table &table){$/;"	f	class:Gt
+size	.\Graph.cpp	/^int Graph::size() const{$/;"	f	class:Graph
 split	.\FileReader.cpp	/^vector<string> FileReader::split(const string &str, char delim){$/;"	f	class:FileReader
 test	.\Test.cpp	/^void Test::test(){$/;"	f	class:Test
 time	.\JobPair.h	/^	int time;$/;"	m	class:JobPair
-topologicalSort	.\Ges.cpp	/^vector<Node*> Ges::topologicalSort(Node* root){$/;"	f	class:Ges
-visit	.\Ges.cpp	/^void Ges::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Ges
+topologicalSort	.\Graph.cpp	/^void Graph::topologicalSort(){$/;"	f	class:Graph
+visit	.\Graph.cpp	/^void Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph
 ~Ges	.\Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
+~Graph	.\Graph.cpp	/^Graph::~Graph(){$/;"	f	class:Graph
 ~Node	.\Node.h	/^	~Node(){$/;"	f	class:Node

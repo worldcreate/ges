@@ -17,6 +17,16 @@ public:
 		m_Jobpair=new JobPair();
 		(*m_Jobpair)=(*jobpair);
 	}
+	Node(const Node& node){
+		m_Jobpair=new JobPair();
+		(*m_Jobpair)=(*node.m_Jobpair);
+		m_R=node.m_R;
+		m_Q=node.m_Q;
+		this->m_Index=node.getIndex();
+		m_Checked=node.isCheck();
+		m_Prev.clear();
+		m_Next.clear();
+	}
 	void addNode(Node* node){
 		m_Next.push_back(node);
 		node->addPrev(this);
@@ -38,7 +48,7 @@ public:
 			cout<<endl;
 		}
 	}
-	bool isCheck(){
+	bool isCheck() const{
 		return m_Checked;
 	}
 	void check(){
@@ -56,6 +66,9 @@ public:
 	}
 	void setIndex(int a_Index){
 		m_Index=a_Index;
+	}
+	int getIndex() const{
+		return m_Index;
 	}
 	~Node(){
 		delete m_Jobpair;

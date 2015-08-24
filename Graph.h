@@ -12,8 +12,13 @@ class Graph{
 public:
 	Graph();
 	Graph(const vector<vector<JobPair> >&);
+	Graph(const Graph&);
+	int size() const;
+	Node* operator[](int n) const;
+	void print();
 	~Graph();
 	int getMakespan();
+	void removeNode(int);
 private:
 	void setLongestPath();
 	void topologicalSort();

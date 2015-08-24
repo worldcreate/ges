@@ -4,8 +4,10 @@
 #include <list>
 #include <vector>
 #include <stack>
+#include <deque>
 #include "JobPair.h"
 #include "Node.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -16,11 +18,8 @@ public:
 	void execute();
 	~Ges();
 private:
-	int getMakespan(const vector<vector<JobPair> >&);
-	vector<Node*>* makeGraph(const vector<vector<JobPair> >&);
-	void setLongestPath(vector<Node*>*);
-	void topologicalSort(vector<Node*>*);
-	void visit(Node*,stack<Node*>&);
+	void Ejection(vector<vector<JobPair> > ,int);
+	void Ejection(Graph,deque<Node*>,int,int);
 
 	int m_Iter;
 	int m_MaxIter;
@@ -29,6 +28,7 @@ private:
 	stack<JobPair> m_EP;
 	const char* m_FileName;
 	vector<vector<JobPair> > m_SettingTable;
+	int m_kMax;
 };
 
 #endif
