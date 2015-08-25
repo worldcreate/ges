@@ -11,7 +11,7 @@ using namespace std;
 class Graph{
 public:
 	Graph();
-	Graph(const vector<vector<JobPair> >&);
+	Graph(const vector<vector<JobPair> >&,const vector<vector<JobPair> > &);
 	Graph(const Graph&);
 	int size() const;
 	Node* operator[](int n) const;

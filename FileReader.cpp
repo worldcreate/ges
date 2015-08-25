@@ -33,7 +33,9 @@ FileReader::FileReader(const char *file){
 			jp.index=cnt++;
 			if(i!=0){
 				jp.prev=row[i-1].machine;
+				jp.prevIndex=row[i-1].index;
 				row[i-1].next=jp.machine;
+				row[i-1].nextIndex=jp.index;
 			}
 			row.push_back(jp);
 		}

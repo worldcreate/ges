@@ -4,7 +4,7 @@ Graph::Graph(){
 
 }
 
-Graph::Graph(const vector<vector<JobPair> >& solution){
+Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){
 	Node* root=new Node();
 	Node* leaf=new Node();
 	Node* now=root;
@@ -28,15 +28,27 @@ Graph::Graph(const vector<vector<JobPair> >& solution){
 			search.push(node->m_Next[i]);
 		}
 		int nextMachine=node->m_Jobpair->next;
-		if(nextMachine==-1)
+		int tarIndex=node->m_Jobpair->nextIndex;
+		int jobIndex=node->m_Jobpair->jobIndex;
+		if(tarIndex==-1)
 			continue;
 		Node *now=root->m_Next[nextMachine];
-		while(now->m_Jobpair->machine!=-1){
-			if(node->m_Jobpair->jobIndex==now->m_Jobpair->jobIndex){
+		while(tarIndex!=-1){
+			if(tarIndex==now->m_Jobpair->index){
 				node->addNode(now);
 				break;
 			}
 			now=now->m_Next[0];
+			if(now==leaf){
+				for(int i=0;i<settingTable[jobIndex].size();i++){
+					if(settingTable[jobIndex][i].index==tarIndex){
+						tarIndex=settingTable[jobIndex][i].nextIndex;
+						nextMachine=settingTable[jobIndex][i].next;
+						now=root->m_Next[nextMachine];
+						break;
+					}
+				}
+			}
 		}
 	}
 	setLongestPath();
@@ -183,7 +195,7 @@ void Graph::removeNode(int index){
 }
 
 void Graph::print(){
-	cout<<"- R,Q,J,M,N"<<endl;
+	cout<<"- R,Q,J,M,N,P"<<endl;
 	for(int i=0;i<array.size();i++){
 		cout<<i<<" "<<array[i]->m_R<<","<<array[i]->m_Q<<","<<array[i]->m_Jobpair->jobIndex<<","<<array[i]->m_Jobpair->machine<<",";
 		cout<<"N(";

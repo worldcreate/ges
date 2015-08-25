@@ -82,7 +82,7 @@ void Ges::execute(){
 	while(!m_EP.empty())
 		m_EP.pop();
 
-	Graph graph(_solution);
+	Graph graph(_solution,m_SettingTable);
 	int L=graph.getMakespan()-1;
 	cout<<"L="<<L<<endl;
 	vector<vector<JobPair> > I;
@@ -107,6 +107,7 @@ void Ges::execute(){
 		}
 		cout<<endl;
 	#endif
+	#ifndef DEBUG
 	for(int i=0;i<candidate.size();i++){
 		JobPair jp=candidate[i];
 		int machine=jp.machine;
@@ -121,6 +122,10 @@ void Ges::execute(){
 		m_EP.push(jp);
 
 	}
+	#else
+		vector<JobPair>::iterator it=_solution[0].begin();
+		_solution[0].erase(it);
+	#endif
 	#ifdef DEBUG
 		cout<<"after Eject"<<endl;
 		for(int i=0;i<_solution.size();i++){
@@ -131,7 +136,7 @@ void Ges::execute(){
 			cout<<endl;
 		}
 		cout<<"graph"<<endl;
-		Graph g(_solution);
+		Graph g(_solution,m_SettingTable);
 		g.print();
 	#endif
 	while(m_Iter<m_MaxIter){
@@ -157,7 +162,7 @@ vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 }
 
 void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){
-	Graph graph(_solution);
+	Graph graph(_solution,m_SettingTable);
 	deque<Node*> bottleneckNode;
 
 	// ボトルネックノード抽出
@@ -190,12 +195,13 @@ void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_can
 		bottleneckNode.pop_front();
 		int index=node->getIndex();
 
-		graph.removeNode(index);
-		a_candidates.push_back(*graph[index]->m_Jobpair);
+		Graph _graph(graph);
+		_graph.removeNode(index);
+		a_candidates.push_back(*_graph[index]->m_Jobpair);
 		#ifdef DEBUG
 			cout<<count<<"times"<<endl;
 			cout<<"remove node["<<index<<"]"<<endl;
-			graph.print();
+			_graph.print();
 			cout<<"candidates list"<<endl;
 			for(int i=0;i<a_candidates.size();i++){
 				cout<<"("<<a_candidates[i].jobIndex<<","<<a_candidates[i].machine<<",";
@@ -204,11 +210,11 @@ void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_can
 			cout<<endl;
 		#endif
 
-		if(graph.getMakespan()<=L){
+		if(_graph.getMakespan()<=L){
 			a_I.push_back(a_candidates);
 		}
 		
-		Ejection(graph,bottleneckNode,a_candidates,a_I,count+1,L);
+		Ejection(_graph,bottleneckNode,a_candidates,a_I,count+1,L);
 		a_candidates.pop_back();
 	}
 }

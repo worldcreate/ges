@@ -10,7 +10,9 @@ public:
 		jobIndex=-1;
 		checked=false;
 		prev=-1;
+		prevIndex=-1;
 		next=-1;
+		nextIndex=-1;
 		technicalOrder=-1;
 		index=-1;
 	}
@@ -21,7 +23,9 @@ public:
 		jobIndex=dst.jobIndex;
 		checked=dst.checked;
 		prev=dst.prev;
+		prevIndex=dst.prevIndex;
 		next=dst.next;
+		nextIndex=dst.nextIndex;
 		technicalOrder=dst.technicalOrder;
 		index=dst.index;
 	}
@@ -30,7 +34,9 @@ public:
 	}
 	int machine;
 	int prev;
+	int prevIndex;
 	int next;
+	int nextIndex;
 	int time;
 	int endTime;
 	int jobIndex;
