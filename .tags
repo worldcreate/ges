@@ -7,6 +7,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8J2	//
+Ejection	.\Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,int count,int L){$/;"	f	class:Ges
 Ejection	.\Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,int L){$/;"	f	class:Ges
 FileReader	.\FileReader.cpp	/^FileReader::FileReader(const char *file){$/;"	f	class:FileReader
 FileReader	.\FileReader.h	/^class FileReader{$/;"	c
@@ -89,6 +90,7 @@ next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
 operator =	.\JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 operator []	.\Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
 prev	.\JobPair.h	/^	int prev;$/;"	m	class:JobPair
+print	.\Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
 print	.\Node.h	/^	void print(){$/;"	f	class:Node
 printAll	.\Node.h	/^	void printAll(){$/;"	f	class:Node
 removeNode	.\Graph.cpp	/^void Graph::removeNode(int index){$/;"	f	class:Graph

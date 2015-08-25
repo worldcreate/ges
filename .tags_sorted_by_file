@@ -4,6 +4,7 @@ split	FileReader.cpp	/^vector<string> FileReader::split(const string &str, char 
 FileReader	FileReader.h	/^class FileReader{$/;"	c
 _FILEREADER_H_	FileReader.h	2;"	d
 mTable	FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
+Ejection	Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,int count,int L){$/;"	f	class:Ges
 Ejection	Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,int L){$/;"	f	class:Ges
 Ges	Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
@@ -24,6 +25,7 @@ Graph	Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution){$/;"	f	class:Graph
 getMakespan	Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
 operator []	Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
+print	Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
 removeNode	Graph.cpp	/^void Graph::removeNode(int index){$/;"	f	class:Graph
 setLongestPath	Graph.cpp	/^void Graph::setLongestPath(){$/;"	f	class:Graph
 size	Graph.cpp	/^int Graph::size() const{$/;"	f	class:Graph

@@ -14,6 +14,7 @@ FileReader::FileReader(const char *file){
 	ifstream ifs(file);
 	string str;
 	int j=0;
+	int cnt=0;
 
 	while(getline(ifs,str)){
 		vector<JobPair> row;
@@ -28,6 +29,8 @@ FileReader::FileReader(const char *file){
 			jp.time=atoi(time);
 			jp.endTime=-1;
 			jp.jobIndex=j;
+			jp.technicalOrder=i;
+			jp.index=cnt++;
 			if(i!=0){
 				jp.prev=row[i-1].machine;
 				row[i-1].next=jp.machine;

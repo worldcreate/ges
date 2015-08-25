@@ -11,6 +11,8 @@ public:
 		checked=false;
 		prev=-1;
 		next=-1;
+		technicalOrder=-1;
+		index=-1;
 	}
 	JobPair& operator=(const JobPair& dst){
 		machine=dst.machine;
@@ -20,6 +22,11 @@ public:
 		checked=dst.checked;
 		prev=dst.prev;
 		next=dst.next;
+		technicalOrder=dst.technicalOrder;
+		index=dst.index;
+	}
+	bool operator==(const JobPair& dst){
+		return index==dst.index;
 	}
 	int machine;
 	int prev;
@@ -27,6 +34,8 @@ public:
 	int time;
 	int endTime;
 	int jobIndex;
+	int technicalOrder;
+	int index;
 	bool isCheck(){return checked;}
 	void check(){checked=true;}
 private:
