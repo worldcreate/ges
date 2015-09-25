@@ -4,25 +4,29 @@ split	FileReader.cpp	/^vector<string> FileReader::split(const string &str, char 
 FileReader	FileReader.h	/^class FileReader{$/;"	c
 _FILEREADER_H_	FileReader.h	2;"	d
 mTable	FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
-Ejection	Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,int count,int L){$/;"	f	class:Ges
-Ejection	Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,int L){$/;"	f	class:Ges
+Ejection	Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_candidates,vector<vector<JobPair> >& a_I,int count,int L){$/;"	f	class:Ges
+Ejection	Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){$/;"	f	class:Ges
 Ges	Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
+Perturb	Ges.cpp	/^void Ges::Perturb(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
+Routine	Ges.cpp	/^void Ges::Routine(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
 execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 initialSolution	Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
+insertJob	Ges.cpp	/^void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){$/;"	f	class:Ges
+selectEP	Ges.cpp	/^vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){$/;"	f	class:Ges
 ~Ges	Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 Ges	Ges.h	/^class Ges{$/;"	c
 _GES_H_	Ges.h	2;"	d
 m_EP	Ges.h	/^	stack<JobPair> m_EP;$/;"	m	class:Ges
 m_FileName	Ges.h	/^	const char* m_FileName;$/;"	m	class:Ges
 m_Iter	Ges.h	/^	int m_Iter;$/;"	m	class:Ges
+m_IterRand	Ges.h	/^	int m_IterRand;$/;"	m	class:Ges
 m_MaxIter	Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
-m_Penalty	Ges.h	/^	list<int> m_Penalty;$/;"	m	class:Ges
-m_SettingTable	Ges.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:Ges
-m_Solution	Ges.h	/^	vector<vector<JobPair> > m_Solution; \/\/ 縦Machine 横Jobの配列$/;"	m	class:Ges
-m_kMax	Ges.h	/^	int m_kMax;$/;"	m	class:Ges
+m_Penalty	Ges.h	/^	vector<int> m_Penalty;$/;"	m	class:Ges
+m_SettingTable	Ges.h	/^	vector<vector<JobPair> > m_SettingTable;	\/\/ 縦Job 横技術的順序
+m_Solution	Ges.h	/^	vector<vector<JobPair> > m_Solution;	\/\/ 縦Machine 横投入順序の配列$/;"	m	class:Ges
 Graph	Graph.cpp	/^Graph::Graph(){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
-Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution){$/;"	f	class:Graph
+Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){$/;"	f	class:Graph
 getMakespan	Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
 operator []	Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
 print	Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
@@ -60,12 +64,17 @@ _JOBPAIR_H_	JobPair.h	2;"	d
 check	JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
 checked	JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	JobPair.h	/^	int endTime;$/;"	m	class:JobPair
+index	JobPair.h	/^	int index;$/;"	m	class:JobPair
 isCheck	JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
 jobIndex	JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
 machine	JobPair.h	/^	int machine;$/;"	m	class:JobPair
 next	JobPair.h	/^	int next;$/;"	m	class:JobPair
+nextIndex	JobPair.h	/^	int nextIndex;$/;"	m	class:JobPair
 operator =	JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
+operator ==	JobPair.h	/^	bool operator==(const JobPair& dst){$/;"	f	class:JobPair
 prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
+prevIndex	JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
+technicalOrder	JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
 Node	Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
@@ -99,7 +108,6 @@ setSeed	Util.cpp	/^void Util::setSeed(int n){$/;"	f	class:Util
 Util	Util.h	/^class Util{$/;"	c
 _UTIL_H_	Util.h	2;"	d
 includeVector	Util.h	/^	static bool includeVector(const vector<T>& vec,T value){$/;"	f	class:Util
-removeVector	Util.h	/^	static void removeVector(vector<T>& vec,int index){$/;"	f	class:Util
 main	main.cpp	/^int main(int argc,char *argv[]){$/;"	f
 !_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
 !_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
@@ -110,3 +118,4 @@ main	main.cpp	/^int main(int argc,char *argv[]){$/;"	f
 !_TAG_FILE_ENCODING	cp932	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_JP_URL	http://hp.vector.co.jp/authors/VA025040/	//
+$/;"	m	class:Ges

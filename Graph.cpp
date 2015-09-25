@@ -161,11 +161,15 @@ void Graph::removeNode(int index){
 	
 	// 技術的順序のつなぎ変え
 	if(array[index]->m_Prev.size()==1){
-		// 技術的順序の最初のノードの場合
-		array[index]->m_Next[1]->m_Prev.pop_back();
+		if(array[index]->m_Next.size()==2){
+			// 技術的順序の最初のノードの場合
+			array[index]->m_Next[1]->m_Prev.pop_back();
+		}
 	}else if(array[index]->m_Next.size()==1){
-		// 技術的順序の最後のノードの場合
-		array[index]->m_Prev[1]->m_Next.pop_back();
+		if(array[index]->m_Prev.size()==2){
+			// 技術的順序の最後のノードの場合
+			array[index]->m_Prev[1]->m_Next.pop_back();
+		}
 	}else{
 		prev=array[index]->m_Prev[1];
 		next=array[index]->m_Next[1];
