@@ -4,50 +4,55 @@ Graph::Graph(){
 
 }
 
+/* solution
+	縦がmachine
+	横が投入順序
+*/
+/* settingTable
+	縦がjob
+	横が技術的順序
+ */
 Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){
 	Node* root=new Node();
 	Node* leaf=new Node();
 	Node* now=root;
 	array.push_back(root);
-	for(int i=0;i<solution.size();i++){
+	/*
+		settingTableを頼りに技術的順序による
+		グラフを作成する
+	 */
+	for(int i=0;i<settingTable.size();i++){
 		now=root;
-		for(int j=0;j<solution[i].size();j++){
-			Node* node=new Node(&solution[i][j]);
+		for(int j=0;j<settingTable[i].size();j++){
+			Node* node=new Node(&settingTable[i][j]);
 			array.push_back(node);
 			now->addNode(node);
 			now=node;
 		}
 		now->addNode(leaf);
 	}
-	stack<Node*> search;
-	search.push(root);
-	while(!search.empty()){
-		Node *node=search.top();
-		search.pop();
-		for(int i=0;i<node->m_Next.size();i++){
-			search.push(node->m_Next[i]);
-		}
-		int nextMachine=node->m_Jobpair->next;
-		int tarIndex=node->m_Jobpair->nextIndex;
-		int jobIndex=node->m_Jobpair->jobIndex;
-		if(tarIndex==-1)
-			continue;
-		Node *now=root->m_Next[nextMachine];
-		while(tarIndex!=-1){
-			if(tarIndex==now->m_Jobpair->index){
-				node->addNode(now);
-				break;
-			}
-			now=now->m_Next[0];
-			if(now==leaf){
-				for(int i=0;i<settingTable[jobIndex].size();i++){
-					if(settingTable[jobIndex][i].index==tarIndex){
-						tarIndex=settingTable[jobIndex][i].nextIndex;
-						nextMachine=settingTable[jobIndex][i].next;
-						now=root->m_Next[nextMachine];
-						break;
-					}
+	
+	/*
+		機械の投入順序をsolutionから調べ
+		設定していく
+	 */
+	for(int i=1;i<array.size()-1;i++){
+		int index=array[i]->m_Jobpair->index;
+		int nextIndex=-1;
+		for(int j=0;j<solution.size();j++){
+			for(int k=0;k<solution[j].size();k++){
+				if(solution[j][k].index==index){
+					nextIndex=solution[j][k+1].index;
+					break;
 				}
+			}
+			if(nextIndex!=-1)
+				break;
+		}
+		for(int j=0;j<array.size();j++){
+			if(array[j]->m_Jobpair->index==nextIndex){
+				array[i]->addNode(array[j]);
+				break;
 			}
 		}
 	}
@@ -144,7 +149,7 @@ void Graph::removeNode(int index){
 	Node* prev=tar->m_Prev[0];
 	Node* next=tar->m_Next[0];
 
-	/* 投入順序のつなぎ変え */
+	/* 技術的順序のつなぎ変え */
 	for(int i=0;i<prev->m_Next.size();i++){
 		if(prev->m_Next[i]==tar){
 			prev->m_Next[i]=next;
@@ -159,15 +164,15 @@ void Graph::removeNode(int index){
 	}
 
 	
-	// 技術的順序のつなぎ変え
+	// 投入順序のつなぎ変え
 	if(array[index]->m_Prev.size()==1){
 		if(array[index]->m_Next.size()==2){
-			// 技術的順序の最初のノードの場合
+			// 投入順序の最初のノードの場合
 			array[index]->m_Next[1]->m_Prev.pop_back();
 		}
 	}else if(array[index]->m_Next.size()==1){
 		if(array[index]->m_Prev.size()==2){
-			// 技術的順序の最後のノードの場合
+			// 投入順序の最後のノードの場合
 			array[index]->m_Prev[1]->m_Next.pop_back();
 		}
 	}else{
@@ -177,6 +182,7 @@ void Graph::removeNode(int index){
 		next->m_Prev[1]=prev;
 	}
 
+	// Rの更新
 	for(int i=index+1;i<array.size();i++){
 		int max=0;
 		for(int j=0;j<array[i]->m_Prev.size();j++){

@@ -8,6 +8,7 @@ using namespace std;
 
 int main(int argc,char *argv[]){
 	int i=1;
+	int seed=300;
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
@@ -15,15 +16,17 @@ int main(int argc,char *argv[]){
 				case 'T':{
 					Test t;
 					t.test();
+					exit(0);
 				}
 				break;
 				case 's':
-					Util::setSeed(atoi(arg));
+					seed=atoi(arg);
 				break;
 			}
 		}
 		i++;
 	}
+	Util::setSeed(seed);
 	Ges g(argc,argv);
 	g.execute();
 }

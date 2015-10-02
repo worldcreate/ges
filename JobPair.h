@@ -14,7 +14,7 @@ public:
 		next=-1;
 		nextIndex=-1;
 		technicalOrder=-1;
-		index=-1;
+		index=-1;	// uniqueの番号
 	}
 	JobPair& operator=(const JobPair& dst){
 		machine=dst.machine;

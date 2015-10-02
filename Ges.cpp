@@ -105,6 +105,9 @@ void Ges::execute(){
 }
 
 void Ges::Routine(vector<vector<JobPair> >& solution,int L){
+	#ifdef DEBUG
+		cout<<"Enter routine"<<endl;
+	#endif
 	vector<vector<JobPair> > _solution=solution;
 	while(!m_EP.empty())
 		m_EP.pop();
@@ -112,7 +115,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	vector<vector<JobPair> > I;
 	Ejection(_solution,I,L);
 	#ifdef DEBUG
-		cout<<"I list"<<endl;
+		cout<<"1.I list"<<endl;
 
 		for(int i=0;i<I.size();i++){
 			for(int j=0;j<I[i].size();j++){
@@ -238,7 +241,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				vector<JobPair> candidate=selectEP(I);	
 			}
 			#ifdef DEBUG
-				cout<<"I list"<<endl;
+				cout<<"2.I list"<<endl;
 
 				for(int i=0;i<I.size();i++){
 					for(int j=0;j<I[i].size();j++){
@@ -337,6 +340,11 @@ vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 
 void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){
 	Graph graph(_solution,m_SettingTable);
+	#ifdef DEBUG
+		cout<<"Enter Ejection"<<endl;
+		graph.print();
+		cout<<endl;
+	#endif
 	deque<Node*> bottleneckNode;
 
 	// ボトルネックノード抽出
