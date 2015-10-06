@@ -87,9 +87,21 @@ void Ges::execute(){
 	while(m_Iter<m_MaxIter){
 		m_Solution=_solution;
 		Graph graph(m_Solution,m_SettingTable);
+		#ifdef DEBUG
+			cout<<"[execute]"<<endl;
+			graph.print();
+			cout<<"-------- _solution -----------"<<endl;
+			for(int i=0;i<_solution.size();i++){
+				for(int j=0;j<_solution[i].size();j++){
+					cout<<"("<<_solution[i][j].jobIndex<<","<<_solution[i][j].machine<<",";
+					cout<<_solution[i][j].time<<") ";
+				}
+				cout<<endl;
+			}
+		#endif
 		int L=graph.getMakespan()-1;
 
-		cout<<"L="<<L<<endl;
+		//cout<<"L="<<L<<endl;
 		Routine(_solution,L);
 	}
 
@@ -171,7 +183,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	
 	do{
 		m_Iter++;
-		cout<<"Iter="<<m_Iter<<endl;
+		//cout<<"Iter="<<m_Iter<<endl;
 
 		// GES-1のために解とEPを保持
 		vector<vector<JobPair> > beforeSolution=_solution;
@@ -293,8 +305,11 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			#endif
 		}
 		Perturb(_solution,L);
+		Graph gr(_solution,m_SettingTable);
 		#ifdef DEBUG
-			cout<<"after Perturb"<<endl;
+			cout<<"[end of routine]"<<endl;
+			gr.print();
+			cout<<"-------- _solution --------------"<<endl;
 			for(int i=0;i<_solution.size();i++){
 				for(int j=0;j<_solution[i].size();j++){
 					cout<<"("<<_solution[i][j].jobIndex<<","<<_solution[i][j].machine<<",";
@@ -303,8 +318,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				cout<<endl;
 			}
 		#endif
-		Graph gr(_solution,m_SettingTable);
-		cout<<"makespan="<<g.getMakespan()<<endl;
+		//cout<<"makespan="<<gr.getMakespan()<<endl;
 	}while(!m_EP.empty() && m_Iter<m_MaxIter);
 	#ifdef DEBUG
 		cout<<"routine end"<<endl;

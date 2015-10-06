@@ -31,7 +31,7 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 		}
 		now->addNode(leaf);
 	}
-	
+	array.push_back(leaf);
 	/*
 		機械の投入順序をsolutionから調べ
 		設定していく
@@ -40,12 +40,20 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 		int index=array[i]->m_Jobpair->index;
 		int nextIndex=-1;
 		for(int j=0;j<solution.size();j++){
-			for(int k=0;k<solution[j].size();k++){
+			/* 最終列を検索する必要はない
+				なぜなら最終列とヒットした場合、その後ろの機械は
+				ないからである
+			*/
+			for(int k=0;k<solution[j].size()-1;k++){
 				if(solution[j][k].index==index){
 					nextIndex=solution[j][k+1].index;
 					break;
 				}
 			}
+			/*
+				ヒットしない場合
+				つまり、最終列の機械だった場合
+			 */
 			if(nextIndex!=-1)
 				break;
 		}
