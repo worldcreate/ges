@@ -138,8 +138,24 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		}
 	#endif
 
-	// Iから一つJobPairを選択する
-	vector<JobPair> candidate=selectEP(I);
+	vector<JobPair> candidate;
+
+	// I listが殻だった場合の例外処理
+	try{
+		// Iから一つJobPairを選択する
+		candidate=selectEP(I);
+	}catch(exception& err){
+		cout<<endl;
+		cout<<"ERROR!"<<endl;
+		cout<<endl;
+		cout<<err.what()<<endl;
+		cout<<"L="<<L<<endl;
+		cout<<"--------------------"<<endl;
+
+		Graph graph(_solution,m_SettingTable);
+		graph.print();
+		exit(0);
+	}
 	#ifdef DEBUG
 		cout<<"candidate"<<endl;
 		for(int i=0;i<candidate.size();i++){
@@ -331,6 +347,10 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 	int index=-1;
 	int size=INT_MAX;
+
+	if(I.empty()){
+		throw exception();
+	}
 
 	#ifdef DEBUG
 		cout<<"penalty"<<endl;
