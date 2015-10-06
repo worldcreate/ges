@@ -23,6 +23,7 @@ Gt	.\Gt.cpp	/^Gt::Gt(const char* filename):mFix(false){$/;"	f	class:Gt
 Gt	.\Gt.h	/^class Gt{$/;"	c
 JobPair	.\JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	.\JobPair.h	/^class JobPair{$/;"	c
+LocalSearch	.\Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution){$/;"	f	class:Ges
 NEXTJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NOWJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NULL	.\Gt.cpp	8;"	d	file:

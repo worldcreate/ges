@@ -50,13 +50,11 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 					break;
 				}
 			}
-			/*
-				ヒットしない場合
-				つまり、最終列の機械だった場合
-			 */
 			if(nextIndex!=-1)
 				break;
 		}
+		if(nextIndex==-1)
+			continue;
 		for(int j=0;j<array.size();j++){
 			if(array[j]->m_Jobpair->index==nextIndex){
 				array[i]->addNode(array[j]);

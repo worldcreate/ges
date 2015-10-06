@@ -16,7 +16,7 @@ int main(int argc,char *argv[]){
 			switch(argv[i][1]){
 				case 'T':{
 					Test t;
-					t.test();
+					t.test(argc,argv);
 					exit(0);
 				}
 				break;

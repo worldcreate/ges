@@ -11,14 +11,27 @@ using namespace std;
 Test::Test(){
 }
 
-void Test::test(){
+void Test::test(int argc,char** argv){
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	vector<vector<JobPair> > m_SettingTable;	// 縦Job 横技術的順序
 
+	const char* m_FileName="FT3.txt";
+	int i=0;
+	while(argc>i){
+		if(argv[i][0]=='-'){
+			const char *arg=&argv[i][2];
+			switch(argv[i][1]){
+				case 'f':
+					m_FileName=arg;
+				break;
+			}
+		}
+		i++;
+	}
 
-	FileReader fr("FT3.txt");
+	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
-	Gt gt("FT3.txt");
+	Gt gt(m_FileName);
 	gt.execute();
 	vector<vector<int> > matrix=gt.getMatrix();
 
@@ -45,10 +58,5 @@ void Test::test(){
 
 	Graph graph(m_Solution,m_SettingTable);
 	graph.print();
-	cout<<"========================"<<endl;
-	cout<<"remove"<<endl;
-	cout<<"========================"<<endl;
-	graph.removeNode(9);
-	graph.removeNode(8);
-	graph.print();
+
 }

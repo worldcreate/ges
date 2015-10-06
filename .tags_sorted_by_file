@@ -7,6 +7,7 @@ mTable	FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
 Ejection	Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_candidates,vector<vector<JobPair> >& a_I,int count,int L){$/;"	f	class:Ges
 Ejection	Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){$/;"	f	class:Ges
 Ges	Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
+LocalSearch	Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution){$/;"	f	class:Ges
 Perturb	Ges.cpp	/^void Ges::Perturb(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
 Routine	Ges.cpp	/^void Ges::Routine(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
 execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges

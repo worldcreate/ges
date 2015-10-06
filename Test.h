@@ -4,7 +4,7 @@
 class Test{
 public:
 	Test();
-	void test();
+	void test(int argc,char **argv);
 private:
 
 };
