@@ -171,19 +171,19 @@ void Graph::removeNode(int index){
 
 	
 	// 投入順序のつなぎ変え
-	if(array[index]->m_Prev.size()==1){
-		if(array[index]->m_Next.size()==2){
+	if(tar->m_Prev.size()==1){
+		if(tar->m_Next.size()==2){
 			// 投入順序の最初のノードの場合
-			array[index]->m_Next[1]->m_Prev.pop_back();
+			tar->m_Next[1]->m_Prev.pop_back();
 		}
-	}else if(array[index]->m_Next.size()==1){
-		if(array[index]->m_Prev.size()==2){
+	}else if(tar->m_Next.size()==1){
+		if(tar->m_Prev.size()==2){
 			// 投入順序の最後のノードの場合
-			array[index]->m_Prev[1]->m_Next.pop_back();
+			tar->m_Prev[1]->m_Next.pop_back();
 		}
 	}else{
-		prev=array[index]->m_Prev[1];
-		next=array[index]->m_Next[1];
+		prev=tar->m_Prev[1];
+		next=tar->m_Next[1];
 		prev->m_Next[1]=next;
 		next->m_Prev[1]=prev;
 	}
@@ -199,6 +199,7 @@ void Graph::removeNode(int index){
 		array[i]->m_R=max+array[i]->m_Jobpair->time;
 	}
 
+	// Qの更新
 	for(int i=index-1;i>=0;i--){
 		int max=0;
 		for(int j=0;j<array[i]->m_Next.size();j++){

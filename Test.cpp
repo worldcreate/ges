@@ -56,7 +56,11 @@ void Test::test(int argc,char** argv){
 		cout<<endl;
 	}
 
+	cout<<"before remove"<<endl;
 	Graph graph(m_Solution,m_SettingTable);
 	graph.print();
 
+	cout<<"remove Node[16]"<<endl;
+	graph.removeNode(16);
+	graph.print();
 }

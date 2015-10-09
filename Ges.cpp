@@ -154,6 +154,10 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 
 		Graph graph(_solution,m_SettingTable);
 		graph.print();
+
+		cout<<"Ejection()"<<endl;
+		Ejection(_solution,I,L);
+
 		exit(0);
 	}
 	#ifdef DEBUG
