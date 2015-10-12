@@ -9,11 +9,11 @@ using namespace std;
 
 class Node{
 public:
-	Node():m_Checked(false),m_R(0),m_Q(0){
+	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
 		m_Jobpair=new JobPair();
 		m_Jobpair->time=0;
 	}
-	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){
+	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
 		m_Jobpair=new JobPair();
 		(*m_Jobpair)=(*jobpair);
 	}
@@ -24,6 +24,7 @@ public:
 		m_Q=node.m_Q;
 		this->m_Index=node.getIndex();
 		m_Checked=node.isCheck();
+		m_tempChecked=node.istempCheck();
 		m_Prev.clear();
 		m_Next.clear();
 	}
@@ -51,8 +52,14 @@ public:
 	bool isCheck() const{
 		return m_Checked;
 	}
+	bool istempCheck() const{
+		return m_tempChecked;
+	}
 	void check(){
 		m_Checked=true;
+	}
+	void checkTemp(){
+		m_tempChecked=true;
 	}
 	void reset(){
 		for(int i=0;i<m_Next.size();i++){
@@ -81,6 +88,7 @@ public:
 private:
 	int m_Index;
 	bool m_Checked;
+	bool m_tempChecked;
 };
 
 #endif

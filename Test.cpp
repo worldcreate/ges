@@ -48,19 +48,16 @@ void Test::test(int argc,char** argv){
 		}
 	}
 
-	cout<<"(m,j,t)"<<endl;
+	cout<<"(m,j,t,i)"<<endl;
 	for(int i=0;i<m_Solution.size();i++){
 		for(int j=0;j<m_Solution[i].size();j++){
-			cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<") ";
+			cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
 		}
 		cout<<endl;
 	}
 
-	cout<<"before remove"<<endl;
+	cout<<"graph"<<endl;
 	Graph graph(m_Solution,m_SettingTable);
 	graph.print();
 
-	cout<<"remove Node[16]"<<endl;
-	graph.removeNode(16);
-	graph.print();
 }

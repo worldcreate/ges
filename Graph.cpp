@@ -1,7 +1,6 @@
 #include "Graph.h"
 
 Graph::Graph(){
-
 }
 
 /* solution
@@ -21,10 +20,13 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 		settingTableを頼りに技術的順序による
 		グラフを作成する
 	 */
+	int index=0;
+	root->setIndex(index);
 	for(int i=0;i<settingTable.size();i++){
 		now=root;
 		for(int j=0;j<settingTable[i].size();j++){
 			Node* node=new Node(&settingTable[i][j]);
+			node->setIndex(++index);
 			array.push_back(node);
 			now->addNode(node);
 			now=node;
@@ -32,6 +34,7 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 		now->addNode(leaf);
 	}
 	array.push_back(leaf);
+	leaf->setIndex(++index);
 	/*
 		機械の投入順序をsolutionから調べ
 		設定していく
@@ -66,6 +69,18 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 }
 
 Graph::Graph(const Graph& graph){
+	operator=(graph);
+}
+
+int Graph::size() const{
+	return array.size();
+}
+
+Node* Graph::operator[](int n) const{
+	return array[n];
+}
+
+Graph& Graph::operator=(const Graph& graph){
 	array.resize(graph.size());
 	for(int i=0;i<array.size();i++){
 		Node *node=new Node(*graph[i]);
@@ -95,14 +110,6 @@ Graph::Graph(const Graph& graph){
 	}
 }
 
-int Graph::size() const{
-	return array.size();
-}
-
-Node* Graph::operator[](int n) const{
-	return array[n];
-}
-
 void Graph::setLongestPath(){
 	topologicalSort();
 	for(int i=0;i<array.size();i++){
@@ -125,9 +132,15 @@ void Graph::setLongestPath(){
 	}
 }
 
-void Graph::topologicalSort(){
+void Graph::topologicalSort() throw(runtime_error){
 	stack<Node*> sort;
-	visit(array[0],sort);
+	for(int i=0;i<array.size();i++){
+		if(!array[i]->isCheck() && !array[i]->istempCheck())
+			if(!visit(array[i],sort)){
+				throw runtime_error("ERROR! cycle graph");
+				return;
+			}
+	}
 	array.clear();
 	while(!sort.empty()){
 		array.push_back(sort.top());
@@ -136,14 +149,20 @@ void Graph::topologicalSort(){
 	}
 }
 
-void Graph::visit(Node* node,stack<Node*>& sort){
-	if(node->isCheck())
-		return;
-	node->check();
-	for(int i=0;i<node->m_Next.size();i++){
-		visit(node->m_Next[i],sort);
+bool Graph::visit(Node* node,stack<Node*>& sort){
+	if(node->istempCheck() && !node->isCheck()){
+		return false;
 	}
+	if(node->isCheck())
+		return true;
+	node->checkTemp();
+	for(int i=0;i<node->m_Next.size();i++){
+		if(!visit(node->m_Next[i],sort))
+			return false;
+	}
+	node->check();
 	sort.push(node);
+	return true;
 }
 
 int Graph::getMakespan(){
@@ -214,7 +233,7 @@ void Graph::removeNode(int index){
 void Graph::print(){
 	cout<<"- R,Q,J,M,N,P"<<endl;
 	for(int i=0;i<array.size();i++){
-		cout<<i<<" "<<array[i]->m_R<<","<<array[i]->m_Q<<","<<array[i]->m_Jobpair->jobIndex<<","<<array[i]->m_Jobpair->machine<<",";
+		cout<<array[i]->getIndex()<<" "<<array[i]->m_R<<","<<array[i]->m_Q<<","<<array[i]->m_Jobpair->jobIndex<<","<<array[i]->m_Jobpair->machine<<",";
 		cout<<"N(";
 		for(int j=0;j<array[i]->m_Next.size();j++){
 			cout<<array[i]->m_Next[j]->getIndex()<<",";

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stack>
+#include <stdexcept>
 #include "Node.h"
 #include "JobPair.h"
 
@@ -15,14 +16,15 @@ public:
 	Graph(const Graph&);
 	int size() const;
 	Node* operator[](int n) const;
+	Graph& operator=(const Graph&);
 	void print();
 	~Graph();
 	int getMakespan();
 	void removeNode(int);
 private:
 	void setLongestPath();
-	void topologicalSort();
-	void visit(Node*,stack<Node*>&);
+	void topologicalSort()throw(runtime_error);
+	bool visit(Node*,stack<Node*>&);
 	vector<Node*> array;
 
 };

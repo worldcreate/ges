@@ -27,8 +27,8 @@ LocalSearch	.\Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution
 NEXTJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NOWJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NULL	.\Gt.cpp	8;"	d	file:
-Node	.\Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
-Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	.\Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^	Node(const Node& node){$/;"	f	class:Node
 Node	.\Node.h	/^class Node{$/;"	c
 PREVJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
@@ -52,6 +52,7 @@ array	.\Graph.h	/^	vector<Node*> array;$/;"	m	class:Graph
 check	.\JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
 check	.\Node.h	/^	void check(){$/;"	f	class:Node
 checkConflict	.\Gt.cpp	/^bool Gt::checkConflict(int index,int machine,pair<int,int> &T){$/;"	f	class:Gt
+checkTemp	.\Node.h	/^	void checkTemp(){$/;"	f	class:Node
 checked	.\JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
 execute	.\Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
@@ -67,6 +68,7 @@ initialSolution	.\Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
 insertJob	.\Ges.cpp	/^void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){$/;"	f	class:Ges
 isCheck	.\JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
 isCheck	.\Node.h	/^	bool isCheck() const{$/;"	f	class:Node
+istempCheck	.\Node.h	/^	bool istempCheck() const{$/;"	f	class:Node
 jobIndex	.\JobPair.h	/^	int jobIndex;$/;"	m	class:JobPair
 mCreateTable	.\Gt.h	/^	vector<vector<vector<int> > > mCreateTable;$/;"	m	class:Gt
 mFix	.\Gt.h	/^	bool mFix;$/;"	m	class:Gt
@@ -90,6 +92,7 @@ m_Q	.\Node.h	/^	int m_Q;$/;"	m	class:Node
 m_R	.\Node.h	/^	int m_R;$/;"	m	class:Node
 m_SettingTable	.\Ges.h	/^	vector<vector<JobPair> > m_SettingTable;	\/\/ 縦Job 横技術的順序
 m_Solution	.\Ges.h	/^	vector<vector<JobPair> > m_Solution;	\/\/ 縦Machine 横投入順序の配列$/;"	m	class:Ges
+m_tempChecked	.\Node.h	/^	bool m_tempChecked;$/;"	m	class:Node
 machine	.\JobPair.h	/^	int machine;$/;"	m	class:JobPair
 main	.\main.cpp	/^int main(int argc,char *argv[]){$/;"	f
 next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
@@ -113,7 +116,7 @@ setTable	.\Gt.cpp	/^void Gt::setTable(Table &table){$/;"	f	class:Gt
 size	.\Graph.cpp	/^int Graph::size() const{$/;"	f	class:Graph
 split	.\FileReader.cpp	/^vector<string> FileReader::split(const string &str, char delim){$/;"	f	class:FileReader
 technicalOrder	.\JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
-test	.\Test.cpp	/^void Test::test(){$/;"	f	class:Test
+test	.\Test.cpp	/^void Test::test(int argc,char** argv){$/;"	f	class:Test
 time	.\JobPair.h	/^	int time;$/;"	m	class:JobPair
 topologicalSort	.\Graph.cpp	/^void Graph::topologicalSort(){$/;"	f	class:Graph
 visit	.\Graph.cpp	/^void Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph

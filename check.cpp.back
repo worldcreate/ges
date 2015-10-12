@@ -1,0 +1,68 @@
+#include "FileReader.h"
+#include "Graph.h"
+#include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cstdlib>
+
+using namespace std;
+
+vector<string> split(const string &str, char delim){
+	istringstream iss(str); string tmp; vector<string> res;
+	while(getline(iss, tmp, delim)) res.push_back(tmp);
+	return res;
+}
+
+int myAtoi(string& src){
+	string dst;
+	for(int i=0;i<src.length();i++){
+		if(isdigit(static_cast<unsigned char>(src.at(i)))){
+			dst.append(&src.at(i));
+		}
+	}
+	return atoi(dst.c_str());
+}
+
+int main(void){
+	FileReader fr("FT10.txt");
+	vector<vector<JobPair> > settingTable=fr.getTable();
+	vector<vector<JobPair> > solution(settingTable.size(),vector<JobPair>(settingTable[0].size()));
+	string str;
+	int line=0;
+
+	while(getline(cin,str)!=NULL){
+		vector<string> ele=split(str,' ');
+		for(int i=0;i<ele.size();i++){
+			vector<string> param=split(ele[i],',');
+			if(param.size()<3)
+				continue;
+			int jobIndex=myAtoi(param[0]);
+			int machine=myAtoi(param[1]);
+			int time=myAtoi(param[2]);
+
+			JobPair *jp=NULL;
+			for(int j=0;j<settingTable.size();j++){
+				for(int k=0;k<settingTable.size();k++){
+					if(settingTable[j][k].jobIndex==jobIndex && settingTable[j][k].machine==machine){
+						jp=&settingTable[j][k];
+						break;
+					}
+				}
+				if(jp!=NULL)
+					break;
+			}
+			solution[line][i]=*jp;
+
+		}
+		line++;
+	}
+
+	Graph graph(solution,settingTable);
+	for(int i=0;i<graph.size();i++){
+		for(int j=0;j<graph[i]->m_Next.size();j++){
+			cout<<graph[i]->getIndex()<<" "<<graph[i]->m_Next[j]->getIndex()<<endl;
+		}
+	}
+}
+

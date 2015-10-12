@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <climits>
+#include <stdexcept>
 
 using namespace std;
 
@@ -229,7 +230,16 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			if(m_EP.empty()){
 				LocalSearch(__solution);
 			}
-			Graph g(__solution,m_SettingTable);
+			// TODO
+			// 挿入した際cycleが生じたらその候補は捨てる
+			Graph g;
+			try{
+				g=Graph(__solution,m_SettingTable);
+			}catch(runtime_error& e){
+				cout<<"Error in Insert"<<endl;
+				cout<<e.what()<<endl;
+				continue;
+			}
 			int makespan=g.getMakespan();
 			if(makespan<min){
 				min=makespan;
@@ -469,11 +479,21 @@ void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
 		_solution[machineRand][jobRand]=_solution[machineRand][jobRand+1];
 		_solution[machineRand][jobRand+1]=jp;
 		
-		Graph g(_solution,m_SettingTable);
+		// TODO
+		// 解を遷移した際、cycleが生じるとその解は捨てる
+		Graph g;
+		try{
+			g=Graph(_solution,m_SettingTable);
+			cnt++;
+		}catch(runtime_error& e){
+			cout<<"Error in Perturb"<<endl;
+			cout<<e.what()<<endl;
+			continue;
+		}
 		if(g.getMakespan()<=L){
 			solution=_solution;
 		}
-		cnt++;
+
 	}
 	#ifdef DEBUG
 		cout<<"after Perturb"<<endl;

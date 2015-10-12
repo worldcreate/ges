@@ -77,16 +77,18 @@ prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
 prevIndex	JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
 technicalOrder	JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
-Node	Node.h	/^	Node():m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
-Node	Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
+Node	Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	Node.h	/^	Node(const Node& node){$/;"	f	class:Node
 Node	Node.h	/^class Node{$/;"	c
 _NODE_H_	Node.h	2;"	d
 addNode	Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
 addPrev	Node.h	/^	void addPrev(Node* node){$/;"	f	class:Node
 check	Node.h	/^	void check(){$/;"	f	class:Node
+checkTemp	Node.h	/^	void checkTemp(){$/;"	f	class:Node
 getIndex	Node.h	/^	int getIndex() const{$/;"	f	class:Node
 isCheck	Node.h	/^	bool isCheck() const{$/;"	f	class:Node
+istempCheck	Node.h	/^	bool istempCheck() const{$/;"	f	class:Node
 m_Checked	Node.h	/^	bool m_Checked;$/;"	m	class:Node
 m_Index	Node.h	/^	int m_Index;$/;"	m	class:Node
 m_Jobpair	Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
@@ -94,6 +96,7 @@ m_Next	Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
 m_Prev	Node.h	/^	vector<Node*> m_Prev;$/;"	m	class:Node
 m_Q	Node.h	/^	int m_Q;$/;"	m	class:Node
 m_R	Node.h	/^	int m_R;$/;"	m	class:Node
+m_tempChecked	Node.h	/^	bool m_tempChecked;$/;"	m	class:Node
 print	Node.h	/^	void print(){$/;"	f	class:Node
 printAll	Node.h	/^	void printAll(){$/;"	f	class:Node
 reset	Node.h	/^	void reset(){$/;"	f	class:Node
@@ -101,7 +104,7 @@ resetChild	Node.h	/^	void resetChild(){$/;"	f	class:Node
 setIndex	Node.h	/^	void setIndex(int a_Index){$/;"	f	class:Node
 ~Node	Node.h	/^	~Node(){$/;"	f	class:Node
 Test	Test.cpp	/^Test::Test(){$/;"	f	class:Test
-test	Test.cpp	/^void Test::test(){$/;"	f	class:Test
+test	Test.cpp	/^void Test::test(int argc,char** argv){$/;"	f	class:Test
 Test	Test.h	/^class Test{$/;"	c
 _TEST_H_	Test.h	2;"	d
 getRand	Util.cpp	/^int Util::getRand(int min,int max){$/;"	f	class:Util
