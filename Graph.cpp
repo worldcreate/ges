@@ -248,6 +248,14 @@ void Graph::print(){
 	}
 }
 
+void Graph::printForTsort(){
+	for(int i=0;i<array.size();i++){
+		for(int j=0;j<array[i]->m_Next.size();j++){
+			cout<<array[i]->getIndex()<<" "<<array[i]->m_Next[j]->getIndex()<<endl;
+		}
+	}
+}
+
 Graph::~Graph(){
 	for(int i=0;i<array.size();i++){
 		delete array[i];

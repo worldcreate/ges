@@ -35,6 +35,13 @@ void Test::test(int argc,char** argv){
 	gt.execute();
 	vector<vector<int> > matrix=gt.getMatrix();
 
+	for(int i=0;i<matrix.size();i++){
+		for(int j=0;j<matrix[i].size();j++){
+			cout<<matrix[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+
 	m_Solution.resize(m_SettingTable.size());
 	for(int m=0;m<matrix.size();m++){
 		for(int i=0;i<matrix[m].size();i++){

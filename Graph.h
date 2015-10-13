@@ -18,6 +18,7 @@ public:
 	Node* operator[](int n) const;
 	Graph& operator=(const Graph&);
 	void print();
+	void printForTsort();
 	~Graph();
 	int getMakespan();
 	void removeNode(int);

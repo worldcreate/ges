@@ -28,6 +28,7 @@ public:
 		nextIndex=dst.nextIndex;
 		technicalOrder=dst.technicalOrder;
 		index=dst.index;
+		return *this;
 	}
 	bool operator==(const JobPair& dst){
 		return index==dst.index;
