@@ -3,6 +3,7 @@
 #include "JobPair.h"
 #include "Gt.h"
 #include "Graph.h"
+#include "NeighbourGenerator.h"
 #include <iostream>
 #include <vector>
 
@@ -31,16 +32,26 @@ void Test::test(int argc,char** argv){
 
 	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
-	Gt gt(m_FileName);
-	gt.execute();
-	vector<vector<int> > matrix=gt.getMatrix();
 
-	for(int i=0;i<matrix.size();i++){
-		for(int j=0;j<matrix[i].size();j++){
-			cout<<matrix[i][j]<<" ";
+
+
+	// Gt gt(m_FileName);
+	// gt.execute();
+	// vector<vector<int> > matrix=gt.getMatrix();
+
+	int temp[3][3]={
+		{0,2,1},
+		{0,1,2},
+		{0,1,2}
+	};
+
+	vector<vector<int> > matrix=vector<vector<int> >(3,vector<int>(3,0));
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			matrix[i][j]=temp[i][j];
 		}
-		cout<<endl;
 	}
+
 
 	m_Solution.resize(m_SettingTable.size());
 	for(int m=0;m<matrix.size();m++){
@@ -55,16 +66,19 @@ void Test::test(int argc,char** argv){
 		}
 	}
 
-	cout<<"(m,j,t,i)"<<endl;
-	for(int i=0;i<m_Solution.size();i++){
-		for(int j=0;j<m_Solution[i].size();j++){
-			cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
-		}
-		cout<<endl;
-	}
+	// cout<<"(m,j,t,i)"<<endl;
+	// for(int i=0;i<m_Solution.size();i++){
+	// 	for(int j=0;j<m_Solution[i].size();j++){
+	// 		cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
+	// 	}
+	// 	cout<<endl;
+	// }
 
-	cout<<"graph"<<endl;
+	// cout<<"graph"<<endl;
 	Graph graph(m_Solution,m_SettingTable);
-	graph.print();
+	graph.printForTsort();
 
+
+	// NeighbourGenerator ng(m_Solution,graph.getMakespan()-1);
+	// ng.makeNeighbour(m_SettingTable);
 }

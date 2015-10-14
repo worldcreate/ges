@@ -222,6 +222,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// 挿入可能な場所に挿入する
 		vector<vector<vector<JobPair> > > solutionCandidates;
 		int index;
+		int count=0;
 		int min=INT_MAX;
 		for(int i=0;i<_solution[tarJob.machine].size()+1;i++){
 			vector<vector<JobPair> > __solution=_solution;
@@ -243,9 +244,10 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			int makespan=g.getMakespan();
 			if(makespan<min){
 				min=makespan;
-				index=i;
+				index=count;
 			}
 			solutionCandidates.push_back(__solution);
+			count++;
 			#ifdef DEBUG
 				cout<<"Insert["<<i<<"]"<<endl;
 				for(int j=0;j<__solution.size();j++){
@@ -258,7 +260,9 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			#endif
 		}
 		// makespanが最小のものを選択する
-		_solution=solutionCandidates[index];
+		// 候補が0ではない場合
+		if(!solutionCandidates.empty())
+			_solution=solutionCandidates[index];
 		#ifdef DEBUG
 			cout<<"min schedule"<<endl;
 			for(int i=0;i<_solution.size();i++){

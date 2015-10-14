@@ -22,6 +22,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(DEBUG) -o $@ $(OBJS) $(LIBS) 
 run:
 	./$(TARGET)
+
 clean:
 	rm -f $(TARGET) $(OBJS) .nfs* *~ *.core *.stackdump \#* core 
 .cpp.o:

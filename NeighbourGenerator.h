@@ -10,10 +10,12 @@ class NeighbourGenerator{
 public:
 	NeighbourGenerator();
 	NeighbourGenerator(vector<vector<JobPair> >&,int);
-	void makeNeighbour();
+	void makeNeighbour(vector<vector<JobPair> >&);
 	vector<vector<JobPair> > getSolution(int);
 private:
-	vector<vector<JobPair> >& m_solution;
+	// vector<Node*> changeAfter(const vector<Node*>&,int,int);
+	// vector<Node*> changeBefore(const vector<Node*>&,int,int);
+	vector<vector<JobPair> > m_solution;
 	int m_L;
 };
 
