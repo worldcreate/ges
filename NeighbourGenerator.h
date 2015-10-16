@@ -15,16 +15,18 @@ public:
 	void makeNeighbour();
 	// vector<vector<JobPair> > getNeighbour(int);
 private:
+	enum ORDER{PREV=-1,CENTER,NEXT};
+	int m_L;
+	vector<vector<JobPair> > m_solution;
+	vector<vector<JobPair> > m_SettingTable;
+	vector<vector<Node*> > m_CriticalPathList;
+	// NeighbourList
 	void findCriticalPath(Node*,Node*,vector<Node*>&,vector<Node*>&);
 	vector<vector<JobPair> > changeBackward(const vector<vector<JobPair> >&,JobPair*,JobPair*);
 	vector<vector<JobPair> > changeForward(const vector<vector<JobPair> >&,JobPair*,JobPair*);
 	void insertBefore(vector<JobPair>&,int,int);
 	void insertAfter(vector<JobPair>&,int,int);
-	vector<vector<JobPair> > m_solution;
-	vector<vector<JobPair> > m_SettingTable;
-	vector<vector<Node*> > m_CriticalPathList;
-	// NeighbourList
-	int m_L;
+	JobPair *findJobFromSetting(JobPair*,enum ORDER);
 };
 
 #endif

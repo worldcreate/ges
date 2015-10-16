@@ -11,56 +11,68 @@ NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vect
 }
 
 void NeighbourGenerator::makeNeighbour(){
-	vector<Node*> bottleneck;
-	Graph g(m_solution,m_SettingTable);
-	for(int i=0;i<g.size();i++){
-		if(g[i]->m_R+g[i]->m_Q-g[i]->m_Jobpair->time>m_L){
-			bottleneck.push_back(g[i]);
+	cout<<"setting table"<<endl;
+	for(int i=0;i<m_SettingTable.size();i++){
+		for(int j=0;j<m_SettingTable[i].size();j++){
+			m_SettingTable[i][j].print();
 		}
+		cout<<endl;
 	}
 
-	cout<<"bottleneck Node"<<endl;
-	for(int i=0;i<bottleneck.size();i++){
-		cout<<"("<<bottleneck[i]->m_Jobpair->machine<<","<<bottleneck[i]->m_Jobpair->jobIndex<<","<<bottleneck[i]->m_Jobpair->time<<") ";
-	}
+	cout<<"i=1:j=1"<<endl;
+	m_SettingTable[1][1].print();
 	cout<<endl;
 
-	m_CriticalPathList.clear();
-	vector<Node*> criticalPath;
-	findCriticalPath(g[0],g[g.size()-1],bottleneck,criticalPath);
+	// vector<Node*> bottleneck;
+	// Graph g(m_solution,m_SettingTable);
+	// for(int i=0;i<g.size();i++){
+	// 	if(g[i]->m_R+g[i]->m_Q-g[i]->m_Jobpair->time>m_L){
+	// 		bottleneck.push_back(g[i]);
+	// 	}
+	// }
 
-	cout<<"critical Path"<<endl;
-	for(int i=0;i<m_CriticalPathList.size();i++){
-		for(int j=0;j<m_CriticalPathList[i].size();j++){
-			cout<<"("<<m_CriticalPathList[i][j]->m_Jobpair->machine<<","<<m_CriticalPathList[i][j]->m_Jobpair->jobIndex<<") ";
-		}
-		cout<<endl;
-	}
+	// cout<<"bottleneck Node"<<endl;
+	// for(int i=0;i<bottleneck.size();i++){
+	// 	cout<<"("<<bottleneck[i]->m_Jobpair->machine<<","<<bottleneck[i]->m_Jobpair->jobIndex<<","<<bottleneck[i]->m_Jobpair->time<<") ";
+	// }
+	// cout<<endl;
 
-	for(int i=0;i<m_CriticalPathList.size();i++){
-		cout<<"m_CriticalPathList["<<i<<"]"<<endl;
-		for(int j=0;j<m_CriticalPathList[i].size();j++){
-			cout<<"("<<m_CriticalPathList[i][j]->m_Jobpair->machine<<","<<m_CriticalPathList[i][j]->m_Jobpair->jobIndex<<") ";
-		}
-		cout<<endl;
+	// m_CriticalPathList.clear();
+	// vector<Node*> criticalPath;
+	// findCriticalPath(g[0],g[g.size()-1],bottleneck,criticalPath);
 
-		criticalPath.clear();
-		criticalPath=m_CriticalPathList[i];
-		for(int j=0;j<criticalPath.size()-1;j++){
-			for(int k=j+1;k<criticalPath.size();k++){
-				if(criticalPath[j]->m_Jobpair->machine!=
-					criticalPath[k]->m_Jobpair->machine)
-					continue;
-				if(criticalPath[j]->m_Jobpair->machine==-1)
-					continue;
-				// JobPair *iJp=findJobFromSetting(criticalPath[j]->m_Jobpair);
-				// JobPair *jJp=findJobFromSetting(criticalPath[k]->m_Jobpair);
-				vector<vector<JobPair> > solution;
-				// solution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
-				solution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
-			}
-		}
-	}
+	// cout<<"critical Path"<<endl;
+	// for(int i=0;i<m_CriticalPathList.size();i++){
+	// 	for(int j=0;j<m_CriticalPathList[i].size();j++){
+	// 		cout<<"("<<m_CriticalPathList[i][j]->m_Jobpair->machine<<","<<m_CriticalPathList[i][j]->m_Jobpair->jobIndex<<") ";
+	// 	}
+	// 	cout<<endl;
+	// }
+
+	// for(int i=0;i<m_CriticalPathList.size();i++){
+	// 	cout<<"m_CriticalPathList["<<i<<"]"<<endl;
+	// 	for(int j=0;j<m_CriticalPathList[i].size();j++){
+	// 		cout<<"("<<m_CriticalPathList[i][j]->m_Jobpair->machine<<","<<m_CriticalPathList[i][j]->m_Jobpair->jobIndex<<") ";
+	// 	}
+	// 	cout<<endl;
+
+	// 	criticalPath.clear();
+	// 	criticalPath=m_CriticalPathList[i];
+	// 	for(int j=0;j<criticalPath.size()-1;j++){
+	// 		for(int k=j+1;k<criticalPath.size();k++){
+	// 			if(criticalPath[j]->m_Jobpair->machine!=
+	// 				criticalPath[k]->m_Jobpair->machine)
+	// 				continue;
+	// 			if(criticalPath[j]->m_Jobpair->machine==-1)
+	// 				continue;
+	// 			JobPair *alphaI=findJobFromSetting(criticalPath[j]->m_Jobpair,PREV);
+	// 			JobPair *gammaJ=findJobFromSetting(criticalPath[k]->m_Jobpair,NEXT);
+	// 			vector<vector<JobPair> > solution;
+	// 			// solution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
+	// 			solution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
+	// 		}
+	// 	}
+	// }
 }
 
 void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){
@@ -181,4 +193,19 @@ void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){
 			break;
 		}
 	solution.insert(it,jp);
+}
+
+JobPair* NeighbourGenerator::findJobFromSetting(JobPair* jp,enum ORDER order){
+	int jobIndex=jp->jobIndex;
+	for(int i=0;i<m_SettingTable[jobIndex].size();i++){
+		if(m_SettingTable[jobIndex][i].index!=jp->index)
+			continue;
+		if(i==0 && order==PREV){
+			return NULL;
+		}
+		if(i==m_SettingTable[jobIndex].size()-1 && order==NEXT){
+			return NULL;
+		}
+		return &m_SettingTable[jobIndex][i+order];
+	}
 }

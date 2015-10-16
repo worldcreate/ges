@@ -1,6 +1,10 @@
 #ifndef _JOBPAIR_H_
 #define _JOBPAIR_H_
 
+#include <iostream>
+
+using namespace std;
+
 class JobPair{
 public:
 	JobPair(){
@@ -32,6 +36,9 @@ public:
 	}
 	bool operator==(const JobPair& dst){
 		return index==dst.index;
+	}
+	void print(){
+		cout<<"("<<machine<<","<<jobIndex<<") ";
 	}
 	int machine;
 	int prev;
