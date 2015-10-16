@@ -36,6 +36,31 @@ void NeighbourGenerator::makeNeighbour(){
 		}
 		cout<<endl;
 	}
+
+	for(int i=0;i<m_CriticalPathList.size();i++){
+		cout<<"m_CriticalPathList["<<i<<"]"<<endl;
+		for(int j=0;j<m_CriticalPathList[i].size();j++){
+			cout<<"("<<m_CriticalPathList[i][j]->m_Jobpair->machine<<","<<m_CriticalPathList[i][j]->m_Jobpair->jobIndex<<") ";
+		}
+		cout<<endl;
+
+		criticalPath.clear();
+		criticalPath=m_CriticalPathList[i];
+		for(int j=0;j<criticalPath.size()-1;j++){
+			for(int k=j+1;k<criticalPath.size();k++){
+				if(criticalPath[j]->m_Jobpair->machine!=
+					criticalPath[k]->m_Jobpair->machine)
+					continue;
+				if(criticalPath[j]->m_Jobpair->machine==-1)
+					continue;
+				// JobPair *iJp=findJobFromSetting(criticalPath[j]->m_Jobpair);
+				// JobPair *jJp=findJobFromSetting(criticalPath[k]->m_Jobpair);
+				vector<vector<JobPair> > solution;
+				// solution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
+				solution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
+			}
+		}
+	}
 }
 
 void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){
@@ -47,7 +72,9 @@ void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& b
 	for(int i=0;i<node->m_Next.size();i++){
 		vector<Node*> _criticalPath=criticalPath;
 		for(int j=0;j<bottleneck.size();j++){
-			cout<<"m_Next["<<i<<"]="<<node->m_Next[i]->m_Jobpair->index<<":bottleneck["<<j<<"]="<<bottleneck[j]->m_Jobpair->index<<endl;
+			#ifdef DEBUG
+				cout<<"m_Next["<<i<<"]="<<node->m_Next[i]->m_Jobpair->index<<":bottleneck["<<j<<"]="<<bottleneck[j]->m_Jobpair->index<<endl;
+			#endif
 			if(node->m_Next[i]->m_Jobpair->index==bottleneck[j]->m_Jobpair->index){
 				_criticalPath.push_back(node);
 				findCriticalPath(node->m_Next[i],leaf,bottleneck,_criticalPath);
@@ -57,15 +84,101 @@ void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& b
 	}
 }
 
-// vector<Node*> NeighbourGenerator::changeAfter(const vector<Node*>& bottleneck,int i,int j){
-// 	return null;
-// }
+vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){
+	// iの前にj
+	vector<vector<JobPair> >_solution=solution;
+	int machine=I->machine;
+	int iIndex=-1,jIndex=-1;
+	for(int i=0;i<solution[machine].size();i++){
+		if(solution[machine][i].index==I->index){
+			iIndex=i;
+		}
+		if(solution[machine][i].index==J->index){
+			jIndex=i;
+		}
+	}
 
-// vector<Node*> NeighbourGenerator::changeBefore(const vector<Node*>& bottleneck,int i,int j){
-// 	return null;
-// }
+	cout<<"before solution["<<machine<<"]"<<endl;
+	for(int i=0;i<_solution[machine].size();i++){
+		cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+	}
+	cout<<endl;
+	cout<<"iIndex="<<iIndex<<":jIndex="<<jIndex<<endl;
+	insertBefore(_solution[machine],iIndex,jIndex);
+	cout<<"after solution["<<machine<<"]"<<endl;
+	for(int i=0;i<_solution[machine].size();i++){
+		cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+	}
+	cout<<endl;
+	return _solution;
+}
+
+vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){
+	// iをjの後に
+	vector<vector<JobPair> >_solution=solution;
+	int machine=I->machine;
+	int iIndex=-1,jIndex=-1;
+	for(int i=0;i<solution[machine].size();i++){
+		if(solution[machine][i].index==I->index){
+			iIndex=i;
+		}
+		if(solution[machine][i].index==J->index){
+			jIndex=i;
+		}
+	}
+
+	cout<<"before solution["<<machine<<"]"<<endl;
+	for(int i=0;i<_solution[machine].size();i++){
+		cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+	}
+	cout<<endl;
+	cout<<"iIndex="<<iIndex<<":jIndex="<<jIndex<<endl;
+	insertAfter(_solution[machine],jIndex,iIndex);
+	cout<<"after solution["<<machine<<"]"<<endl;
+	for(int i=0;i<_solution[machine].size();i++){
+		cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+	}
+	cout<<endl;
+	return _solution;
+}
 
 // vector<vector<JobPair> > NeighbourGenerator::getSolution(int index){
 // 	return null;
 // }
 
+void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){
+	vector<JobPair>::iterator it;
+	JobPair jp;
+	int i;
+	for(i=0,it=solution.begin();it!=solution.end();it++,i++)
+		if(i==src){
+			jp=solution[i];
+			break;
+		}
+	solution.erase(it);
+	
+	for(i=0,it=solution.begin();it!=solution.end();it++,i++)
+		if(i==tar){
+			break;
+		}
+	solution.insert(it,jp);
+
+}
+
+void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){
+	vector<JobPair>::iterator it;
+	JobPair jp;
+	int i;
+	for(i=0,it=solution.begin();it!=solution.end();it++,i++)
+		if(i==src){
+			jp=solution[i];
+			break;
+		}
+	solution.erase(it);
+	
+	for(i=0,it=solution.begin();it!=solution.end();it++,i++)
+		if(i==tar){
+			break;
+		}
+	solution.insert(it,jp);
+}

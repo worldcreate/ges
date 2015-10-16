@@ -29,13 +29,15 @@ Graph	Graph.cpp	/^Graph::Graph(){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){$/;"	f	class:Graph
 getMakespan	Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
+operator =	Graph.cpp	/^Graph& Graph::operator=(const Graph& graph){$/;"	f	class:Graph
 operator []	Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
 print	Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
+printForTsort	Graph.cpp	/^void Graph::printForTsort(){$/;"	f	class:Graph
 removeNode	Graph.cpp	/^void Graph::removeNode(int index){$/;"	f	class:Graph
 setLongestPath	Graph.cpp	/^void Graph::setLongestPath(){$/;"	f	class:Graph
 size	Graph.cpp	/^int Graph::size() const{$/;"	f	class:Graph
-topologicalSort	Graph.cpp	/^void Graph::topologicalSort(){$/;"	f	class:Graph
-visit	Graph.cpp	/^void Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph
+topologicalSort	Graph.cpp	/^void Graph::topologicalSort() throw(runtime_error){$/;"	f	class:Graph
+visit	Graph.cpp	/^bool Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph
 ~Graph	Graph.cpp	/^Graph::~Graph(){$/;"	f	class:Graph
 Graph	Graph.h	/^class Graph{$/;"	c
 _GRAPH_H_	Graph.h	2;"	d
@@ -77,6 +79,20 @@ prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
 prevIndex	JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
 technicalOrder	JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
+NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(){$/;"	f	class:NeighbourGenerator
+NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vector<vector<JobPair> >& a_SettingTable,int L):m_L(L){$/;"	f	class:NeighbourGenerator
+changeBackward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
+changeForward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
+findCriticalPath	NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){$/;"	f	class:NeighbourGenerator
+insertAfter	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
+insertBefore	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
+makeNeighbour	NeighbourGenerator.cpp	/^void NeighbourGenerator::makeNeighbour(){$/;"	f	class:NeighbourGenerator
+NeighbourGenerator	NeighbourGenerator.h	/^class NeighbourGenerator{$/;"	c
+_NEIGHBOURGENERATOR_H_	NeighbourGenerator.h	2;"	d
+m_CriticalPathList	NeighbourGenerator.h	/^	vector<vector<Node*> > m_CriticalPathList;$/;"	m	class:NeighbourGenerator
+m_L	NeighbourGenerator.h	/^	int m_L;$/;"	m	class:NeighbourGenerator
+m_SettingTable	NeighbourGenerator.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:NeighbourGenerator
+m_solution	NeighbourGenerator.h	/^	vector<vector<JobPair> > m_solution;$/;"	m	class:NeighbourGenerator
 Node	Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	Node.h	/^	Node(const Node& node){$/;"	f	class:Node

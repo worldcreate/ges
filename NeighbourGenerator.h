@@ -13,14 +13,17 @@ public:
 	NeighbourGenerator();
 	NeighbourGenerator(vector<vector<JobPair> >&,vector<vector<JobPair> >&,int);
 	void makeNeighbour();
-	// vector<vector<JobPair> > getSolution(int);
+	// vector<vector<JobPair> > getNeighbour(int);
 private:
 	void findCriticalPath(Node*,Node*,vector<Node*>&,vector<Node*>&);
-	// vector<Node*> changeAfter(const vector<Node*>&,int,int);
-	// vector<Node*> changeBefore(const vector<Node*>&,int,int);f
+	vector<vector<JobPair> > changeBackward(const vector<vector<JobPair> >&,JobPair*,JobPair*);
+	vector<vector<JobPair> > changeForward(const vector<vector<JobPair> >&,JobPair*,JobPair*);
+	void insertBefore(vector<JobPair>&,int,int);
+	void insertAfter(vector<JobPair>&,int,int);
 	vector<vector<JobPair> > m_solution;
 	vector<vector<JobPair> > m_SettingTable;
 	vector<vector<Node*> > m_CriticalPathList;
+	// NeighbourList
 	int m_L;
 };
 

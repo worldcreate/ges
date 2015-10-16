@@ -27,6 +27,9 @@ LocalSearch	.\Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution
 NEXTJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NOWJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NULL	.\Gt.cpp	8;"	d	file:
+NeighbourGenerator	.\NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(){$/;"	f	class:NeighbourGenerator
+NeighbourGenerator	.\NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vector<vector<JobPair> >& a_SettingTable,int L):m_L(L){$/;"	f	class:NeighbourGenerator
+NeighbourGenerator	.\NeighbourGenerator.h	/^class NeighbourGenerator{$/;"	c
 Node	.\Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^	Node(const Node& node){$/;"	f	class:Node
@@ -43,12 +46,15 @@ _GES_H_	.\Ges.h	2;"	d
 _GRAPH_H_	.\Graph.h	2;"	d
 _GT_H_	.\Gt.h	2;"	d
 _JOBPAIR_H_	.\JobPair.h	2;"	d
+_NEIGHBOURGENERATOR_H_	.\NeighbourGenerator.h	2;"	d
 _NODE_H_	.\Node.h	2;"	d
 _TEST_H_	.\Test.h	2;"	d
 _UTIL_H_	.\Util.h	2;"	d
 addNode	.\Node.h	/^	void addNode(Node* node){$/;"	f	class:Node
 addPrev	.\Node.h	/^	void addPrev(Node* node){$/;"	f	class:Node
 array	.\Graph.h	/^	vector<Node*> array;$/;"	m	class:Graph
+changeBackward	.\NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
+changeForward	.\NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
 check	.\JobPair.h	/^	void check(){checked=true;}$/;"	f	class:JobPair
 check	.\Node.h	/^	void check(){$/;"	f	class:Node
 checkConflict	.\Gt.cpp	/^bool Gt::checkConflict(int index,int machine,pair<int,int> &T){$/;"	f	class:Gt
@@ -57,6 +63,7 @@ checked	.\JobPair.h	/^	bool checked;$/;"	m	class:JobPair
 endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
 execute	.\Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 execute	.\Gt.cpp	/^void Gt::execute(){$/;"	f	class:Gt
+findCriticalPath	.\NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){$/;"	f	class:NeighbourGenerator
 getIndex	.\Node.h	/^	int getIndex() const{$/;"	f	class:Node
 getMakespan	.\Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
 getMinTimeOverT	.\Gt.cpp	/^int Gt::getMinTimeOverT(const vector<vector<int> > &index,pair<int,int> &T){$/;"	f	class:Gt
@@ -65,6 +72,8 @@ getTable	.\FileReader.cpp	/^vector<vector<JobPair> >& FileReader::getTable(){$/;
 includeVector	.\Util.h	/^	static bool includeVector(const vector<T>& vec,T value){$/;"	f	class:Util
 index	.\JobPair.h	/^	int index;$/;"	m	class:JobPair
 initialSolution	.\Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
+insertAfter	.\NeighbourGenerator.cpp	/^void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
+insertBefore	.\NeighbourGenerator.cpp	/^void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
 insertJob	.\Ges.cpp	/^void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){$/;"	f	class:Ges
 isCheck	.\JobPair.h	/^	bool isCheck(){return checked;}$/;"	f	class:JobPair
 isCheck	.\Node.h	/^	bool isCheck() const{$/;"	f	class:Node
@@ -78,12 +87,14 @@ mMatrix	.\Gt.h	/^	vector<vector<JobPair> > mMatrix;$/;"	m	class:Gt
 mTable	.\FileReader.h	/^	vector<vector<JobPair> > mTable;$/;"	m	class:FileReader
 mTable	.\Gt.h	/^	Table mTable;$/;"	m	class:Gt
 m_Checked	.\Node.h	/^	bool m_Checked;$/;"	m	class:Node
+m_CriticalPathList	.\NeighbourGenerator.h	/^	vector<vector<Node*> > m_CriticalPathList;$/;"	m	class:NeighbourGenerator
 m_EP	.\Ges.h	/^	stack<JobPair> m_EP;$/;"	m	class:Ges
 m_FileName	.\Ges.h	/^	const char* m_FileName;$/;"	m	class:Ges
 m_Index	.\Node.h	/^	int m_Index;$/;"	m	class:Node
 m_Iter	.\Ges.h	/^	int m_Iter;$/;"	m	class:Ges
 m_IterRand	.\Ges.h	/^	int m_IterRand;$/;"	m	class:Ges
 m_Jobpair	.\Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
+m_L	.\NeighbourGenerator.h	/^	int m_L;$/;"	m	class:NeighbourGenerator
 m_MaxIter	.\Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
 m_Next	.\Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
 m_Penalty	.\Ges.h	/^	vector<int> m_Penalty;$/;"	m	class:Ges
@@ -91,12 +102,16 @@ m_Prev	.\Node.h	/^	vector<Node*> m_Prev;$/;"	m	class:Node
 m_Q	.\Node.h	/^	int m_Q;$/;"	m	class:Node
 m_R	.\Node.h	/^	int m_R;$/;"	m	class:Node
 m_SettingTable	.\Ges.h	/^	vector<vector<JobPair> > m_SettingTable;	\/\/ 縦Job 横技術的順序
+m_SettingTable	.\NeighbourGenerator.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:NeighbourGenerator
 m_Solution	.\Ges.h	/^	vector<vector<JobPair> > m_Solution;	\/\/ 縦Machine 横投入順序の配列$/;"	m	class:Ges
+m_solution	.\NeighbourGenerator.h	/^	vector<vector<JobPair> > m_solution;$/;"	m	class:NeighbourGenerator
 m_tempChecked	.\Node.h	/^	bool m_tempChecked;$/;"	m	class:Node
 machine	.\JobPair.h	/^	int machine;$/;"	m	class:JobPair
 main	.\main.cpp	/^int main(int argc,char *argv[]){$/;"	f
+makeNeighbour	.\NeighbourGenerator.cpp	/^void NeighbourGenerator::makeNeighbour(){$/;"	f	class:NeighbourGenerator
 next	.\JobPair.h	/^	int next;$/;"	m	class:JobPair
 nextIndex	.\JobPair.h	/^	int nextIndex;$/;"	m	class:JobPair
+operator =	.\Graph.cpp	/^Graph& Graph::operator=(const Graph& graph){$/;"	f	class:Graph
 operator =	.\JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobPair
 operator ==	.\JobPair.h	/^	bool operator==(const JobPair& dst){$/;"	f	class:JobPair
 operator []	.\Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
@@ -105,6 +120,7 @@ prevIndex	.\JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
 print	.\Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
 print	.\Node.h	/^	void print(){$/;"	f	class:Node
 printAll	.\Node.h	/^	void printAll(){$/;"	f	class:Node
+printForTsort	.\Graph.cpp	/^void Graph::printForTsort(){$/;"	f	class:Graph
 removeNode	.\Graph.cpp	/^void Graph::removeNode(int index){$/;"	f	class:Graph
 reset	.\Node.h	/^	void reset(){$/;"	f	class:Node
 resetChild	.\Node.h	/^	void resetChild(){$/;"	f	class:Node
@@ -118,8 +134,8 @@ split	.\FileReader.cpp	/^vector<string> FileReader::split(const string &str, cha
 technicalOrder	.\JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 test	.\Test.cpp	/^void Test::test(int argc,char** argv){$/;"	f	class:Test
 time	.\JobPair.h	/^	int time;$/;"	m	class:JobPair
-topologicalSort	.\Graph.cpp	/^void Graph::topologicalSort(){$/;"	f	class:Graph
-visit	.\Graph.cpp	/^void Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph
+topologicalSort	.\Graph.cpp	/^void Graph::topologicalSort() throw(runtime_error){$/;"	f	class:Graph
+visit	.\Graph.cpp	/^bool Graph::visit(Node* node,stack<Node*>& sort){$/;"	f	class:Graph
 ~Ges	.\Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 ~Graph	.\Graph.cpp	/^Graph::~Graph(){$/;"	f	class:Graph
 ~Node	.\Node.h	/^	~Node(){$/;"	f	class:Node
