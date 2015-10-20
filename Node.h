@@ -83,8 +83,8 @@ public:
 	JobPair *m_Jobpair;
 	vector<Node*> m_Next;
 	vector<Node*> m_Prev;
-	int m_R;
-	int m_Q;
+	int m_R;	//0からそのnodeまでの最長経路
+	int m_Q;	//nodeからn+1までの最長経路
 private:
 	int m_Index;
 	bool m_Checked;

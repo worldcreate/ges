@@ -8,6 +8,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8J2	//
 $/;"	m	class:Ges
+CENTER	.\NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 Ejection	.\Ges.cpp	/^void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_candidates,vector<vector<JobPair> >& a_I,int count,int L){$/;"	f	class:Ges
 Ejection	.\Ges.cpp	/^void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){$/;"	f	class:Ges
 FileReader	.\FileReader.cpp	/^FileReader::FileReader(const char *file){$/;"	f	class:FileReader
@@ -24,6 +25,7 @@ Gt	.\Gt.h	/^class Gt{$/;"	c
 JobPair	.\JobPair.h	/^	JobPair(){$/;"	f	class:JobPair
 JobPair	.\JobPair.h	/^class JobPair{$/;"	c
 LocalSearch	.\Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution){$/;"	f	class:Ges
+NEXT	.\NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 NEXTJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NOWJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 NULL	.\Gt.cpp	8;"	d	file:
@@ -34,6 +36,8 @@ Node	.\Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"
 Node	.\Node.h	/^	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
 Node	.\Node.h	/^	Node(const Node& node){$/;"	f	class:Node
 Node	.\Node.h	/^class Node{$/;"	c
+ORDER	.\NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	g	class:NeighbourGenerator
+PREV	.\NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 PREVJOBPAIR	.\Gt.h	/^	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};$/;"	e	enum:Gt::__anon1
 Perturb	.\Ges.cpp	/^void Ges::Perturb(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
 Routine	.\Ges.cpp	/^void Ges::Routine(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
@@ -64,9 +68,11 @@ endTime	.\JobPair.h	/^	int endTime;$/;"	m	class:JobPair
 execute	.\Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 execute	.\Gt.cpp	/^void Gt::execute(){$/;"	f	class:Gt
 findCriticalPath	.\NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){$/;"	f	class:NeighbourGenerator
+findJobFromSetting	.\NeighbourGenerator.cpp	/^JobPair* NeighbourGenerator::findJobFromSetting(JobPair* jp,enum ORDER order){$/;"	f	class:NeighbourGenerator
 getIndex	.\Node.h	/^	int getIndex() const{$/;"	f	class:Node
 getMakespan	.\Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
 getMinTimeOverT	.\Gt.cpp	/^int Gt::getMinTimeOverT(const vector<vector<int> > &index,pair<int,int> &T){$/;"	f	class:Gt
+getNodeByIndex	.\Graph.cpp	/^Node* Graph::getNodeByIndex(int index){$/;"	f	class:Graph
 getRand	.\Util.cpp	/^int Util::getRand(int min,int max){$/;"	f	class:Util
 getTable	.\FileReader.cpp	/^vector<vector<JobPair> >& FileReader::getTable(){$/;"	f	class:FileReader
 includeVector	.\Util.h	/^	static bool includeVector(const vector<T>& vec,T value){$/;"	f	class:Util
@@ -118,6 +124,7 @@ operator []	.\Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Grap
 prev	.\JobPair.h	/^	int prev;$/;"	m	class:JobPair
 prevIndex	.\JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
 print	.\Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
+print	.\JobPair.h	/^	void print(){$/;"	f	class:JobPair
 print	.\Node.h	/^	void print(){$/;"	f	class:Node
 printAll	.\Node.h	/^	void printAll(){$/;"	f	class:Node
 printForTsort	.\Graph.cpp	/^void Graph::printForTsort(){$/;"	f	class:Graph

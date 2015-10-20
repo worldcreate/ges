@@ -22,6 +22,7 @@ public:
 	~Graph();
 	int getMakespan();
 	void removeNode(int);
+	Node* getNodeByIndex(int);
 private:
 	void setLongestPath();
 	void topologicalSort()throw(runtime_error);

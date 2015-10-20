@@ -29,6 +29,7 @@ Graph	Graph.cpp	/^Graph::Graph(){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){$/;"	f	class:Graph
 getMakespan	Graph.cpp	/^int Graph::getMakespan(){$/;"	f	class:Graph
+getNodeByIndex	Graph.cpp	/^Node* Graph::getNodeByIndex(int index){$/;"	f	class:Graph
 operator =	Graph.cpp	/^Graph& Graph::operator=(const Graph& graph){$/;"	f	class:Graph
 operator []	Graph.cpp	/^Node* Graph::operator[](int n) const{$/;"	f	class:Graph
 print	Graph.cpp	/^void Graph::print(){$/;"	f	class:Graph
@@ -77,6 +78,7 @@ operator =	JobPair.h	/^	JobPair& operator=(const JobPair& dst){$/;"	f	class:JobP
 operator ==	JobPair.h	/^	bool operator==(const JobPair& dst){$/;"	f	class:JobPair
 prev	JobPair.h	/^	int prev;$/;"	m	class:JobPair
 prevIndex	JobPair.h	/^	int prevIndex;$/;"	m	class:JobPair
+print	JobPair.h	/^	void print(){$/;"	f	class:JobPair
 technicalOrder	JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
 NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(){$/;"	f	class:NeighbourGenerator
@@ -84,10 +86,15 @@ NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerat
 changeBackward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
 changeForward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
 findCriticalPath	NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){$/;"	f	class:NeighbourGenerator
+findJobFromSetting	NeighbourGenerator.cpp	/^JobPair* NeighbourGenerator::findJobFromSetting(JobPair* jp,enum ORDER order){$/;"	f	class:NeighbourGenerator
 insertAfter	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
 insertBefore	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
 makeNeighbour	NeighbourGenerator.cpp	/^void NeighbourGenerator::makeNeighbour(){$/;"	f	class:NeighbourGenerator
+CENTER	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
+NEXT	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 NeighbourGenerator	NeighbourGenerator.h	/^class NeighbourGenerator{$/;"	c
+ORDER	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	g	class:NeighbourGenerator
+PREV	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 _NEIGHBOURGENERATOR_H_	NeighbourGenerator.h	2;"	d
 m_CriticalPathList	NeighbourGenerator.h	/^	vector<vector<Node*> > m_CriticalPathList;$/;"	m	class:NeighbourGenerator
 m_L	NeighbourGenerator.h	/^	int m_L;$/;"	m	class:NeighbourGenerator

@@ -110,6 +110,15 @@ Graph& Graph::operator=(const Graph& graph){
 	}
 }
 
+Node* Graph::getNodeByIndex(int index){
+	for(int i=0;i<array.size();i++){
+		if(array[i]->m_Jobpair->index==index){
+			return array[i];
+		}
+	}
+	return NULL;
+}
+
 void Graph::setLongestPath(){
 	topologicalSort();
 	for(int i=0;i<array.size();i++){
