@@ -4,6 +4,7 @@
 #include "Gt.h"
 #include "Graph.h"
 #include "NeighbourGenerator.h"
+#include "Util.h"
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -20,6 +21,7 @@ void Test::test(int argc,char** argv){
 	const char* m_FileName="FT3.txt";
 	int trial=1;
 	int i=0;
+	int seed=200;
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
@@ -30,10 +32,15 @@ void Test::test(int argc,char** argv){
 				case 't':
 					trial=atoi(arg);
 				break;
+				case 's':
+					seed=atoi(arg);
+				break;
 			}
 		}
 		i++;
 	}
+
+	Util::setSeed(seed);
 
 	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
@@ -76,7 +83,7 @@ void Test::test(int argc,char** argv){
 		}
 
 
-		NeighbourGenerator ng(m_Solution,m_SettingTable,graph.getMakespan()-1);
+		NeighbourGenerator ng(m_Solution,m_SettingTable);
 		ng.makeNeighbour();
 	}
 }
