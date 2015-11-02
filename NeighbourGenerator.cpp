@@ -84,7 +84,7 @@ void NeighbourGenerator::makeNeighbour(){
 					g.getNodeByIndex(J->index)->m_Q-J->time>=g.getNodeByIndex(gammaI->index)->m_Q-gammaI->time){
 					vector<vector<JobPair> > forwardSolution;
 					forwardSolution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
-
+					m_NeighbourList.push_back(forwardSolution);
 					cout<<"solution"<<endl;
 					for(int i=0;i<m_solution.size();i++){
 						for(int j=0;j<m_solution[i].size();j++){
@@ -121,6 +121,7 @@ void NeighbourGenerator::makeNeighbour(){
 					g.getNodeByIndex(I->index)->m_R>=g.getNodeByIndex(alphaJ->index)->m_R){
 					vector<vector<JobPair> > backwardSolution;
 					backwardSolution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
+					m_NeighbourList.push_back(backwardSolution);
 					cout<<"solution"<<endl;
 					for(int i=0;i<m_solution.size();i++){
 						for(int j=0;j<m_solution[i].size();j++){
@@ -245,9 +246,13 @@ vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<J
 	return _solution;
 }
 
-// vector<vector<JobPair> > NeighbourGenerator::getSolution(int index){
-// 	return null;
-// }
+vector<vector<JobPair> > NeighbourGenerator::getNeighbour(int index){
+	return m_NeighbourList[index];
+}
+
+int NeighbourGenerator::getNeighbourSize(){
+	return m_NeighbourList.size();
+}
 
 void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){
 	vector<JobPair>::iterator it;
