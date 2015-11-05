@@ -607,9 +607,8 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 }
 
 bool Ges::tabuCheck(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& _solution,vector<vector<JobPair> >&solution){
-	return false;
 	int machine=-1;
-	for(int i=0;i<_solution.sie();i++){
+	for(int i=0;i<_solution.size();i++){
 		for(int j=0;j<_solution[i].size();j++){
 			if(solution[i][j].index!=_solution[i][j].index){
 				machine=i;
@@ -619,10 +618,11 @@ bool Ges::tabuCheck(deque<vector<vector<JobPair> > >& tabuList,vector<vector<Job
 		if(machine!=-1)
 			break;
 	}
+	bool flag;
 	for(int i=0;i<tabuList.size();i++){
-		bool flag=true;
+		flag=true;
 		for(int j=0;j<_solution[machine].size();j++){
-			if(tabuList[i][machine][j].index!=_solution[machine][j])
+			if(tabuList[i][machine][j].index!=_solution[machine][j].index)
 				flag=false;
 		}
 		if(flag)
