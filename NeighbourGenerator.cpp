@@ -85,33 +85,40 @@ void NeighbourGenerator::makeNeighbour(){
 					vector<vector<JobPair> > forwardSolution;
 					forwardSolution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(forwardSolution);
-					cout<<"solution"<<endl;
-					for(int i=0;i<m_solution.size();i++){
-						for(int j=0;j<m_solution[i].size();j++){
-							m_solution[i][j].print();
+					#ifdef DEBUG
+						cout<<"solution"<<endl;
+						for(int i=0;i<m_solution.size();i++){
+							for(int j=0;j<m_solution[i].size();j++){
+								m_solution[i][j].print();
+							}
+							cout<<endl;
 						}
-						cout<<endl;
-					}
-					cout<<"change forward"<<endl;
-					for(int m=0;m<forwardSolution.size();m++){
-						for(int n=0;n<forwardSolution[m].size();n++){
-							forwardSolution[m][n].print();
+						cout<<"change forward"<<endl;
+						for(int m=0;m<forwardSolution.size();m++){
+							for(int n=0;n<forwardSolution[m].size();n++){
+								forwardSolution[m][n].print();
+							}
+							cout<<endl;
 						}
-						cout<<endl;
-					}
-
+					#endif
 					Graph forward(forwardSolution,m_SettingTable);
 					#ifdef DEBUG
 						forward.print();
 					#endif
 					if(g.getMakespan()>forward.getMakespan()){
-						cout<<"reduce"<<endl;
+						#ifdef DEBUG
+							cout<<"reduce"<<endl;
+						#endif
 					}else{
 						if(forward.getNodeByIndex(J->index)->m_R-J->time<=g.getNodeByIndex(J->index)->m_R-J->time-I->time){
-							cout<<"left guidepost"<<endl;
+							#ifdef DEBUG
+								cout<<"left guidepost"<<endl;
+							#endif
 						}
 						if(forward.getNodeByIndex(J->index)->m_Q<=g.getNodeByIndex(J->index)->m_Q+I->time){
-							cout<<"right guidepost"<<endl;
+							#ifdef DEBUG
+								cout<<"right guidepost"<<endl;
+							#endif
 						}
 					}
 				}
@@ -122,33 +129,41 @@ void NeighbourGenerator::makeNeighbour(){
 					vector<vector<JobPair> > backwardSolution;
 					backwardSolution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(backwardSolution);
-					cout<<"solution"<<endl;
-					for(int i=0;i<m_solution.size();i++){
-						for(int j=0;j<m_solution[i].size();j++){
-							m_solution[i][j].print();
+					#ifdef DEBUG
+						cout<<"solution"<<endl;
+						for(int i=0;i<m_solution.size();i++){
+							for(int j=0;j<m_solution[i].size();j++){
+								m_solution[i][j].print();
+							}
+							cout<<endl;
 						}
-						cout<<endl;
-					}
-					cout<<"change backward"<<endl;
-					for(int m=0;m<backwardSolution.size();m++){
-						for(int n=0;n<backwardSolution[m].size();n++){
-							backwardSolution[m][n].print();
+						cout<<"change backward"<<endl;
+						for(int m=0;m<backwardSolution.size();m++){
+							for(int n=0;n<backwardSolution[m].size();n++){
+								backwardSolution[m][n].print();
+							}
+							cout<<endl;
 						}
-						cout<<endl;
-					}
+					#endif
 
 					Graph backward(backwardSolution,m_SettingTable);
 					#ifdef DEBUG
 						backward.print();
 					#endif
 					if(g.getMakespan()>backward.getMakespan()){
-						cout<<"reduce"<<endl;
+						#ifdef DEBUG
+							cout<<"reduce"<<endl;
+						#endif
 					}else{
 						if(backward.getNodeByIndex(I->index)->m_Q<=g.getNodeByIndex(I->index)->m_Q-J->time){
-							cout<<"right guidepost"<<endl;
+							#ifdef DEBUG
+								cout<<"right guidepost"<<endl;
+							#endif
 						}
 						if(backward.getNodeByIndex(I->index)->m_R-I->time<=g.getNodeByIndex(I->index)->m_R-I->time+J->time){
-							cout<<"left guidepost"<<endl;
+							#ifdef DEBUG
+								cout<<"left guidepost"<<endl;
+							#endif
 						}
 					}
 				}

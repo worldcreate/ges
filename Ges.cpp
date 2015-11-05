@@ -152,19 +152,20 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// Iから一つJobPairを選択する
 		candidate=selectEP(I);
 	}catch(exception& err){
-		cout<<endl;
-		cout<<"ERROR!"<<endl;
-		cout<<endl;
-		cout<<err.what()<<endl;
-		cout<<"L="<<L<<endl;
-		cout<<"--------------------"<<endl;
+		#ifdef DEBUG
+			cout<<endl;
+			cout<<"ERROR!"<<endl;
+			cout<<endl;
+			cout<<err.what()<<endl;
+			cout<<"L="<<L<<endl;
+			cout<<"--------------------"<<endl;
 
-		Graph graph(_solution,m_SettingTable);
-		graph.print();
+			Graph graph(_solution,m_SettingTable);
+			graph.print();
 
-		cout<<"Ejection()"<<endl;
-		Ejection(_solution,I,L);
-
+			cout<<"Ejection()"<<endl;
+			Ejection(_solution,I,L);
+		#endif
 		exit(0);
 	}
 	#ifdef DEBUG
@@ -243,8 +244,10 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			try{
 				g=Graph(__solution,m_SettingTable);
 			}catch(runtime_error& e){
-				cout<<"Error in Insert"<<endl;
-				cout<<e.what()<<endl;
+				#ifdef DEBUG
+					cout<<"Error in Insert"<<endl;
+					cout<<e.what()<<endl;
+				#endif
 				continue;
 			}
 			int makespan=g.getMakespan();
@@ -496,8 +499,10 @@ void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
 			g=Graph(_solution,m_SettingTable);
 			cnt++;
 		}catch(runtime_error& e){
-			cout<<"Error in Perturb"<<endl;
-			cout<<e.what()<<endl;
+			#ifdef DEBUG
+				cout<<"Error in Perturb"<<endl;
+				cout<<e.what()<<endl;
+			#endif
 			continue;
 		}
 		if(g.getMakespan()<=L){
@@ -560,25 +565,28 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 		if(!flag){
 			int minMakespan=INT_MAX;
 			int index=-1;
-			cout<<"size="<<size<<endl;
 			for(int i=0;i<size;i++){
 				__solution=ng.getNeighbour(i);
 				if(tabuCheck(tabuList,__solution,_solution))
 					continue;
 				Graph _g(__solution,m_SettingTable);
 				int _makespan=_g.getMakespan();
-				cout<<"i["<<i<<"]="<<_makespan<<endl;
-				cout<<"make="<<_makespan<<endl;
-				cout<<"INT_MAX="<<INT_MAX<<endl;
-				cout<<"minMakespan="<<minMakespan<<endl;
-				cout<<"index="<<index<<endl;
+				#ifdef DEBUG
+					cout<<"i["<<i<<"]="<<_makespan<<endl;
+					cout<<"make="<<_makespan<<endl;
+					cout<<"INT_MAX="<<INT_MAX<<endl;
+					cout<<"minMakespan="<<minMakespan<<endl;
+					cout<<"index="<<index<<endl;
+				#endif
 				if(minMakespan>_makespan){
 					minMakespan=_makespan;
 					index=i;
 				}
 			}
 			if(index!=-1){
-				cout<<"ret index="<<index<<endl;
+				#ifdef DEBUG
+					cout<<"ret index="<<index<<endl;
+				#endif
 				_solution=ng.getNeighbour(index);
 				addTabuList(tabuList,_solution);
 			}
