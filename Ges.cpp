@@ -2,6 +2,7 @@
 #include "FileReader.h"
 #include "Gt.h"
 #include "Util.h"
+#include "NeighbourGenerator.h"
 #include <algorithm>
 #include <iostream>
 #include <climits>
@@ -15,6 +16,8 @@ Ges::Ges(int argc,char **argv){
 	m_IterRand=100;
 	m_FileName="FT3.txt";
 	m_kMax=3;
+	m_stagLS=50;
+	m_maxT=10;
 	int i=1;
 	while(argc>i){
 		if(argv[i][0]=='-'){
@@ -28,6 +31,9 @@ Ges::Ges(int argc,char **argv){
 				break;
 				case 'r':
 					m_IterRand=atoi(arg);
+				break;
+				case 's':
+					m_stagLS=atoi(arg);
 				break;
 			}
 		}
@@ -523,7 +529,105 @@ void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){
 }
 
 void Ges::LocalSearch(vector<vector<JobPair> >& solution){
+	deque<vector<vector<JobPair> > > tabuList;
+	vector<vector<JobPair> > _solution=solution;
 
+	Graph g(_solution,m_SettingTable);
+	int notImprove=0;
+	int prevMakespan=g.getMakespan();
+	do{
+		NeighbourGenerator ng(_solution,m_SettingTable);
+		ng.makeNeighbour();
+		int size=ng.getNeighbourSize();
+		Graph g(_solution,m_SettingTable);
+		int makespan=g.getMakespan();
+		vector<vector<JobPair> > __solution;
+
+		bool flag=false;
+		for(int i=0;i<size;i++){
+			__solution=ng.getNeighbour(i);
+			if(tabuCheck(tabuList,__solution,_solution))
+				continue;
+			Graph _g(__solution,m_SettingTable);
+			int _makespan=_g.getMakespan();
+			if(_makespan>makespan)
+				continue;
+			_solution=__solution;
+			addTabuList(tabuList,_solution);
+			flag=true;
+			break;
+		}
+		if(!flag){
+			int minMakespan=INT_MAX;
+			int index=-1;
+			cout<<"size="<<size<<endl;
+			for(int i=0;i<size;i++){
+				__solution=ng.getNeighbour(i);
+				if(tabuCheck(tabuList,__solution,_solution))
+					continue;
+				Graph _g(__solution,m_SettingTable);
+				int _makespan=_g.getMakespan();
+				cout<<"i["<<i<<"]="<<_makespan<<endl;
+				cout<<"make="<<_makespan<<endl;
+				cout<<"INT_MAX="<<INT_MAX<<endl;
+				cout<<"minMakespan="<<minMakespan<<endl;
+				cout<<"index="<<index<<endl;
+				if(minMakespan>_makespan){
+					minMakespan=_makespan;
+					index=i;
+				}
+			}
+			if(index!=-1){
+				cout<<"ret index="<<index<<endl;
+				_solution=ng.getNeighbour(index);
+				addTabuList(tabuList,_solution);
+			}
+		}
+		g=Graph(_solution,m_SettingTable);
+		int _makespan=g.getMakespan();
+		if(prevMakespan==_makespan){
+			notImprove++;
+		}else{
+			notImprove=0;
+		}
+		prevMakespan=_makespan;
+		#ifdef DEBUG
+			cout<<"notImprove:"<<notImprove<<endl;
+		#endif
+		solution=_solution;
+	}while(notImprove<m_stagLS);
+}
+
+bool Ges::tabuCheck(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& _solution,vector<vector<JobPair> >&solution){
+	return false;
+	int machine=-1;
+	for(int i=0;i<_solution.sie();i++){
+		for(int j=0;j<_solution[i].size();j++){
+			if(solution[i][j].index!=_solution[i][j].index){
+				machine=i;
+				break;
+			}
+		}
+		if(machine!=-1)
+			break;
+	}
+	for(int i=0;i<tabuList.size();i++){
+		bool flag=true;
+		for(int j=0;j<_solution[machine].size();j++){
+			if(tabuList[i][machine][j].index!=_solution[machine][j])
+				flag=false;
+		}
+		if(flag)
+			break;
+	}
+	return flag;
+}
+
+void Ges::addTabuList(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& solution){
+	tabuList.push_back(solution);
+	if(tabuList.size()>m_maxT){
+		tabuList.pop_front();
+	}
 }
 
 Ges::~Ges(){

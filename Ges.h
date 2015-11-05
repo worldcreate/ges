@@ -25,10 +25,14 @@ private:
 	void Perturb(vector<vector<JobPair> >&,int);
 	void insertJob(vector<vector<JobPair> >&,JobPair &,int);
 	void LocalSearch(vector<vector<JobPair> >&);
+	bool tabuCheck(deque<vector<vector<JobPair> > >&,vector<vector<JobPair> >&,vector<vector<JobPair> >&);
+	void addTabuList(deque<vector<vector<JobPair> > >&,vector<vector<JobPair> >&);
 
 	int m_Iter;
 	int m_MaxIter;
 	int m_IterRand;
+	int m_stagLS;
+	int m_maxT;
 	vector<int> m_Penalty;
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	stack<JobPair> m_EP;
