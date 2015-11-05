@@ -108,7 +108,7 @@ void Ges::execute(){
 		#endif
 		int L=graph.getMakespan()-1;
 
-		//cout<<"L="<<L<<endl;
+		cout<<"L="<<L<<endl;
 		Routine(_solution,L);
 	}
 
