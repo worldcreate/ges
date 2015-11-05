@@ -234,13 +234,22 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		for(int i=0;i<_solution[tarJob.machine].size()+1;i++){
 			vector<vector<JobPair> > __solution=_solution;
 			insertJob(__solution,tarJob,i);
+			// TODO
+			// 挿入した際cycleが生じたらその候補は捨てる
+			Graph g;
+			try{
+				g=Graph(__solution,m_SettingTable);
+			}catch(runtime_error& e){
+				#ifdef DEBUG
+					cout<<"Error in Insert"<<endl;
+					cout<<e.what()<<endl;
+				#endif
+				continue;
+			}
 			// feasible scheduleならば
 			if(m_EP.empty()){
 				LocalSearch(__solution);
 			}
-			// TODO
-			// 挿入した際cycleが生じたらその候補は捨てる
-			Graph g;
 			try{
 				g=Graph(__solution,m_SettingTable);
 			}catch(runtime_error& e){
