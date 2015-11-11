@@ -15,7 +15,7 @@ Graph::Graph():output(false){
 Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable,bool oflag){
 	output=oflag;
 	if(output){
-		cout<<"Graph constructor"<<endl;
+		printf("Graph constructor\n");
 	}
 	#ifdef DEBUG
 		MemoryManagement *mm=MemoryManagement::getInstance();
@@ -265,34 +265,32 @@ void Graph::removeNode(int index){
 }
 
 void Graph::print(){
-	cout<<"- R,Q,J,M,N,P"<<endl;
+	printf("- R,Q,J,M,N,P\n");
 	for(int i=0;i<array.size();i++){
-		cout<<array[i]->getIndex()<<" "<<array[i]->m_R<<","<<array[i]->m_Q<<","<<array[i]->m_Jobpair->jobIndex<<","<<array[i]->m_Jobpair->machine<<",";
-		cout<<"N(";
+		printf("%d %d,%d,%d,%d,",array[i]->getIndex(),array[i]->m_R,array[i]->m_Q,array[i]->m_Jobpair->jobIndex,array[i]->m_Jobpair->machine);
+		printf("N(");
 		for(int j=0;j<array[i]->m_Next.size();j++){
-			cout<<array[i]->m_Next[j]->getIndex()<<",";
+			printf("%d,",array[i]->m_Next[j]->getIndex());
 		}
-		cout<<"),";
-		cout<<"P(";
+		printf("),P(");
 		for(int j=0;j<array[i]->m_Prev.size();j++){
-			cout<<array[i]->m_Prev[j]->getIndex()<<",";
+			printf("%d,",array[i]->m_Prev[j]->getIndex());
 		}
-		cout<<")";
-		cout<<endl;
+		printf(")\n");
 	}
 }
 
 void Graph::printForTsort(){
 	for(int i=0;i<array.size();i++){
 		for(int j=0;j<array[i]->m_Next.size();j++){
-			cout<<array[i]->getIndex()<<" "<<array[i]->m_Next[j]->getIndex()<<endl;
+			printf("%d %d\n",array[i]->getIndex(),array[i]->m_Next[j]->getIndex());
 		}
 	}
 }
 
 Graph::~Graph(){
 	if(output){
-		cout<<"Graph destructor"<<endl;
+		printf("Graph destructor\n");
 	}
 	for(int i=0;i<array.size();i++){
 		#ifdef DEBUG

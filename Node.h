@@ -13,7 +13,7 @@ class Node{
 public:
 	Node(bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
 		if(output){
-			cout<<"Node default constructor"<<endl;
+			printf("Node default constructor\n");
 		}
 		m_Jobpair=new JobPair();
 		#ifdef DEBUG
@@ -23,7 +23,7 @@ public:
 	}
 	Node(const JobPair* jobpair,bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
 		if(output){
-			cout<<"Node const JobPair* constructor"<<endl;
+			printf("Node const JobPair* constructor\n");
 		}
 		m_Jobpair=new JobPair();
 		#ifdef DEBUG
@@ -33,7 +33,7 @@ public:
 	}
 	Node(const Node& node,bool flag=false):output(flag){
 		if(output){
-			cout<<"Node const Node& constructor"<<endl;
+			printf("Node const Node& construtor\n");
 		}
 		m_Jobpair=new JobPair();
 		#ifdef DEBUG
@@ -57,17 +57,15 @@ public:
 		m_Prev.push_back(node);
 	}
 	void print(){
-		cout<<"("<<m_Jobpair->machine<<","<<m_Jobpair->jobIndex<<","<<m_Next.size();
-		cout<<","<<m_Prev.size()<<","<<m_R<<","<<m_Q<<","<<m_Index<<") ";
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,M_Q,m_Index);
 		if(m_Next.size()>0)
 			m_Next[0]->print();
 	}
 	void printAll(){
-		cout<<"("<<m_Jobpair->machine<<","<<m_Jobpair->jobIndex<<","<<m_Next.size();
-		cout<<","<<m_Prev.size()<<","<<m_R<<","<<m_Q<<","<<m_Index<<") ";
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,M_Q,m_Index);
 		for(int i=0;i<m_Next.size();i++){
 			m_Next[i]->print();
-			cout<<endl;
+			printf("\n");
 		}
 	}
 	bool isCheck() const{
@@ -100,7 +98,7 @@ public:
 	}
 	~Node(){
 		if(output){
-			cout<<"Node destructor"<<endl;
+			printf("Node destructor\n");
 		}
 		#ifdef DEBUG
 			MemoryManagement::getInstance()->removeAddress(m_Jobpair);

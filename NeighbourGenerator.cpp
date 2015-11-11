@@ -23,11 +23,11 @@ void NeighbourGenerator::makeNeighbour(){
 	}
 
 	#ifdef DEBUG
-		cout<<"bottleneck Node"<<endl;
+		printf("bottleneck Node\n");
 		for(int i=0;i<bottleneck.size();i++){
-			cout<<"("<<bottleneck[i]->m_Jobpair->machine<<","<<bottleneck[i]->m_Jobpair->jobIndex<<","<<bottleneck[i]->m_Jobpair->time<<") ";
+			printf("(%d,%d,%d) ",bottleneck[i]->m_Jobpair->machine,bottleneck[i]->m_Jobpair->jobIndex,bottleneck[i]->m_Jobpair->time);
 		}
-		cout<<endl;
+		printf("\n");
 	#endif
 
 	m_CriticalPathList=pair<vector<Node*>,int>(vector<Node*>(),-1);
@@ -35,11 +35,11 @@ void NeighbourGenerator::makeNeighbour(){
 	findCriticalPath(g[0],g[g.size()-1],bottleneck,criticalPath,0);
 
 	#ifdef DEBUG
-		cout<<"critical Path"<<endl;
+		printf("critical Path\n");
 		for(int i=0;i<m_CriticalPathList.first.size();i++){
-			cout<<"("<<m_CriticalPathList.first[i]->m_Jobpair->machine<<","<<m_CriticalPathList.first[i]->m_Jobpair->jobIndex<<") ";
+			printf("(%d,%d) ",m_CriticalPathList.first[i]->m_Jobpair->machine,m_CriticalPathList.first[i]->m_Jobpair->jobIndex);
 		}
-		cout<<endl;
+		printf("\n");
 	#endif
 
 	criticalPath.clear();
@@ -57,26 +57,26 @@ void NeighbourGenerator::makeNeighbour(){
 			JobPair *gammaJ=findJobFromSetting(J,NEXT);
 
 			#ifdef DEBUG
-				cout<<"I:";
+				printf("I:");
 				criticalPath[j]->m_Jobpair->print();
-				cout<<endl;
-				cout<<"alphaI:";
+				printf("\n");
+				printf("alphaI:");
 				if(alphaI!=NULL){
 					alphaI->print();
 				}else{
-					cout<<"NULL";
+					printf("NULL");
 				}
-				cout<<endl;
-				cout<<"J:";
+				printf("\n");
+				printf("J:");
 				criticalPath[k]->m_Jobpair->print();
-				cout<<endl;
-				cout<<"gammaJ:";
+				printf("\n");
+				printf("gammaJ:");
 				if(gammaJ!=NULL){
 					gammaJ->print();
 				}else{
-					cout<<"NULL";
+					printf("NULL");
 				}
-				cout<<endl;
+				printf("\n");
 			#endif
 
 			for(int l=0;l<criticalPath.size();l++){
@@ -87,19 +87,19 @@ void NeighbourGenerator::makeNeighbour(){
 					forwardSolution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(forwardSolution);
 					#ifdef DEBUG
-						cout<<"solution"<<endl;
+						printf("solution\n");
 						for(int i=0;i<m_solution.size();i++){
 							for(int j=0;j<m_solution[i].size();j++){
 								m_solution[i][j].print();
 							}
-							cout<<endl;
+							printf("\n");
 						}
-						cout<<"change forward"<<endl;
+						printf("change forward\n");
 						for(int m=0;m<forwardSolution.size();m++){
 							for(int n=0;n<forwardSolution[m].size();n++){
 								forwardSolution[m][n].print();
 							}
-							cout<<endl;
+							printf("\n");
 						}
 					#endif
 					Graph forward(forwardSolution,m_SettingTable);
@@ -109,17 +109,17 @@ void NeighbourGenerator::makeNeighbour(){
 					#endif
 					if(g.getMakespan()>forward.getMakespan()){
 						#ifdef DEBUG
-							cout<<"reduce"<<endl;
+							printf("reduce\n");
 						#endif
 					}else{
 						if(forward.getNodeByIndex(J->index)->m_R-J->time<=g.getNodeByIndex(J->index)->m_R-J->time-I->time){
 							#ifdef DEBUG
-								cout<<"left guidepost"<<endl;
+								printf("left guidepost\n");
 							#endif
 						}
 						if(forward.getNodeByIndex(J->index)->m_Q<=g.getNodeByIndex(J->index)->m_Q+I->time){
 							#ifdef DEBUG
-								cout<<"right guidepost"<<endl;
+								printf("right guidepost\n");
 							#endif
 						}
 					}
@@ -132,19 +132,19 @@ void NeighbourGenerator::makeNeighbour(){
 					backwardSolution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(backwardSolution);
 					#ifdef DEBUG
-						cout<<"solution"<<endl;
+						printf("solution\n");
 						for(int i=0;i<m_solution.size();i++){
 							for(int j=0;j<m_solution[i].size();j++){
 								m_solution[i][j].print();
 							}
-							cout<<endl;
+							printf("\n");
 						}
-						cout<<"change backward"<<endl;
+						printf("change backward\n");
 						for(int m=0;m<backwardSolution.size();m++){
 							for(int n=0;n<backwardSolution[m].size();n++){
 								backwardSolution[m][n].print();
 							}
-							cout<<endl;
+							printf("\n");
 						}
 					#endif
 
@@ -155,17 +155,17 @@ void NeighbourGenerator::makeNeighbour(){
 					#endif
 					if(g.getMakespan()>backward.getMakespan()){
 						#ifdef DEBUG
-							cout<<"reduce"<<endl;
+							printf("reduce\n");
 						#endif
 					}else{
 						if(backward.getNodeByIndex(I->index)->m_Q<=g.getNodeByIndex(I->index)->m_Q-J->time){
 							#ifdef DEBUG
-								cout<<"right guidepost"<<endl;
+								printf("right guidepost\n");
 							#endif
 						}
 						if(backward.getNodeByIndex(I->index)->m_R-I->time<=g.getNodeByIndex(I->index)->m_R-I->time+J->time){
 							#ifdef DEBUG
-								cout<<"left guidepost"<<endl;
+								printf("left guidepost\n");
 							#endif
 						}
 					}
@@ -187,7 +187,7 @@ void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& b
 		vector<Node*> _criticalPath=criticalPath;
 		for(int j=0;j<bottleneck.size();j++){
 			#ifdef DEBUG
-				cout<<"m_Next["<<i<<"]="<<node->m_Next[i]->m_Jobpair->index<<":bottleneck["<<j<<"]="<<bottleneck[j]->m_Jobpair->index<<endl;
+				printf("m_Next[%d]=%d:bottleneck[%d]=%d\n",i,node->m_Next[i]->m_Jobpair->index,j,bottlenec,[j]->m_Jobpair->index);
 			#endif
 			if(node->m_Next[i]->m_Jobpair->index==bottleneck[j]->m_Jobpair->index){
 				_criticalPath.push_back(node);
@@ -213,20 +213,20 @@ vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<
 	}
 
 	#ifdef DEBUG
-		cout<<"before solution["<<machine<<"]"<<endl;
+		printf("before solution[%d]\n",machine);
 		for(int i=0;i<_solution[machine].size();i++){
-			cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
 		}
-		cout<<endl;
-		cout<<"iIndex="<<iIndex<<":jIndex="<<jIndex<<endl;
+		printf("\n");
+		printf("iIndex=%d:jIndex=%d\n",iIndex,jIndex);
 	#endif
 	insertBefore(_solution[machine],iIndex,jIndex);
 	#ifdef DEBUG
-		cout<<"after solution["<<machine<<"]"<<endl;
+		printf("after solution[%d]\n",machine);
 		for(int i=0;i<_solution[machine].size();i++){
-			cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
 		}
-		cout<<endl;
+		printf("\n");
 	#endif
 	return _solution;
 }
@@ -246,20 +246,20 @@ vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<J
 	}
 
 	#ifdef DEBUG
-		cout<<"before solution["<<machine<<"]"<<endl;
+		printf("before solution[%d]\n",machine);
 		for(int i=0;i<_solution[machine].size();i++){
-			cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
 		}
-		cout<<endl;
-		cout<<"iIndex="<<iIndex<<":jIndex="<<jIndex<<endl;
+		printf("\n");
+		printf("iInex=%d:jIndex=%d\n",iIndex,jIndex);
 	#endif
 	insertAfter(_solution[machine],jIndex,iIndex);
 	#ifdef DEBUG
-		cout<<"after solution["<<machine<<"]"<<endl;
+		printf("after solution[%d]\n",machine);
 		for(int i=0;i<_solution[machine].size();i++){
-			cout<<"("<<_solution[machine][i].machine<<","<<_solution[machine][i].jobIndex<<") ";
+			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
 		}
-		cout<<endl;
+		printf("\n");
 	#endif
 	return _solution;
 }
