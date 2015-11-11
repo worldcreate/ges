@@ -14,6 +14,7 @@ NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vect
 void NeighbourGenerator::makeNeighbour(){
 	vector<Node*> bottleneck;
 	Graph g(m_solution,m_SettingTable);
+	g.setLongestPath();
 	int L=g.getMakespan();
 	for(int i=0;i<g.size();i++){
 		if(g[i]->m_R+g[i]->m_Q-g[i]->m_Jobpair->time==L){
@@ -102,6 +103,7 @@ void NeighbourGenerator::makeNeighbour(){
 						}
 					#endif
 					Graph forward(forwardSolution,m_SettingTable);
+					forward.setLongestPath();
 					#ifdef DEBUG
 						forward.print();
 					#endif
@@ -147,6 +149,7 @@ void NeighbourGenerator::makeNeighbour(){
 					#endif
 
 					Graph backward(backwardSolution,m_SettingTable);
+					backward.setLongestPath();
 					#ifdef DEBUG
 						backward.print();
 					#endif

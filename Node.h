@@ -2,23 +2,43 @@
 #define _NODE_H_
 
 #include "JobPair.h"
+#include "MemoryManagement.h"
 #include <vector>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 class Node{
 public:
-	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
+	Node(bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
+		if(output){
+			cout<<"Node default constructor"<<endl;
+		}
 		m_Jobpair=new JobPair();
+		#ifdef DEBUG
+			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
+		#endif
 		m_Jobpair->time=0;
 	}
-	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
+	Node(const JobPair* jobpair,bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
+		if(output){
+			cout<<"Node const JobPair* constructor"<<endl;
+		}
 		m_Jobpair=new JobPair();
+		#ifdef DEBUG
+			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
+		#endif
 		(*m_Jobpair)=(*jobpair);
 	}
-	Node(const Node& node){
+	Node(const Node& node,bool flag=false):output(flag){
+		if(output){
+			cout<<"Node const Node& constructor"<<endl;
+		}
 		m_Jobpair=new JobPair();
+		#ifdef DEBUG
+			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
+		#endif
 		(*m_Jobpair)=(*node.m_Jobpair);
 		m_R=node.m_R;
 		m_Q=node.m_Q;
@@ -27,6 +47,7 @@ public:
 		m_tempChecked=node.istempCheck();
 		m_Prev.clear();
 		m_Next.clear();
+		output=node.output;
 	}
 	void addNode(Node* node){
 		m_Next.push_back(node);
@@ -78,6 +99,12 @@ public:
 		return m_Index;
 	}
 	~Node(){
+		if(output){
+			cout<<"Node destructor"<<endl;
+		}
+		#ifdef DEBUG
+			MemoryManagement::getInstance()->removeAddress(m_Jobpair);
+		#endif
 		delete m_Jobpair;
 	}
 	JobPair *m_Jobpair;
@@ -85,6 +112,7 @@ public:
 	vector<Node*> m_Prev;
 	int m_R;	//0からそのnodeまでの最長経路
 	int m_Q;	//nodeからn+1までの最長経路
+	bool output;
 private:
 	int m_Index;
 	bool m_Checked;

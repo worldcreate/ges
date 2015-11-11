@@ -3,6 +3,7 @@
 #include "Gt.h"
 #include "Util.h"
 #include "NeighbourGenerator.h"
+#include "MemoryManagement.h"
 #include <algorithm>
 #include <iostream>
 #include <climits>
@@ -94,6 +95,7 @@ void Ges::execute(){
 	while(m_Iter<m_MaxIter){
 		m_Solution=_solution;
 		Graph graph(m_Solution,m_SettingTable);
+		graph.setLongestPath();
 		#ifdef DEBUG
 			cout<<"[execute]"<<endl;
 			graph.print();
@@ -120,7 +122,8 @@ void Ges::execute(){
 		cout<<endl;
 	}
 	Graph g(m_Solution,m_SettingTable);
-	cout<<"makespan="<<g.getMakespan()<<endl;
+	g.setLongestPath();
+	printf("makespan=%d\n",g.getMakespan());
 }
 
 void Ges::Routine(vector<vector<JobPair> >& solution,int L){
@@ -161,6 +164,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			cout<<"--------------------"<<endl;
 
 			Graph graph(_solution,m_SettingTable);
+			graph.setLongestPath();
 			graph.print();
 
 			cout<<"Ejection()"<<endl;
@@ -204,6 +208,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		}
 		cout<<"graph"<<endl;
 		Graph g(_solution,m_SettingTable);
+		g.setLongestPath();
 		g.print();
 	#endif
 
@@ -236,9 +241,9 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			insertJob(__solution,tarJob,i);
 			// TODO
 			// 挿入した際cycleが生じたらその候補は捨てる
-			Graph g;
+			Graph g(__solution,m_SettingTable);
 			try{
-				g=Graph(__solution,m_SettingTable);
+				g.setLongestPath();
 			}catch(runtime_error& e){
 				#ifdef DEBUG
 					cout<<"Error in Insert"<<endl;
@@ -250,8 +255,9 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			if(m_EP.empty()){
 				LocalSearch(__solution);
 			}
+			g=Graph(__solution,m_SettingTable);
 			try{
-				g=Graph(__solution,m_SettingTable);
+				g.setLongestPath();
 			}catch(runtime_error& e){
 				#ifdef DEBUG
 					cout<<"Error in Insert"<<endl;
@@ -292,6 +298,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		#endif
 
 		Graph g(_solution,m_SettingTable);
+		g.setLongestPath();
 		if(g.getMakespan()>L){
 			vector<vector<JobPair> > I;
 			Ejection(_solution,I,L);
@@ -302,7 +309,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				m_EP=beforeEP;
 			}else{
 				// Iから一つJobPairを選択する
-				vector<JobPair> candidate=selectEP(I);	
+				vector<JobPair> candidate=selectEP(I);
 			}
 			#ifdef DEBUG
 				cout<<"2.I list"<<endl;
@@ -353,11 +360,13 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				}
 				cout<<"graph"<<endl;
 				Graph g(_solution,m_SettingTable);
+				g.setLongestPath();
 				g.print();
 			#endif
 		}
 		Perturb(_solution,L);
 		Graph gr(_solution,m_SettingTable);
+		gr.setLongestPath();
 		#ifdef DEBUG
 			cout<<"[end of routine]"<<endl;
 			gr.print();
@@ -370,7 +379,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				cout<<endl;
 			}
 		#endif
-		//cout<<"makespan="<<gr.getMakespan()<<endl;
 	}while(!m_EP.empty() && m_Iter<m_MaxIter);
 	#ifdef DEBUG
 		cout<<"routine end"<<endl;
@@ -410,6 +418,7 @@ vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 
 void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){
 	Graph graph(_solution,m_SettingTable);
+	graph.setLongestPath();
 	#ifdef DEBUG
 		cout<<"Enter Ejection"<<endl;
 		graph.print();
@@ -503,9 +512,9 @@ void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
 		
 		// TODO
 		// 解を遷移した際、cycleが生じるとその解は捨てる
-		Graph g;
+		Graph g(_solution,m_SettingTable);
 		try{
-			g=Graph(_solution,m_SettingTable);
+			g.setLongestPath();
 			cnt++;
 		}catch(runtime_error& e){
 			#ifdef DEBUG
@@ -547,6 +556,7 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 	vector<vector<JobPair> > _solution=solution;
 
 	Graph g(_solution,m_SettingTable);
+	g.setLongestPath();
 	int notImprove=0;
 	int prevMakespan=g.getMakespan();
 	do{
@@ -554,6 +564,7 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 		ng.makeNeighbour();
 		int size=ng.getNeighbourSize();
 		Graph g(_solution,m_SettingTable);
+		g.setLongestPath();
 		int makespan=g.getMakespan();
 		vector<vector<JobPair> > __solution;
 
@@ -563,6 +574,7 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 			if(tabuCheck(tabuList,__solution,_solution))
 				continue;
 			Graph _g(__solution,m_SettingTable);
+			_g.setLongestPath();
 			int _makespan=_g.getMakespan();
 			if(_makespan>makespan)
 				continue;
@@ -579,6 +591,7 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 				if(tabuCheck(tabuList,__solution,_solution))
 					continue;
 				Graph _g(__solution,m_SettingTable);
+				_g.setLongestPath();
 				int _makespan=_g.getMakespan();
 				#ifdef DEBUG
 					cout<<"i["<<i<<"]="<<_makespan<<endl;
@@ -601,6 +614,7 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 			}
 		}
 		g=Graph(_solution,m_SettingTable);
+		g.setLongestPath();
 		int _makespan=g.getMakespan();
 		if(prevMakespan==_makespan){
 			notImprove++;

@@ -40,13 +40,15 @@ void Test::test(int argc,char** argv){
 		i++;
 	}
 
+
+
 	Util::setSeed(seed);
 
 	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
 
 	for(int i=0;i<trial;i++){
-		cout<<"===================================================="<<endl;
+		//cout<<"===================================================="<<endl;
 		Gt gt(m_FileName);
 		gt.execute();
 		vector<vector<int> > matrix=gt.getMatrix();
@@ -65,25 +67,29 @@ void Test::test(int argc,char** argv){
 			}
 		}
 
-		cout<<"(m,j,t,i)"<<endl;
-		for(int i=0;i<m_Solution.size();i++){
-			for(int j=0;j<m_Solution[i].size();j++){
-				cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
-			}
-			cout<<endl;
-		}
+		// cout<<"(m,j,t,i)"<<endl;
+		// for(int i=0;i<m_Solution.size();i++){
+		// 	for(int j=0;j<m_Solution[i].size();j++){
+		// 		cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
+		// 	}
+		// 	cout<<endl;
+		// }
+		
+		Graph g(m_Solution,m_SettingTable,true);
+		g=Graph(m_Solution,m_SettingTable,true);	//
 
-		Graph graph;
-		try{
-			cout<<"graph"<<endl;
-			graph=Graph(m_Solution,m_SettingTable);
-			graph.print();
-		}catch(runtime_error& e){
-			continue;
-		}
-
-
-		NeighbourGenerator ng(m_Solution,m_SettingTable);
-		ng.makeNeighbour();
+	// 	cout<<"start"<<endl;
+	// 	vector<Graph> array(1000,Graph(m_Solution,m_SettingTable,true));
+	// 	try{
+	// 		//cout<<"graph"<<endl;
+	// 		for(int i=0;i<1000;i++)
+	// 			array[i].setLongestPath();
+	// 		//graph.print();
+	// 	}catch(runtime_error& e){
+	// 		cout<<e.what()<<endl;
+	// 		continue;
+	// 	}
+	// 	cout<<"end"<<endl;
 	}
+	MemoryManagement::releaseInstance();
 }
