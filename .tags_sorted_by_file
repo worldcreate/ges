@@ -10,10 +10,12 @@ Ges	Ges.cpp	/^Ges::Ges(int argc,char **argv){$/;"	f	class:Ges
 LocalSearch	Ges.cpp	/^void Ges::LocalSearch(vector<vector<JobPair> >& solution){$/;"	f	class:Ges
 Perturb	Ges.cpp	/^void Ges::Perturb(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
 Routine	Ges.cpp	/^void Ges::Routine(vector<vector<JobPair> >& solution,int L){$/;"	f	class:Ges
+addTabuList	Ges.cpp	/^void Ges::addTabuList(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& solution){$/;"	f	class:Ges
 execute	Ges.cpp	/^void Ges::execute(){$/;"	f	class:Ges
 initialSolution	Ges.cpp	/^void Ges::initialSolution(){$/;"	f	class:Ges
 insertJob	Ges.cpp	/^void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){$/;"	f	class:Ges
 selectEP	Ges.cpp	/^vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){$/;"	f	class:Ges
+tabuCheck	Ges.cpp	/^bool Ges::tabuCheck(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& _solution,vector<vector<JobPair> >&solution){$/;"	f	class:Ges
 ~Ges	Ges.cpp	/^Ges::~Ges(){$/;"	f	class:Ges
 Ges	Ges.h	/^class Ges{$/;"	c
 _GES_H_	Ges.h	2;"	d
@@ -25,6 +27,8 @@ m_MaxIter	Ges.h	/^	int m_MaxIter;$/;"	m	class:Ges
 m_Penalty	Ges.h	/^	vector<int> m_Penalty;$/;"	m	class:Ges
 m_SettingTable	Ges.h	/^	vector<vector<JobPair> > m_SettingTable;	\/\/ 縦Job 横技術的順序
 m_Solution	Ges.h	/^	vector<vector<JobPair> > m_Solution;	\/\/ 縦Machine 横投入順序の配列$/;"	m	class:Ges
+m_maxT	Ges.h	/^	int m_maxT;$/;"	m	class:Ges
+m_stagLS	Ges.h	/^	int m_stagLS;$/;"	m	class:Ges
 Graph	Graph.cpp	/^Graph::Graph(){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const Graph& graph){$/;"	f	class:Graph
 Graph	Graph.cpp	/^Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){$/;"	f	class:Graph
@@ -82,11 +86,13 @@ print	JobPair.h	/^	void print(){$/;"	f	class:JobPair
 technicalOrder	JobPair.h	/^	int technicalOrder;$/;"	m	class:JobPair
 time	JobPair.h	/^	int time;$/;"	m	class:JobPair
 NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(){$/;"	f	class:NeighbourGenerator
-NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vector<vector<JobPair> >& a_SettingTable,int L):m_L(L){$/;"	f	class:NeighbourGenerator
+NeighbourGenerator	NeighbourGenerator.cpp	/^NeighbourGenerator::NeighbourGenerator(vector<vector<JobPair> >& a_solution,vector<vector<JobPair> >& a_SettingTable){$/;"	f	class:NeighbourGenerator
 changeBackward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
 changeForward	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<JobPair> >& solution,JobPair* I,JobPair* J){$/;"	f	class:NeighbourGenerator
-findCriticalPath	NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath){$/;"	f	class:NeighbourGenerator
+findCriticalPath	NeighbourGenerator.cpp	/^void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& bottleneck,vector<Node*>& criticalPath,int length){$/;"	f	class:NeighbourGenerator
 findJobFromSetting	NeighbourGenerator.cpp	/^JobPair* NeighbourGenerator::findJobFromSetting(JobPair* jp,enum ORDER order){$/;"	f	class:NeighbourGenerator
+getNeighbour	NeighbourGenerator.cpp	/^vector<vector<JobPair> > NeighbourGenerator::getNeighbour(int index){$/;"	f	class:NeighbourGenerator
+getNeighbourSize	NeighbourGenerator.cpp	/^int NeighbourGenerator::getNeighbourSize(){$/;"	f	class:NeighbourGenerator
 insertAfter	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertAfter(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
 insertBefore	NeighbourGenerator.cpp	/^void NeighbourGenerator::insertBefore(vector<JobPair>& solution,int tar,int src){$/;"	f	class:NeighbourGenerator
 makeNeighbour	NeighbourGenerator.cpp	/^void NeighbourGenerator::makeNeighbour(){$/;"	f	class:NeighbourGenerator
@@ -96,8 +102,8 @@ NeighbourGenerator	NeighbourGenerator.h	/^class NeighbourGenerator{$/;"	c
 ORDER	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	g	class:NeighbourGenerator
 PREV	NeighbourGenerator.h	/^	enum ORDER{PREV=-1,CENTER,NEXT};$/;"	e	enum:NeighbourGenerator::ORDER
 _NEIGHBOURGENERATOR_H_	NeighbourGenerator.h	2;"	d
-m_CriticalPathList	NeighbourGenerator.h	/^	vector<vector<Node*> > m_CriticalPathList;$/;"	m	class:NeighbourGenerator
-m_L	NeighbourGenerator.h	/^	int m_L;$/;"	m	class:NeighbourGenerator
+m_CriticalPathList	NeighbourGenerator.h	/^	pair<vector<Node*>,int> m_CriticalPathList;$/;"	m	class:NeighbourGenerator
+m_NeighbourList	NeighbourGenerator.h	/^	vector<vector<vector<JobPair> > > m_NeighbourList;$/;"	m	class:NeighbourGenerator
 m_SettingTable	NeighbourGenerator.h	/^	vector<vector<JobPair> > m_SettingTable;$/;"	m	class:NeighbourGenerator
 m_solution	NeighbourGenerator.h	/^	vector<vector<JobPair> > m_solution;$/;"	m	class:NeighbourGenerator
 Node	Node.h	/^	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){$/;"	f	class:Node
@@ -117,8 +123,8 @@ m_Index	Node.h	/^	int m_Index;$/;"	m	class:Node
 m_Jobpair	Node.h	/^	JobPair *m_Jobpair;$/;"	m	class:Node
 m_Next	Node.h	/^	vector<Node*> m_Next;$/;"	m	class:Node
 m_Prev	Node.h	/^	vector<Node*> m_Prev;$/;"	m	class:Node
-m_Q	Node.h	/^	int m_Q;$/;"	m	class:Node
-m_R	Node.h	/^	int m_R;$/;"	m	class:Node
+m_Q	Node.h	/^	int m_Q;	\/\/nodeからn+1までの最長経路$/;"	m	class:Node
+m_R	Node.h	/^	int m_R;	\/\/0からそのnodeまでの最長経路$/;"	m	class:Node
 m_tempChecked	Node.h	/^	bool m_tempChecked;$/;"	m	class:Node
 print	Node.h	/^	void print(){$/;"	f	class:Node
 printAll	Node.h	/^	void printAll(){$/;"	f	class:Node
