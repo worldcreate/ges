@@ -28,7 +28,7 @@ Ges::Ges(int argc,char **argv){
 				case 'f':
 					m_FileName=arg;
 				break;
-				case 'm':
+				case 'i':
 					m_MaxIter=atoi(arg);
 				break;
 				case 'r':
