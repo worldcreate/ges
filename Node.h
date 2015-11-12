@@ -16,9 +16,6 @@ public:
 			printf("Node default constructor\n");
 		}
 		m_Jobpair=new JobPair();
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
-		#endif
 		m_Jobpair->time=0;
 	}
 	Node(const JobPair* jobpair,bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
@@ -26,9 +23,6 @@ public:
 			printf("Node const JobPair* constructor\n");
 		}
 		m_Jobpair=new JobPair();
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
-		#endif
 		(*m_Jobpair)=(*jobpair);
 	}
 	Node(const Node& node,bool flag=false):output(flag){
@@ -36,9 +30,6 @@ public:
 			printf("Node const Node& construtor\n");
 		}
 		m_Jobpair=new JobPair();
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->addAddress(m_Jobpair,string("JobPair (in Node)"));
-		#endif
 		(*m_Jobpair)=(*node.m_Jobpair);
 		m_R=node.m_R;
 		m_Q=node.m_Q;
@@ -100,9 +91,6 @@ public:
 		if(output){
 			printf("Node destructor\n");
 		}
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->removeAddress(m_Jobpair);
-		#endif
 		delete m_Jobpair;
 	}
 	JobPair *m_Jobpair;

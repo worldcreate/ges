@@ -17,17 +17,8 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 	if(output){
 		printf("Graph constructor\n");
 	}
-	#ifdef DEBUG
-		MemoryManagement *mm=MemoryManagement::getInstance();
-	#endif
 	Node* root=new Node(output);
-	#ifdef DEBUG
-		mm->addAddress(root,string("Node root(in Graph)"));
-	#endif
 	Node* leaf=new Node(output);
-	#ifdef DEBUG
-		mm->addAddress(leaf,string("Node leaf(in Graph)"));
-	#endif
 	Node* now=root;
 	array.push_back(root);
 	/*
@@ -40,9 +31,6 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 		now=root;
 		for(int j=0;j<settingTable[i].size();j++){
 			Node* node=new Node(&settingTable[i][j],output);
-			#ifdef DEBUG
-				mm->addAddress(node,string("Node(in Graph)"));
-			#endif
 			node->setIndex(++index);
 			array.push_back(node);
 			now->addNode(node);
@@ -98,18 +86,12 @@ Node* Graph::operator[](int n) const{
 
 Graph& Graph::operator=(const Graph& graph){
 	for(int i=0;i<array.size();i++){
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->removeAddress(array[i]);
-		#endif
 		delete array[i];
 	}
 	output=graph.output;
 	array.resize(graph.size());
 	for(int i=0;i<array.size();i++){
 		Node *node=new Node(*graph[i]);
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->addAddress(node,"Node (in Graph copy)");
-		#endif
 		array[i]=node;
 	}
 	for(int i=0;i<array.size();i++){
@@ -293,9 +275,6 @@ Graph::~Graph(){
 		printf("Graph destructor\n");
 	}
 	for(int i=0;i<array.size();i++){
-		#ifdef DEBUG
-			MemoryManagement::getInstance()->removeAddress(array[i]);
-		#endif
 		delete array[i];
 	}
 }

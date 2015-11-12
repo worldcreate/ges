@@ -22,25 +22,9 @@ void NeighbourGenerator::makeNeighbour(){
 		}
 	}
 
-	#ifdef DEBUG
-		printf("bottleneck Node\n");
-		for(int i=0;i<bottleneck.size();i++){
-			printf("(%d,%d,%d) ",bottleneck[i]->m_Jobpair->machine,bottleneck[i]->m_Jobpair->jobIndex,bottleneck[i]->m_Jobpair->time);
-		}
-		printf("\n");
-	#endif
-
 	m_CriticalPathList=pair<vector<Node*>,int>(vector<Node*>(),-1);
 	vector<Node*> criticalPath;
 	findCriticalPath(g[0],g[g.size()-1],bottleneck,criticalPath,0);
-
-	#ifdef DEBUG
-		printf("critical Path\n");
-		for(int i=0;i<m_CriticalPathList.first.size();i++){
-			printf("(%d,%d) ",m_CriticalPathList.first[i]->m_Jobpair->machine,m_CriticalPathList.first[i]->m_Jobpair->jobIndex);
-		}
-		printf("\n");
-	#endif
 
 	criticalPath.clear();
 	criticalPath=m_CriticalPathList.first;
@@ -56,29 +40,6 @@ void NeighbourGenerator::makeNeighbour(){
 			JobPair *alphaJ=findJobFromSetting(J,PREV);
 			JobPair *gammaJ=findJobFromSetting(J,NEXT);
 
-			#ifdef DEBUG
-				printf("I:");
-				criticalPath[j]->m_Jobpair->print();
-				printf("\n");
-				printf("alphaI:");
-				if(alphaI!=NULL){
-					alphaI->print();
-				}else{
-					printf("NULL");
-				}
-				printf("\n");
-				printf("J:");
-				criticalPath[k]->m_Jobpair->print();
-				printf("\n");
-				printf("gammaJ:");
-				if(gammaJ!=NULL){
-					gammaJ->print();
-				}else{
-					printf("NULL");
-				}
-				printf("\n");
-			#endif
-
 			for(int l=0;l<criticalPath.size();l++){
 				// gammaJがCriticalPathに含まれていればforwardchangeする
 				if(gammaJ!=NULL && gammaI!=NULL && gammaJ->index==criticalPath[l]->m_Jobpair->index &&
@@ -86,41 +47,13 @@ void NeighbourGenerator::makeNeighbour(){
 					vector<vector<JobPair> > forwardSolution;
 					forwardSolution=changeForward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(forwardSolution);
-					#ifdef DEBUG
-						printf("solution\n");
-						for(int i=0;i<m_solution.size();i++){
-							for(int j=0;j<m_solution[i].size();j++){
-								m_solution[i][j].print();
-							}
-							printf("\n");
-						}
-						printf("change forward\n");
-						for(int m=0;m<forwardSolution.size();m++){
-							for(int n=0;n<forwardSolution[m].size();n++){
-								forwardSolution[m][n].print();
-							}
-							printf("\n");
-						}
-					#endif
 					Graph forward(forwardSolution,m_SettingTable);
 					forward.setLongestPath();
-					#ifdef DEBUG
-						forward.print();
-					#endif
 					if(g.getMakespan()>forward.getMakespan()){
-						#ifdef DEBUG
-							printf("reduce\n");
-						#endif
 					}else{
 						if(forward.getNodeByIndex(J->index)->m_R-J->time<=g.getNodeByIndex(J->index)->m_R-J->time-I->time){
-							#ifdef DEBUG
-								printf("left guidepost\n");
-							#endif
 						}
 						if(forward.getNodeByIndex(J->index)->m_Q<=g.getNodeByIndex(J->index)->m_Q+I->time){
-							#ifdef DEBUG
-								printf("right guidepost\n");
-							#endif
 						}
 					}
 				}
@@ -131,42 +64,14 @@ void NeighbourGenerator::makeNeighbour(){
 					vector<vector<JobPair> > backwardSolution;
 					backwardSolution=changeBackward(m_solution,criticalPath[j]->m_Jobpair,criticalPath[k]->m_Jobpair);
 					m_NeighbourList.push_back(backwardSolution);
-					#ifdef DEBUG
-						printf("solution\n");
-						for(int i=0;i<m_solution.size();i++){
-							for(int j=0;j<m_solution[i].size();j++){
-								m_solution[i][j].print();
-							}
-							printf("\n");
-						}
-						printf("change backward\n");
-						for(int m=0;m<backwardSolution.size();m++){
-							for(int n=0;n<backwardSolution[m].size();n++){
-								backwardSolution[m][n].print();
-							}
-							printf("\n");
-						}
-					#endif
 
 					Graph backward(backwardSolution,m_SettingTable);
 					backward.setLongestPath();
-					#ifdef DEBUG
-						backward.print();
-					#endif
 					if(g.getMakespan()>backward.getMakespan()){
-						#ifdef DEBUG
-							printf("reduce\n");
-						#endif
 					}else{
 						if(backward.getNodeByIndex(I->index)->m_Q<=g.getNodeByIndex(I->index)->m_Q-J->time){
-							#ifdef DEBUG
-								printf("right guidepost\n");
-							#endif
 						}
 						if(backward.getNodeByIndex(I->index)->m_R-I->time<=g.getNodeByIndex(I->index)->m_R-I->time+J->time){
-							#ifdef DEBUG
-								printf("left guidepost\n");
-							#endif
 						}
 					}
 				}
@@ -186,9 +91,6 @@ void NeighbourGenerator::findCriticalPath(Node* node,Node* leaf,vector<Node*>& b
 	for(int i=0;i<node->m_Next.size();i++){
 		vector<Node*> _criticalPath=criticalPath;
 		for(int j=0;j<bottleneck.size();j++){
-			#ifdef DEBUG
-				printf("m_Next[%d]=%d:bottleneck[%d]=%d\n",i,node->m_Next[i]->m_Jobpair->index,j,bottlenec,[j]->m_Jobpair->index);
-			#endif
 			if(node->m_Next[i]->m_Jobpair->index==bottleneck[j]->m_Jobpair->index){
 				_criticalPath.push_back(node);
 				findCriticalPath(node->m_Next[i],leaf,bottleneck,_criticalPath,length+node->m_Jobpair->time);
@@ -212,22 +114,7 @@ vector<vector<JobPair> > NeighbourGenerator::changeBackward(const vector<vector<
 		}
 	}
 
-	#ifdef DEBUG
-		printf("before solution[%d]\n",machine);
-		for(int i=0;i<_solution[machine].size();i++){
-			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
-		}
-		printf("\n");
-		printf("iIndex=%d:jIndex=%d\n",iIndex,jIndex);
-	#endif
 	insertBefore(_solution[machine],iIndex,jIndex);
-	#ifdef DEBUG
-		printf("after solution[%d]\n",machine);
-		for(int i=0;i<_solution[machine].size();i++){
-			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
-		}
-		printf("\n");
-	#endif
 	return _solution;
 }
 
@@ -245,22 +132,7 @@ vector<vector<JobPair> > NeighbourGenerator::changeForward(const vector<vector<J
 		}
 	}
 
-	#ifdef DEBUG
-		printf("before solution[%d]\n",machine);
-		for(int i=0;i<_solution[machine].size();i++){
-			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
-		}
-		printf("\n");
-		printf("iInex=%d:jIndex=%d\n",iIndex,jIndex);
-	#endif
 	insertAfter(_solution[machine],jIndex,iIndex);
-	#ifdef DEBUG
-		printf("after solution[%d]\n",machine);
-		for(int i=0;i<_solution[machine].size();i++){
-			printf("(%d,%d) ",_solution[machine][i].machine,_solution[machine][i].jobIndex);
-		}
-		printf("\n");
-	#endif
 	return _solution;
 }
 

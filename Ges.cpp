@@ -55,17 +55,6 @@ void Ges::initialSolution(){
 	gt.execute();
 	vector<vector<int> > matrix=gt.getMatrix();
 
-	#ifdef DEBUG
-		printf("Matrix");
-		for(int i=0;i<matrix.size();i++){
-			for(int j=0;j<matrix[i].size();j++){
-				printf("%d ",matrix[i][j]);
-			}
-			printf("\n");
-		}
-		printf("\n");
-	#endif
-
 	m_Solution.resize(m_SettingTable.size());
 	for(int m=0;m<matrix.size();m++){
 		for(int i=0;i<matrix[m].size();i++){
@@ -78,16 +67,6 @@ void Ges::initialSolution(){
 			}
 		}
 	}
-
-	#ifdef DEBUG
-		printf("m_Solution");
-		for(int i=0;i<m_Solution.size();i++){
-			for(int j=0;j<m_Solution[i].size();j++){
-				printf("(%d,%d,%d) ",m_Solution[i][j].jobIndex,m_Solution[i][j].machine,m_Solution[i][j].time);
-			}
-			printf("\n");
-		}
-	#endif
 }
 
 void Ges::execute(){
@@ -96,17 +75,6 @@ void Ges::execute(){
 		m_Solution=_solution;
 		Graph graph(m_Solution,m_SettingTable);
 		graph.setLongestPath();
-		#ifdef DEBUG
-			printf("[execute]\n");
-			graph.print();
-			printf("-------- _solution -----------\n");
-			for(int i=0;i<_solution.size();i++){
-				for(int j=0;j<_solution[i].size();j++){
-					printf("(%d,%d,%d) ",_solution[i][j].jobIndex,_solution[i][j].machine,_solution[i][j].time);
-				}
-				printf("\n");
-			}
-		#endif
 		int L=graph.getMakespan()-1;
 
 		printf("L=%d\n",L);
@@ -126,25 +94,12 @@ void Ges::execute(){
 }
 
 void Ges::Routine(vector<vector<JobPair> >& solution,int L){
-	#ifdef DEBUG
-		printf("Enter routine\n");
-	#endif
 	vector<vector<JobPair> > _solution=solution;
 	while(!m_EP.empty())
 		m_EP.pop();
 
 	vector<vector<JobPair> > I;
 	Ejection(_solution,I,L);
-	#ifdef DEBUG
-		printf("1.I list\n");
-
-		for(int i=0;i<I.size();i++){
-			for(int j=0;j<I[i].size();j++){
-				printf("(%d,%d,%d) ",I[i][j].jobIndex,I[i][j].machine,I[i][j].time);
-			}
-			printf("\n");
-		}
-	#endif
 
 	vector<JobPair> candidate;
 
@@ -153,29 +108,19 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// Iから一つJobPairを選択する
 		candidate=selectEP(I);
 	}catch(exception& err){
-		#ifdef DEBUG
-			printf("\nERROR\n\n");
-			printf("%s\n",err.what());
-			printf("L=%d\n",L);
-			printf("--------------------");
+		printf("\nERROR\n\n");
+		printf("%s\n",err.what());
+		printf("L=%d\n",L);
+		printf("--------------------");
 
-			Graph graph(_solution,m_SettingTable);
-			graph.setLongestPath();
-			graph.print();
+		Graph graph(_solution,m_SettingTable);
+		graph.setLongestPath();
+		graph.print();
 
-			printf("Ejection\n");
-			Ejection(_solution,I,L);
-		#endif
+		printf("Ejection\n");
+		Ejection(_solution,I,L);
 		exit(0);
 	}
-	#ifdef DEBUG
-		printf("candidate\n");
-		for(int i=0;i<candidate.size();i++){
-			printf("(%d,%d,%d) ",candidate[i].jobIndex,candidate[i].machine,candidate[i].time);
-		}
-		printf("\n");
-	#endif
-
 
 	// 選択されたJobPairを抜出EPに入れる
 	for(int i=0;i<candidate.size();i++){
@@ -192,20 +137,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		m_EP.push(jp);
 	}
 
-	#ifdef DEBUG
-		printf("after Eject\n");
-		for(int i=0;i<_solution.size();i++){
-			for(int j=0;j<_solution[i].size();j++){
-				printf("(%d,%d,%d) ",_solution[i][j].jobIndex,_solution[i][j].machine,_solution[i][j].time);
-			}
-			printf("\n");
-		}
-		printf("graph\n");
-		Graph g(_solution,m_SettingTable);
-		g.setLongestPath();
-		g.print();
-	#endif
-
 	Perturb(_solution,L);
 	
 	do{
@@ -218,10 +149,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 
 		// EPより一つ作業を取得
 		JobPair tarJob=m_EP.top();
-		#ifdef DEBUG
-			printf("select EP job\n");
-			printf("(%d,%d,%d)\n",tarJob.machine,tarJob.jobIndex,tarJob.time);
-		#endif
 		m_EP.pop();
 		m_Penalty[tarJob.index]++;
 
@@ -239,10 +166,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			try{
 				g.setLongestPath();
 			}catch(runtime_error& e){
-				#ifdef DEBUG
-					printf("Error in Insert\n");
-					printf("%s\n",e.what());
-				#endif
 				continue;
 			}
 			// feasible scheduleならば
@@ -253,10 +176,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			try{
 				g.setLongestPath();
 			}catch(runtime_error& e){
-				#ifdef DEBUG
-					printf("Error in Insert\n");
-					printf("%s\n",e.what());
-				#endif
 				continue;
 			}
 			int makespan=g.getMakespan();
@@ -266,29 +185,11 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			}
 			solutionCandidates.push_back(__solution);
 			count++;
-			#ifdef DEBUG
-				printf("Insert[%d]\n",i);
-				for(int j=0;j<__solution.size();j++){
-					for(int k=0;k<__solution[j].size();k++){
-						printf("(%d,%d,%d) ",__solution[j][k].jobIndex,__solution[j][k].machine,__solution[j][k].time);
-					}
-					printf("\n");
-				}
-			#endif
 		}
 		// makespanが最小のものを選択する
 		// 候補が0ではない場合
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
-		#ifdef DEBUG
-			printf("min schedule\n");
-			for(int i=0;i<_solution.size();i++){
-				for(int j=0;j<_solution[i].size();j++){
-					printf("(%d,%d,%d) ",_solution[i][j].jobIndex,_solution[i][j].machine,_solution[i][j].time);
-				}
-				printf("\n");
-			}
-		#endif
 
 		Graph g(_solution,m_SettingTable);
 		g.setLongestPath();
@@ -304,25 +205,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				// Iから一つJobPairを選択する
 				vector<JobPair> candidate=selectEP(I);
 			}
-			#ifdef DEBUG
-				printf("2.I list\n");
-
-				for(int i=0;i<I.size();i++){
-					for(int j=0;j<I[i].size();j++){
-						printf("(%d,%d,%d) ",I[i][j].jobIndex,I[i][j].machine,I[i][j].time);
-					}
-					printf("\n");
-				}
-			#endif
-
-			
-			#ifdef DEBUG
-				printf("candidate\n");
-				for(int i=0;i<candidate.size();i++){
-					printf("(%d,%d,%d) ",candidate[i].jobIndex,candidate[i].machine,candidate[i].time);
-				}
-				printf("\n");
-			#endif
 
 			// 選択されたJobPairを抜出EPに入れる
 			for(int i=0;i<candidate.size();i++){
@@ -338,42 +220,11 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				}
 				m_EP.push(jp);
 			}
-
-
-			#ifdef DEBUG
-				printf("after Eject\n");
-				for(int i=0;i<_solution.size();i++){
-					for(int j=0;j<_solution[i].size();j++){
-						printf("(%d,%d,%d) ",_solution[i][j].jobIndex,_solution[i][j].machine,_solution[i][j].time);
-					}
-					printf("\n");
-				}
-				printf("graph\n");
-				Graph g(_solution,m_SettingTable);
-				g.setLongestPath();
-				g.print();
-			#endif
 		}
 		Perturb(_solution,L);
 		Graph gr(_solution,m_SettingTable);
 		gr.setLongestPath();
-		#ifdef DEBUG
-			printf("[end of routine]\n");
-			gr.print();
-			printf("-------- _solution --------------\n");
-			for(int i=0;i<_solution.size();i++){
-				for(int j=0;j<_solution[i].size();j++){
-					printf("(%d,%d,%d) ",_solution[i][j].jobIndex,_solution[i][j].machine,_solution[i][j].time);
-				}
-				printf("\n");
-			}
-		#endif
 	}while(!m_EP.empty() && m_Iter<m_MaxIter);
-	#ifdef DEBUG
-		printf("routine end\n");
-		printf("iter=%d\n",m_Iter);
-		printf("EP.size()=%d\n",m_EP.size());
-	#endif
 	solution=_solution;
 }
 
@@ -385,13 +236,6 @@ vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 		throw exception();
 	}
 
-	#ifdef DEBUG
-		printf("penalty\n");
-		for(int i=0;i<m_Penalty.size();i++){
-			printf("%d,",m_Penalty[i]);
-		}
-		printf("\n");
-	#endif
 	for(int i=0;i<I.size();i++){
 		int tSize=0;
 		for(int j=0;j<I[i].size();j++){
@@ -408,11 +252,6 @@ vector<JobPair> Ges::selectEP(vector<vector<JobPair> >& I){
 void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& a_I,int L){
 	Graph graph(_solution,m_SettingTable);
 	graph.setLongestPath();
-	#ifdef DEBUG
-		printf("Enter Ejection\n");
-		graph.print();
-		printf("\n");
-	#endif
 	deque<Node*> bottleneckNode;
 
 	// ボトルネックノード抽出
@@ -422,14 +261,6 @@ void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& 
 				bottleneckNode.push_back(graph[i]);
 		}
 	}
-	#ifdef DEBUG
-		printf("bottleneck Node\n");
-		for(int i=0;i<bottleneckNode.size();i++){
-			printf("%d ",bottleneckNode.at(i)->getIndex());
-		}
-		printf("\n");
-		graph.print();
-	#endif
 
 	vector<JobPair> candidates;
 	Ejection(graph,bottleneckNode,candidates,a_I,0,L);
@@ -448,16 +279,6 @@ void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_can
 		Graph _graph(graph);
 		_graph.removeNode(index);
 		a_candidates.push_back(*_graph[index]->m_Jobpair);
-		#ifdef DEBUG
-			printf("%d times\n",count);
-			printf("remove node[%d]\n",index);
-			_graph.print();
-			printf("candidates list\n");
-			for(int i=0;i<a_candidates.size();i++){
-				printf("(%d,%d,%d) ",a_candidates[i].jobIndex,a_candidates[i].machine,a_candidates[i].time);
-			}
-			printf("\n");
-		#endif
 
 		if(_graph.getMakespan()<=L){
 			a_I.push_back(a_candidates);
@@ -469,17 +290,6 @@ void Ges::Ejection(Graph graph,deque<Node*> bottleneckNode,vector<JobPair> a_can
 }
 
 void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
-	#ifdef DEBUG
-		printf("before Perturb\n");
-		for(int i=0;i<solution.size();i++){
-			for(int j=0;j<solution[i].size();j++){
-				printf("(%d,%d,%d) ",solution[i][j].jobIndex,solution[i][j].machine,solution[i][j].time);
-			}
-			printf("\n");
-		}
-
-	#endif
-
 	// 指定した回数だけランダムに解を遷移させる
 	// ただし、遷移してL以下にならなかった場合は
 	// 解を遷移させずにカウントする
@@ -504,10 +314,6 @@ void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
 			g.setLongestPath();
 			cnt++;
 		}catch(runtime_error& e){
-			#ifdef DEBUG
-				printf("Error in Perturb\n");
-				printf("%s\n",e.what());
-			#endif
 			continue;
 		}
 		if(g.getMakespan()<=L){
@@ -515,15 +321,6 @@ void Ges::Perturb(vector<vector<JobPair> >& solution,int L){
 		}
 
 	}
-	#ifdef DEBUG
-		printf("after Perturb\n");
-		for(int i=0;i<solution.size();i++){
-			for(int j=0;j<solution[i].size();j++){
-				printf("(%d,%d,%d) ",solution[i][j].jobIndex,solution[i][j].machine,solution[i][j].time);
-			}
-			printf("\n");
-		}
-	#endif
 }
 
 void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){
@@ -579,22 +376,12 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 				Graph _g(__solution,m_SettingTable);
 				_g.setLongestPath();
 				int _makespan=_g.getMakespan();
-				#ifdef DEBUG
-					printf("i[%d]=%d\n",i,_makespan);
-					printf("make=%d\n",_makespan);
-					printf("INT_MAX=%d\n",INT_MAX);
-					printf("minMakespan=%d\n",minMakespan);
-					printf("index=%d\n",index);
-				#endif
 				if(minMakespan>_makespan){
 					minMakespan=_makespan;
 					index=i;
 				}
 			}
 			if(index!=-1){
-				#ifdef DEBUG
-					printf("ret index=%d\n",index);
-				#endif
 				_solution=ng.getNeighbour(index);
 				addTabuList(tabuList,_solution);
 			}
@@ -608,9 +395,6 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 			notImprove=0;
 		}
 		prevMakespan=_makespan;
-		#ifdef DEBUG
-			printf("notImprove:%d\n",notImprove);
-		#endif
 		solution=_solution;
 	}while(notImprove<m_stagLS);
 }

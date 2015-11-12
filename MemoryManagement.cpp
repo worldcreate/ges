@@ -41,7 +41,4 @@ void MemoryManagement::print(){
 }
 
 MemoryManagement::~MemoryManagement(){
-	#ifdef DEBUG
-		print();
-	#endif
 }
