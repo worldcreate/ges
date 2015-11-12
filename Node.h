@@ -48,12 +48,12 @@ public:
 		m_Prev.push_back(node);
 	}
 	void print(){
-		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,M_Q,m_Index);
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,m_Q,m_Index);
 		if(m_Next.size()>0)
 			m_Next[0]->print();
 	}
 	void printAll(){
-		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,M_Q,m_Index);
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,m_Q,m_Index);
 		for(int i=0;i<m_Next.size();i++){
 			m_Next[i]->print();
 			printf("\n");
