@@ -2,6 +2,7 @@
 #define _JOBPAIR_H_
 
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
