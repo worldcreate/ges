@@ -15,15 +15,15 @@ debug: DEBUG=-g -DDEBUG
 
 debug: $(TARGET)
 
-useMP: DEBUG= -fopenmp
-
-useMP: $(TARGET)
+test: 
+	./$(TARGET) -T
 
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(DEBUG) -o $@ $(OBJS) $(LIBS) 
 run:
 	./$(TARGET)
+
 clean:
-	rm -f $(TARGET) $(OBJS) .nfs* *~ \#* core 
+	rm -f $(TARGET) $(OBJS) .nfs* *~ *.core *.stackdump \#* core 
 .cpp.o:
 	$(CC) $(CFLAGS) $(DEBUG) $(INCLUDES) -c $< 
