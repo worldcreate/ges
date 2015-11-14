@@ -55,7 +55,7 @@ void Ges::initialSolution(){
 	gt.execute();
 	vector<vector<int> > matrix=gt.getMatrix();
 
-	m_Solution.resize(m_SettingTable.size());
+	m_Solution.resize(m_SettingTable[0].size());
 	for(int m=0;m<matrix.size();m++){
 		for(int i=0;i<matrix[m].size();i++){
 			int job=matrix[m][i];
