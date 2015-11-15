@@ -2,6 +2,7 @@
 #define _JOBPAIR_H_
 
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ public:
 		return index==dst.index;
 	}
 	void print(){
-		cout<<"("<<machine<<","<<jobIndex<<") ";
+		printf("(%d,%d) ",machine,jobIndex);
 	}
 	int machine;
 	int prev;

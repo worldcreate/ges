@@ -1,6 +1,7 @@
 #include "Graph.h"
+#include <string>
 
-Graph::Graph(){
+Graph::Graph():output(false){
 }
 
 /* solution
@@ -11,9 +12,13 @@ Graph::Graph(){
 	縦がjob
 	横が技術的順序
  */
-Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable){
-	Node* root=new Node();
-	Node* leaf=new Node();
+Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPair> >& settingTable,bool oflag){
+	output=oflag;
+	if(output){
+		printf("Graph constructor\n");
+	}
+	Node* root=new Node(output);
+	Node* leaf=new Node(output);
 	Node* now=root;
 	array.push_back(root);
 	/*
@@ -25,7 +30,7 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 	for(int i=0;i<settingTable.size();i++){
 		now=root;
 		for(int j=0;j<settingTable[i].size();j++){
-			Node* node=new Node(&settingTable[i][j]);
+			Node* node=new Node(&settingTable[i][j],output);
 			node->setIndex(++index);
 			array.push_back(node);
 			now->addNode(node);
@@ -65,10 +70,9 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 			}
 		}
 	}
-	setLongestPath();
 }
 
-Graph::Graph(const Graph& graph){
+Graph::Graph(const Graph& graph):output(false){
 	operator=(graph);
 }
 
@@ -81,6 +85,10 @@ Node* Graph::operator[](int n) const{
 }
 
 Graph& Graph::operator=(const Graph& graph){
+	for(int i=0;i<array.size();i++){
+		delete array[i];
+	}
+	output=graph.output;
 	array.resize(graph.size());
 	for(int i=0;i<array.size();i++){
 		Node *node=new Node(*graph[i]);
@@ -147,7 +155,6 @@ void Graph::topologicalSort() throw(runtime_error){
 		if(!array[i]->isCheck() && !array[i]->istempCheck())
 			if(!visit(array[i],sort)){
 				throw runtime_error("ERROR! cycle graph");
-				return;
 			}
 	}
 	array.clear();
@@ -240,32 +247,33 @@ void Graph::removeNode(int index){
 }
 
 void Graph::print(){
-	cout<<"- R,Q,J,M,N,P"<<endl;
+	printf("- R,Q,J,M,N,P\n");
 	for(int i=0;i<array.size();i++){
-		cout<<array[i]->getIndex()<<" "<<array[i]->m_R<<","<<array[i]->m_Q<<","<<array[i]->m_Jobpair->jobIndex<<","<<array[i]->m_Jobpair->machine<<",";
-		cout<<"N(";
+		printf("%d %d,%d,%d,%d,",array[i]->getIndex(),array[i]->m_R,array[i]->m_Q,array[i]->m_Jobpair->jobIndex,array[i]->m_Jobpair->machine);
+		printf("N(");
 		for(int j=0;j<array[i]->m_Next.size();j++){
-			cout<<array[i]->m_Next[j]->getIndex()<<",";
+			printf("%d,",array[i]->m_Next[j]->getIndex());
 		}
-		cout<<"),";
-		cout<<"P(";
+		printf("),P(");
 		for(int j=0;j<array[i]->m_Prev.size();j++){
-			cout<<array[i]->m_Prev[j]->getIndex()<<",";
+			printf("%d,",array[i]->m_Prev[j]->getIndex());
 		}
-		cout<<")";
-		cout<<endl;
+		printf(")\n");
 	}
 }
 
 void Graph::printForTsort(){
 	for(int i=0;i<array.size();i++){
 		for(int j=0;j<array[i]->m_Next.size();j++){
-			cout<<array[i]->getIndex()<<" "<<array[i]->m_Next[j]->getIndex()<<endl;
+			printf("%d %d\n",array[i]->getIndex(),array[i]->m_Next[j]->getIndex());
 		}
 	}
 }
 
 Graph::~Graph(){
+	if(output){
+		printf("Graph destructor\n");
+	}
 	for(int i=0;i<array.size();i++){
 		delete array[i];
 	}

@@ -35,4 +35,5 @@ int main(int argc,char *argv[]){
 		Ges g(argc,argv);
 		g.execute();
 	}
+	MemoryManagement::releaseInstance();
 }

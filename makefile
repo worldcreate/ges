@@ -15,6 +15,10 @@ debug: DEBUG=-g -DDEBUG
 
 debug: $(TARGET)
 
+predebug: DEBUG=-g
+
+predebug: $(TARGET)
+
 test: 
 	./$(TARGET) -T
 

@@ -2,22 +2,33 @@
 #define _NODE_H_
 
 #include "JobPair.h"
+#include "MemoryManagement.h"
 #include <vector>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 class Node{
 public:
-	Node():m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
+	Node(bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
+		if(output){
+			printf("Node default constructor\n");
+		}
 		m_Jobpair=new JobPair();
 		m_Jobpair->time=0;
 	}
-	Node(const JobPair* jobpair):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0){
+	Node(const JobPair* jobpair,bool flag=false):m_Checked(false),m_tempChecked(false),m_R(0),m_Q(0),output(flag){
+		if(output){
+			printf("Node const JobPair* constructor\n");
+		}
 		m_Jobpair=new JobPair();
 		(*m_Jobpair)=(*jobpair);
 	}
-	Node(const Node& node){
+	Node(const Node& node,bool flag=false):output(flag){
+		if(output){
+			printf("Node const Node& construtor\n");
+		}
 		m_Jobpair=new JobPair();
 		(*m_Jobpair)=(*node.m_Jobpair);
 		m_R=node.m_R;
@@ -27,6 +38,7 @@ public:
 		m_tempChecked=node.istempCheck();
 		m_Prev.clear();
 		m_Next.clear();
+		output=node.output;
 	}
 	void addNode(Node* node){
 		m_Next.push_back(node);
@@ -36,17 +48,15 @@ public:
 		m_Prev.push_back(node);
 	}
 	void print(){
-		cout<<"("<<m_Jobpair->machine<<","<<m_Jobpair->jobIndex<<","<<m_Next.size();
-		cout<<","<<m_Prev.size()<<","<<m_R<<","<<m_Q<<","<<m_Index<<") ";
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,m_Q,m_Index);
 		if(m_Next.size()>0)
 			m_Next[0]->print();
 	}
 	void printAll(){
-		cout<<"("<<m_Jobpair->machine<<","<<m_Jobpair->jobIndex<<","<<m_Next.size();
-		cout<<","<<m_Prev.size()<<","<<m_R<<","<<m_Q<<","<<m_Index<<") ";
+		printf("(%d,%d,%d,%d,%d,%d,%d) ",m_Jobpair->machine,m_Jobpair->jobIndex,m_Next.size(),m_Prev.size(),m_R,m_Q,m_Index);
 		for(int i=0;i<m_Next.size();i++){
 			m_Next[i]->print();
-			cout<<endl;
+			printf("\n");
 		}
 	}
 	bool isCheck() const{
@@ -78,6 +88,9 @@ public:
 		return m_Index;
 	}
 	~Node(){
+		if(output){
+			printf("Node destructor\n");
+		}
 		delete m_Jobpair;
 	}
 	JobPair *m_Jobpair;
@@ -85,6 +98,7 @@ public:
 	vector<Node*> m_Prev;
 	int m_R;	//0からそのnodeまでの最長経路
 	int m_Q;	//nodeからn+1までの最長経路
+	bool output;
 private:
 	int m_Index;
 	bool m_Checked;
