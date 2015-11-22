@@ -108,6 +108,8 @@ bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 	vector<JobPair> c;
 	// 同じTをsameTに代入
 	for(int i=0;i<jobTable.size();i++){
+		if(findJobpairByMachineAndJob(machine,i,NOWJOBPAIR)->isCheck())
+			continue;
 		JobPair jp;
 		jp.jobIndex=i;
 		jp.time=jobTable[i];
@@ -120,6 +122,8 @@ bool Gt::checkConflict(int index,int machine,pair<int,int> &T){
 
 	// それぞれのsameTに対してコンフリクトを起こしているかを確認
 	for(int j=0;j<differT.size();j++){
+		if(findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->isCheck())
+			continue;
 		if(differT[j].time-
 			findJobpairByMachineAndJob(
 				machine,differT[j].jobIndex,NOWJOBPAIR)->time <T.first
@@ -143,6 +147,8 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 	vector<JobPair> differT;
 	// 同じTをsameTに代入
 	for(int i=0;i<jobTable.size();i++){
+		if(findJobpairByMachineAndJob(machine,i,NOWJOBPAIR)->isCheck())
+			continue;
 		JobPair jp;
 		jp.jobIndex=i;
 		jp.time=jobTable[i];
@@ -155,6 +161,8 @@ void Gt::fixConflict(int index,int machine,pair<int,int> &T){
 
 	// それぞれのsameTに対してコンフリクトを起こしているかを確認
 	for(int j=0;j<differT.size();j++){
+		if(findJobpairByMachineAndJob(machine,j,NOWJOBPAIR)->isCheck())
+			continue;
 		if(differT[j].time-
 			findJobpairByMachineAndJob(
 				machine,differT[j].jobIndex,NOWJOBPAIR)->time <T.first
