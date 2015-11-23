@@ -32,7 +32,7 @@ int main(int argc,char *argv[]){
 	}
 	for(int i=0;i<trial;i++){
 		Util::setSeed(seed+i);
-		Ges g(argc,argv);
+		Ges g(argc,argv,i);
 		g.execute();
 	}
 	MemoryManagement::releaseInstance();
