@@ -5,6 +5,7 @@
 #include <vector>
 #include <stack>
 #include <deque>
+#include <stdio.h>
 #include "JobPair.h"
 #include "Node.h"
 #include "Graph.h"
@@ -13,7 +14,7 @@ using namespace std;
 
 class Ges{
 public:
-	Ges(int ,char **);
+	Ges(int ,char **,int);
 	void initialSolution();
 	void execute();
 	~Ges();
@@ -36,9 +37,10 @@ private:
 	vector<int> m_Penalty;
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	stack<JobPair> m_EP;
-	const char* m_FileName;
+	char m_FileName[256];
 	vector<vector<JobPair> > m_SettingTable;	// 縦Job 横技術的順序
 	int m_kMax;
+	FILE *fOut;
 };
 
 #endif

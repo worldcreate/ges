@@ -9,24 +9,32 @@
 #include <climits>
 #include <stdexcept>
 #include <cstdio>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 
-Ges::Ges(int argc,char **argv){
+Ges::Ges(int argc,char **argv,int trial){
 	m_Iter=0;
 	m_MaxIter=100;
 	m_IterRand=100;
-	m_FileName="FT3.txt";
+	strcpy(m_FileName,"probrem/FT3.txt");
 	m_kMax=3;
 	m_stagLS=50;
 	m_maxT=10;
+	fOut=stdout;
+	char outName[256]="";
+	char outArg[256]="";
+	char outFile[256];
 	int i=1;
+	struct stat stat_buf;
 	while(argc>i){
 		if(argv[i][0]=='-'){
 			const char *arg=&argv[i][2];
 			switch(argv[i][1]){
 				case 'f':
-					m_FileName=arg;
+					sprintf(m_FileName,"probrem/%s",arg);
 				break;
 				case 'i':
 					m_MaxIter=atoi(arg);
@@ -34,13 +42,27 @@ Ges::Ges(int argc,char **argv){
 				case 'r':
 					m_IterRand=atoi(arg);
 				break;
+				case 'o':
+					strcpy(outName,arg);
+				continue;
 				// case 's':
 				// 	m_stagLS=atoi(arg);
 				// break;
 			}
+			sprintf(outArg,"%s_%s",outArg,&argv[i][1]);
 		}
 		i++;
 	}
+	if(strcmp(outName,"")!=0){
+		sprintf(outFile,"data/%s_%d.txt",outName,trial);
+	}else{
+		sprintf(outFile,"data/%s_%d.txt",outArg,trial);
+	}
+	if(stat("./data",&stat_buf)==-1){
+		mkdir("data",0755);
+	}
+	fOut=fopen(outFile,"w");
+
 	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
 
@@ -141,6 +163,9 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	
 	do{
 		m_Iter++;
+		Graph g(m_Solution,m_SettingTable);
+		g.setLongestPath();
+		fprintf(fOut,"%d,%d,%d\n",m_Iter,m_EP.size(),g.getMakespan());
 		//cout<<"Iter="<<m_Iter<<endl;
 
 		// GES-1のために解とEPを保持
@@ -162,7 +187,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			insertJob(__solution,tarJob,i);
 			// TODO
 			// 挿入した際cycleが生じたらその候補は捨てる
-			Graph g(__solution,m_SettingTable);
+			g=Graph(__solution,m_SettingTable);
 			try{
 				g.setLongestPath();
 			}catch(runtime_error& e){
@@ -191,7 +216,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
 
-		Graph g(_solution,m_SettingTable);
+		g=Graph(_solution,m_SettingTable);
 		g.setLongestPath();
 		if(g.getMakespan()>L){
 			vector<vector<JobPair> > I;
@@ -432,5 +457,5 @@ void Ges::addTabuList(deque<vector<vector<JobPair> > >& tabuList,vector<vector<J
 }
 
 Ges::~Ges(){
-
+	fclose(fOut);
 }
