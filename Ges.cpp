@@ -9,6 +9,7 @@
 #include <climits>
 #include <stdexcept>
 #include <cstdio>
+#include <string.h>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ Ges::Ges(int argc,char **argv){
 	m_Iter=0;
 	m_MaxIter=100;
 	m_IterRand=100;
-	m_FileName="FT3.txt";
+	strcpy(m_FileName,"probrem/FT3.txt");
 	m_kMax=3;
 	m_stagLS=50;
 	m_maxT=10;
@@ -26,7 +27,7 @@ Ges::Ges(int argc,char **argv){
 			const char *arg=&argv[i][2];
 			switch(argv[i][1]){
 				case 'f':
-					m_FileName=arg;
+					sprintf(m_FileName,"probrem/%s",arg);
 				break;
 				case 'i':
 					m_MaxIter=atoi(arg);
