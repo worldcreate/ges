@@ -53,16 +53,11 @@ void Gt::execute(){
 		if(machine==-1)
 			break;
 		// step3
-		if(checkConflict(index,machine,T)){
-			// step4
-			pair<int,int> TT=T;
-			fixConflict(index,machine,TT);
-			setNextJobpair(index,machine,TT);
+		// step4
+		pair<int,int> TT=T;
+		fixConflict(index,machine,TT);
+		setNextJobpair(index,machine,TT);
 			
-		}else{
-			// step5
-			setNextJobpair(index,machine,T);
-		}
 		addNextIndexTable(index);
 		index++;
 
