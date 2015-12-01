@@ -224,8 +224,10 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			// Iが空だった場合
 			if(I.empty()){
 				// GES-1
-				_solution=beforeSolution;
-				m_EP=beforeEP;
+				// _solution=beforeSolution;
+				// m_EP=beforeEP;
+				// GES-2
+				excessiveEject(_solution,L);
 			}else{
 				// Iから一つJobPairを選択する
 				vector<JobPair> candidate=selectEP(I);
@@ -454,6 +456,37 @@ void Ges::addTabuList(deque<vector<vector<JobPair> > >& tabuList,vector<vector<J
 	if(tabuList.size()>m_maxT){
 		tabuList.pop_front();
 	}
+}
+
+void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
+	// TODO
+	// kmax個のボトルネックノードをp[i]が小さいものを優先して抜き出す
+	// この作業をI(pi,L)が空で無くなるまで繰り返す
+	// 最後は最小のものをIから選択肢solutionから抜き出す
+	// また制約違反なく戻せるものは元の位置に戻す
+	// 残ったものをEPに登録する
+	vector<vector<JobPair> > _solution=solution;
+	Graph graph(_solution,m_SettingTable);
+	graph.setLongestPath();
+	
+	deque<Node*> bottleneckNode;
+
+	// ボトルネックノード抽出
+	for(int i=0;i<graph.size();i++){
+		if(graph[i]->m_R+graph[i]->m_Q-graph[i]->m_Jobpair->time>L){
+			if(graph[i]->m_Jobpair->machine!=-1)
+				bottleneckNode.push_back(graph[i]);
+		}
+	}
+	
+	vector<vector<JobPair> > I;
+	do{
+		removeSolution(_solution,bottleneckNode);
+		Ejection(_solution,I,L);
+	}while(I.empty());
+}
+
+void Ges::removeSolution(vector<vector<JobPair> > &solution,deque<Node*> &bottleneckNode){
 }
 
 Ges::~Ges(){
