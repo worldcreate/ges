@@ -469,7 +469,8 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	Graph graph(_solution,m_SettingTable);
 	graph.setLongestPath();
 	
-	deque<Node*> bottleneckNode;
+	vector<Node*> bottleneckNode;
+	vector<Node*> removedNode;
 
 	// ボトルネックノード抽出
 	for(int i=0;i<graph.size();i++){
@@ -479,14 +480,50 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 		}
 	}
 	
+	// ボトルネックノードの並び替え
+	sort(bottleneckNode.begin(),bottleneckNode.end(),Ges::bottleneckLess);
+	
 	vector<vector<JobPair> > I;
 	do{
 		removeSolution(_solution,bottleneckNode);
 		Ejection(_solution,I,L);
 	}while(I.empty());
+	vector<JobPair> candidate=selectEP(I);
+	
+	// 選択されたJobPairをsolutionから抜き出す
+	for(int i=0;i<candidate.size();i++){
+		JobPair jp=candidate[i];
+		int machine=jp.machine;
+
+		vector<JobPair>::iterator it=_solution[machine].begin();
+		for(;it!=_solution[machine].end();it++){
+			if((*it)==jp){
+				_solution[machine].erase(it);
+				break;
+			}
+		}
+	}	
 }
 
-void Ges::removeSolution(vector<vector<JobPair> > &solution,deque<Node*> &bottleneckNode){
+bool Ges::bottleneckLesss(Node* l,Node* r){
+	return m_Penalty[l->index]<m_Penalty[r->index];
+}
+
+void Ges::removeSolution(vector<vector<JobPair> > &solution,vector<Node*> &bottleneckNode,vector<Node*> &removedNode){
+	for(int i=0;i<m_kMax;i++){
+		if(bottleneckNode.empty())
+			break;
+		Node* node=bottleneckNode[0];
+		removedNode.push_back(node);
+		bottleneckNode.erase(bottleneckNode.begin());
+		int machine=node->m_Jobpair->machine;
+		for(vector<JobPair>::iterator it=solution[machine].begin();it!=solution[machine].end();it++){
+			if((*it).index!=node->m_Jobpair->index)
+				continue;
+			solution[machine].erase(it);
+			break;
+		}
+	}
 }
 
 Ges::~Ges(){
