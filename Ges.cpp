@@ -502,7 +502,10 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 				break;
 			}
 		}
-	}	
+	}
+	
+	// 制約違反なく戻せるものは元の位置に戻す
+	
 }
 
 bool Ges::bottleneckLesss(Node* l,Node* r){
