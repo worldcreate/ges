@@ -470,7 +470,7 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	graph.setLongestPath();
 	
 	vector<Node*> bottleneckNode;
-	vector<Node*> removedNode;
+	vector<JobPair> removedJobpair;
 
 	// ボトルネックノード抽出
 	for(int i=0;i<graph.size();i++){
@@ -485,7 +485,7 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	
 	vector<vector<JobPair> > I;
 	do{
-		removeSolution(_solution,bottleneckNode);
+		removeSolution(_solution,bottleneckNode,removedJobpair);
 		Ejection(_solution,I,L);
 	}while(I.empty());
 	vector<JobPair> candidate=selectEP(I);
@@ -498,6 +498,7 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 		vector<JobPair>::iterator it=_solution[machine].begin();
 		for(;it!=_solution[machine].end();it++){
 			if((*it)==jp){
+				removedJobpair.push_back((*it));
 				_solution[machine].erase(it);
 				break;
 			}
@@ -505,19 +506,28 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	}
 	
 	// 制約違反なく戻せるものは元の位置に戻す
-	
+	for(int i=0;i<removedJobpair.size();i++){
+		int index=removedJobpair[i].index;
+		int machine=removedJobpair[i].machine;
+		for(int j=0;j<solution[machine].size();j++){
+			if(solution[machine][j].index!=index)
+				continue;
+			
+			break;
+		}
+	}
 }
 
-bool Ges::bottleneckLesss(Node* l,Node* r){
+bool Ges::bottleneckLess(Node* l,Node* r){
 	return m_Penalty[l->index]<m_Penalty[r->index];
 }
 
-void Ges::removeSolution(vector<vector<JobPair> > &solution,vector<Node*> &bottleneckNode,vector<Node*> &removedNode){
+void Ges::removeSolution(vector<vector<JobPair> > &solution,vector<Node*> &bottleneckNode,vector<JobPair> &removedJobpair){
 	for(int i=0;i<m_kMax;i++){
 		if(bottleneckNode.empty())
 			break;
 		Node* node=bottleneckNode[0];
-		removedNode.push_back(node);
+		removedJobpair.push_back((*node->m_Jobpair));
 		bottleneckNode.erase(bottleneckNode.begin());
 		int machine=node->m_Jobpair->machine;
 		for(vector<JobPair>::iterator it=solution[machine].begin();it!=solution[machine].end();it++){
