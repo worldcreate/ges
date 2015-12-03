@@ -124,6 +124,7 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	Ejection(_solution,I,L);
 
 	vector<JobPair> candidate;
+	candidate.clear();
 
 	// I listが殻だった場合の例外処理
 	try{
@@ -228,7 +229,8 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				m_EP=beforeEP;
 			}else{
 				// Iから一つJobPairを選択する
-				vector<JobPair> candidate=selectEP(I);
+				candidate.clear();
+				candidate=selectEP(I);
 			}
 
 			// 選択されたJobPairを抜出EPに入れる
