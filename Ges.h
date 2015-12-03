@@ -30,7 +30,7 @@ private:
 	void addTabuList(deque<vector<vector<JobPair> > >&,vector<vector<JobPair> >&);
 	void excessiveEject(vector<vector<JobPair> >&,int);
 	void removeSolution(vector<vector<JobPair> >&,vector<Node*>&,vector<JobPair>&);
-	static bool bottleneckLess(Node*,Node*);
+	void bottleneckSort(vector<Node*>&);
 
 	int m_Iter;
 	int m_MaxIter;

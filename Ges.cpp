@@ -483,7 +483,7 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	}
 	
 	// ボトルネックノードの並び替え
-	sort(bottleneckNode.begin(),bottleneckNode.end(),Ges::bottleneckLess);
+	bottleneckSort(bottleneckNode);
 	
 	vector<vector<JobPair> > I;
 	do{
@@ -520,8 +520,18 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	}
 }
 
-bool Ges::bottleneckLess(Node* l,Node* r){
-	return m_Penalty[l->index]<m_Penalty[r->index];
+// bottleneckNodeのソート
+void Ges::bottleneckSort(vector<Node*>& bottleneckNode){
+	for(int i=0;i<bottleneckNode.size();i++){
+		for(int j=i;j<bottleneckNode.size();j++){
+			if(m_Penalty[bottleneckNode[i]->m_Jobpair->index]
+				<=m_Penalty[bottleneckNode[j]->m_Jobpair->index])
+				continue;
+			Node* tmp=bottleneckNode[i];
+			bottleneckNode[i]=bottleneckNode[j];
+			bottleneckNode[j]=tmp;
+		}
+	}
 }
 
 void Ges::removeSolution(vector<vector<JobPair> > &solution,vector<Node*> &bottleneckNode,vector<JobPair> &removedJobpair){
