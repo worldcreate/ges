@@ -42,6 +42,9 @@ Ges::Ges(int argc,char **argv,int trial){
 				case 'r':
 					m_IterRand=atoi(arg);
 				break;
+				case 'k':
+					m_kMax=atoi(arg);
+				break;
 				case 'o':
 					strcpy(outName,arg);
 				continue;
