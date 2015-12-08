@@ -123,9 +123,12 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	while(!m_EP.empty())
 		m_EP.pop();
 
+	timer.start();
 	vector<vector<JobPair> > I;
 	Ejection(_solution,I,L);
-
+	timer.lap();
+	printf("ejection time=%lfs\n",timer.getSub());
+	
 	vector<JobPair> candidate;
 	candidate.clear();
 
@@ -133,6 +136,8 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 	try{
 		// Iから一つJobPairを選択する
 		candidate=selectEP(I);
+		timer.lap();
+		printf("selectEP time=%lfs\n",timer.getSub());
 	}catch(exception& err){
 		printf("\nERROR\n\n");
 		printf("%s\n",err.what());
@@ -162,9 +167,12 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		}
 		m_EP.push(jp);
 	}
+	timer.lap();
+	printf("insert EP time=%lfs\n",timer.getSub());
 
 	Perturb(_solution,L);
-	
+	timer.lap();
+	printf("Perturb time=%lfs\n",timer.getSub());
 	do{
 		m_Iter++;
 		Graph g(m_Solution,m_SettingTable);
@@ -180,6 +188,8 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		JobPair tarJob=m_EP.top();
 		m_EP.pop();
 		m_Penalty[tarJob.index]++;
+		timer.lap();
+		printf("select EP=%lfs\n",timer.getSub());
 
 		// 挿入可能な場所に挿入する
 		vector<vector<vector<JobPair> > > solutionCandidates;
@@ -219,14 +229,19 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// 候補が0ではない場合
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
-
+		
+		timer.lap();
+		printf("insert job on solution time=%lfs\n",timer.getSub());
 		g=Graph(_solution,m_SettingTable);
 		g.setLongestPath();
 		if(g.getMakespan()>L){
 			vector<vector<JobPair> > I;
 			Ejection(_solution,I,L);
+			timer.lap();
+			printf("Ejection time=%lfs\n",timer.getSub());
 			// Iが空だった場合
 			if(I.empty()){
+				printf("empty\n");
 				// GES-1
 				// _solution=beforeSolution;
 				// m_EP=beforeEP;
@@ -252,8 +267,12 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				}
 				m_EP.push(jp);
 			}
+			timer.lap();
+			printf("insert EP time=%lfs\n",timer.getSub());
 		}
 		Perturb(_solution,L);
+		timer.lap();
+		printf("Perturb time=%lfs\n",timer.getSub());
 		Graph gr(_solution,m_SettingTable);
 		gr.setLongestPath();
 	}while(!m_EP.empty() && m_Iter<m_MaxIter);

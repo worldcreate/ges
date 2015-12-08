@@ -9,6 +9,7 @@
 #include "JobPair.h"
 #include "Node.h"
 #include "Graph.h"
+#include "Timer.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ private:
 	vector<vector<JobPair> > m_SettingTable;	// 縦Job 横技術的順序
 	int m_kMax;
 	FILE *fOut;
+	Timer timer;
 };
 
 #endif
