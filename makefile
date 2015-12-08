@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -O 
+CFLAGS = -O2 
 LDFLAGS =
 INCLUDES = 
 LIBS =
