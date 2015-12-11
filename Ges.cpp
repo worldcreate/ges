@@ -388,11 +388,14 @@ void Ges::insertJob(vector<vector<JobPair> >& solution,JobPair &jp,int index){
 void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 	deque<vector<vector<JobPair> > > tabuList;
 	vector<vector<JobPair> > _solution=solution;
+	vector<vector<JobPair> > minSolution=solution;
+	int minMakespan;
 
 	Graph g(_solution,m_SettingTable);
 	g.setLongestPath();
 	int notImprove=0;
 	int prevMakespan=g.getMakespan();
+	minMakespan=prevMakespan;
 	do{
 		NeighbourGenerator ng(_solution,m_SettingTable);
 		ng.makeNeighbour();
@@ -440,14 +443,19 @@ void Ges::LocalSearch(vector<vector<JobPair> >& solution){
 		g=Graph(_solution,m_SettingTable);
 		g.setLongestPath();
 		int _makespan=g.getMakespan();
-		if(prevMakespan==_makespan){
+		if(minMakespan>_makespan){
+			minMakespan=_makespan;
+			minSolution=_solution;
+		}
+		if(prevMakespan==minMakespan){
 			notImprove++;
 		}else{
 			notImprove=0;
 		}
-		prevMakespan=_makespan;
+		prevMakespan=minMakespan;
 		solution=_solution;
 	}while(notImprove<m_stagLS);
+	solution=minSolution;
 }
 
 bool Ges::tabuCheck(deque<vector<vector<JobPair> > >& tabuList,vector<vector<JobPair> >& _solution,vector<vector<JobPair> >&solution){
