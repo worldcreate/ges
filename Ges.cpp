@@ -229,7 +229,6 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// 候補が0ではない場合
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
-		
 		timer.lap();
 		printf("insert job on solution time=%lfs\n",timer.getSub());
 		g=Graph(_solution,m_SettingTable);
@@ -251,24 +250,23 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 				// Iから一つJobPairを選択する
 				candidate.clear();
 				candidate=selectEP(I);
-			}
+				// 選択されたJobPairを抜出EPに入れる
+				for(int i=0;i<candidate.size();i++){
+					JobPair jp=candidate[i];
+					int machine=jp.machine;
 
-			// 選択されたJobPairを抜出EPに入れる
-			for(int i=0;i<candidate.size();i++){
-				JobPair jp=candidate[i];
-				int machine=jp.machine;
-
-				vector<JobPair>::iterator it=_solution[machine].begin();
-				for(;it!=_solution[machine].end();it++){
-					if((*it)==jp){
-						_solution[machine].erase(it);
-						break;
+					vector<JobPair>::iterator it=_solution[machine].begin();
+					for(;it!=_solution[machine].end();it++){
+						if((*it)==jp){
+							_solution[machine].erase(it);
+							break;
+						}
 					}
+					m_EP.push(jp);
 				}
-				m_EP.push(jp);
+				timer.lap();
+				printf("insert EP time=%lfs\n",timer.getSub());
 			}
-			timer.lap();
-			printf("insert EP time=%lfs\n",timer.getSub());
 		}
 		Perturb(_solution,L);
 		timer.lap();
@@ -312,7 +310,6 @@ void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& 
 				bottleneckNode.push_back(graph[i]);
 		}
 	}
-
 	vector<JobPair> candidates;
 	Ejection(graph,bottleneckNode,candidates,a_I,0,L);
 }
@@ -541,13 +538,46 @@ void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
 	for(int i=0;i<removedJobpair.size();i++){
 		int index=removedJobpair[i].index;
 		int machine=removedJobpair[i].machine;
+		int tarIndex=-1;
 		for(int j=0;j<solution[machine].size();j++){
 			if(solution[machine][j].index!=index)
 				continue;
-			
+			tarIndex=j;
 			break;
 		}
+		for(int j=0;j<_solution[machine].size();j++){
+			int srcIndex=_solution[machine][j].index;
+			bool isFind=false;
+			int insertIndex=-1;
+			for(int k=0;k<solution.size();k++){
+				if(srcIndex!=solution[machine][k].index)
+					continue;
+				if(k>tarIndex){
+					isFind=true;
+					insertIndex=k-1;
+					break;
+				}
+			}
+			if(isFind){
+				vector<vector<JobPair> > __solution=_solution;
+				insertJob(__solution,removedJobpair[i],insertIndex);
+				Graph g(__solution,m_SettingTable);
+				try{
+					g.setLongestPath();
+				}catch(runtime_error &e){
+					m_EP.push(removedJobpair[i]);
+					break;
+				}
+				if(g.getMakespan()>L){
+					m_EP.push(removedJobpair[i]);
+					break;
+				}
+				_solution=__solution;
+				break;
+			}
+		}
 	}
+	solution=_solution;
 }
 
 // bottleneckNodeのソート
