@@ -229,6 +229,8 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// 候補が0ではない場合
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
+		else
+			m_EP.push(tarJob);
 		timer.lap();
 		printf("insert job on solution time=%lfs\n",timer.getSub());
 		g=Graph(_solution,m_SettingTable);
