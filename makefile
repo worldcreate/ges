@@ -11,9 +11,8 @@ OBJS = $(SRC:.cpp=.o)
 # 生成規則 
 all: $(TARGET)
 
-debug: DEBUG=-g -DDEBUG
-
-debug: $(TARGET)
+debug:
+	make $(TARGET) DEBUG='-g -DDEBUG' CFLAGS='-O0'
 
 predebug: DEBUG=-g
 
