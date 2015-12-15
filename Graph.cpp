@@ -30,10 +30,22 @@ Graph::Graph(const vector<vector<JobPair> >& solution,const vector<vector<JobPai
 	for(int i=0;i<settingTable.size();i++){
 		now=root;
 		for(int j=0;j<settingTable[i].size();j++){
+			int machine=settingTable[i][j].machine;
+			int insertIndex=settingTable[i][j].index;
+			bool isExist=false;
+			for(int k=0;k<solution[machine].size();k++){
+				if(solution[machine][k].index!=insertIndex)
+					continue;
+				isExist=true;
+				break;
+			}
+			if(!isExist)
+				continue;
 			Node* node=new Node(&settingTable[i][j],output);
 			node->setIndex(++index);
 			array.push_back(node);
 			now->addNode(node);
+			
 			now=node;
 		}
 		now->addNode(leaf);
