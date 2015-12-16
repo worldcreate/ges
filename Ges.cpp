@@ -23,6 +23,7 @@ Ges::Ges(int argc,char **argv,int trial){
 	m_kMax=3;
 	m_stagLS=50;
 	m_maxT=10;
+	m_GESMode=1;
 	fOut=stdout;
 	char outName[256]="";
 	char outArg[256]="";
@@ -44,6 +45,9 @@ Ges::Ges(int argc,char **argv,int trial){
 				break;
 				case 'k':
 					m_kMax=atoi(arg);
+				break;
+				case 'G':
+					m_GESMode=atoi(arg);
 				break;
 				case 'o':
 					strcpy(outName,arg);
@@ -242,12 +246,14 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			printf("Ejection time=%lfs\n",timer.getSub());
 			// Iが空だった場合
 			if(I.empty()){
-				printf("empty\n");
-				// GES-1
-				// _solution=beforeSolution;
-				// m_EP=beforeEP;
-				// GES-2
-				excessiveEject(_solution,L);
+				if(m_GESMode==1){
+					// GES-1
+					_solution=beforeSolution;
+					m_EP=beforeEP;
+				}else if(m_GESMode==2){
+					// GES-2
+					excessiveEject(_solution,L);
+				}
 			}else{
 				// Iから一つJobPairを選択する
 				candidate.clear();

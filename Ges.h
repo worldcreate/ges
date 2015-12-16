@@ -38,6 +38,7 @@ private:
 	int m_IterRand;
 	int m_stagLS;
 	int m_maxT;
+	int m_GESMode;
 	vector<int> m_Penalty;
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	stack<JobPair> m_EP;
