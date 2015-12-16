@@ -23,6 +23,7 @@ Ges::Ges(int argc,char **argv,int trial){
 	m_kMax=3;
 	m_stagLS=50;
 	m_maxT=10;
+	m_GESMode=1;
 	fOut=stdout;
 	char outName[256]="";
 	char outArg[256]="";
@@ -41,6 +42,12 @@ Ges::Ges(int argc,char **argv,int trial){
 				break;
 				case 'r':
 					m_IterRand=atoi(arg);
+				break;
+				case 'k':
+					m_kMax=atoi(arg);
+				break;
+				case 'G':
+					m_GESMode=atoi(arg);
 				break;
 				case 'o':
 					strcpy(outName,arg);
@@ -216,7 +223,8 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// 候補が0ではない場合
 		if(!solutionCandidates.empty())
 			_solution=solutionCandidates[index];
-
+		else
+			m_EP.push(tarJob);
 		g=Graph(_solution,m_SettingTable);
 		g.setLongestPath();
 		if(g.getMakespan()>L){
@@ -224,28 +232,32 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 			Ejection(_solution,I,L);
 			// Iが空だった場合
 			if(I.empty()){
-				// GES-1
-				_solution=beforeSolution;
-				m_EP=beforeEP;
+				if(m_GESMode==1){
+					// GES-1
+					_solution=beforeSolution;
+					m_EP=beforeEP;
+				}else if(m_GESMode==2){
+					// GES-2
+					excessiveEject(_solution,L);
+				}
 			}else{
 				// Iから一つJobPairを選択する
 				candidate.clear();
 				candidate=selectEP(I);
-			}
+				// 選択されたJobPairを抜出EPに入れる
+				for(int i=0;i<candidate.size();i++){
+					JobPair jp=candidate[i];
+					int machine=jp.machine;
 
-			// 選択されたJobPairを抜出EPに入れる
-			for(int i=0;i<candidate.size();i++){
-				JobPair jp=candidate[i];
-				int machine=jp.machine;
-
-				vector<JobPair>::iterator it=_solution[machine].begin();
-				for(;it!=_solution[machine].end();it++){
-					if((*it)==jp){
-						_solution[machine].erase(it);
-						break;
+					vector<JobPair>::iterator it=_solution[machine].begin();
+					for(;it!=_solution[machine].end();it++){
+						if((*it)==jp){
+							_solution[machine].erase(it);
+							break;
+						}
 					}
+					m_EP.push(jp);
 				}
-				m_EP.push(jp);
 			}
 		}
 		Perturb(_solution,L);
@@ -288,7 +300,6 @@ void Ges::Ejection(vector<vector<JobPair> > _solution,vector<vector<JobPair> >& 
 				bottleneckNode.push_back(graph[i]);
 		}
 	}
-
 	vector<JobPair> candidates;
 	Ejection(graph,bottleneckNode,candidates,a_I,0,L);
 }
@@ -463,6 +474,130 @@ void Ges::addTabuList(deque<vector<vector<JobPair> > >& tabuList,vector<vector<J
 	tabuList.push_back(solution);
 	if(tabuList.size()>m_maxT){
 		tabuList.pop_front();
+	}
+}
+
+void Ges::excessiveEject(vector<vector<JobPair> > &solution,int L){
+	// TODO
+	// kmax個のボトルネックノードをp[i]が小さいものを優先して抜き出す
+	// この作業をI(pi,L)が空で無くなるまで繰り返す
+	// 最後は最小のものをIから選択肢solutionから抜き出す
+	// また制約違反なく戻せるものは元の位置に戻す
+	// 残ったものをEPに登録する
+	vector<vector<JobPair> > _solution=solution;
+	Graph graph(_solution,m_SettingTable);
+	graph.setLongestPath();
+	
+	vector<Node*> bottleneckNode;
+	vector<JobPair> removedJobpair;
+
+	// ボトルネックノード抽出
+	for(int i=0;i<graph.size();i++){
+		if(graph[i]->m_R+graph[i]->m_Q-graph[i]->m_Jobpair->time>L){
+			if(graph[i]->m_Jobpair->machine!=-1)
+				bottleneckNode.push_back(graph[i]);
+		}
+	}
+	
+	// ボトルネックノードの並び替え
+	bottleneckSort(bottleneckNode);
+	
+	vector<vector<JobPair> > I;
+	do{
+		removeSolution(_solution,bottleneckNode,removedJobpair);
+		Ejection(_solution,I,L);
+	}while(I.empty());
+	vector<JobPair> candidate=selectEP(I);
+	
+	// 選択されたJobPairをsolutionから抜き出す
+	for(int i=0;i<candidate.size();i++){
+		JobPair jp=candidate[i];
+		int machine=jp.machine;
+
+		vector<JobPair>::iterator it=_solution[machine].begin();
+		for(;it!=_solution[machine].end();it++){
+			if((*it)==jp){
+				removedJobpair.push_back((*it));
+				_solution[machine].erase(it);
+				break;
+			}
+		}
+	}
+	
+	// 制約違反なく戻せるものは元の位置に戻す
+	for(int i=0;i<removedJobpair.size();i++){
+		int index=removedJobpair[i].index;
+		int machine=removedJobpair[i].machine;
+		int tarIndex=-1;
+		for(int j=0;j<solution[machine].size();j++){
+			if(solution[machine][j].index!=index)
+				continue;
+			tarIndex=j;
+			break;
+		}
+		for(int j=0;j<_solution[machine].size();j++){
+			int srcIndex=_solution[machine][j].index;
+			bool isFind=false;
+			int insertIndex=-1;
+			for(int k=0;k<solution.size();k++){
+				if(srcIndex!=solution[machine][k].index)
+					continue;
+				if(k>tarIndex){
+					isFind=true;
+					insertIndex=k-1;
+					break;
+				}
+			}
+			if(isFind){
+				vector<vector<JobPair> > __solution=_solution;
+				insertJob(__solution,removedJobpair[i],insertIndex);
+				Graph g(__solution,m_SettingTable);
+				try{
+					g.setLongestPath();
+				}catch(runtime_error &e){
+					m_EP.push(removedJobpair[i]);
+					break;
+				}
+				if(g.getMakespan()>L){
+					m_EP.push(removedJobpair[i]);
+					break;
+				}
+				_solution=__solution;
+				break;
+			}
+		}
+	}
+	solution=_solution;
+}
+
+// bottleneckNodeのソート
+void Ges::bottleneckSort(vector<Node*>& bottleneckNode){
+	for(int i=0;i<bottleneckNode.size();i++){
+		for(int j=i;j<bottleneckNode.size();j++){
+			if(m_Penalty[bottleneckNode[i]->m_Jobpair->index]
+				<=m_Penalty[bottleneckNode[j]->m_Jobpair->index])
+				continue;
+			Node* tmp=bottleneckNode[i];
+			bottleneckNode[i]=bottleneckNode[j];
+			bottleneckNode[j]=tmp;
+		}
+	}
+}
+
+void Ges::removeSolution(vector<vector<JobPair> > &solution,vector<Node*> &bottleneckNode,vector<JobPair> &removedJobpair){
+	for(int i=0;i<m_kMax;i++){
+		if(bottleneckNode.empty())
+			break;
+		Node* node=bottleneckNode[0];
+		removedJobpair.push_back((*node->m_Jobpair));
+		bottleneckNode.erase(bottleneckNode.begin());
+		int machine=node->m_Jobpair->machine;
+		for(vector<JobPair>::iterator it=solution[machine].begin();it!=solution[machine].end();it++){
+			if((*it).index!=node->m_Jobpair->index)
+				continue;
+			solution[machine].erase(it);
+			break;
+		}
 	}
 }
 

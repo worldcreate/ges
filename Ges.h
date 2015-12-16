@@ -28,12 +28,16 @@ private:
 	void LocalSearch(vector<vector<JobPair> >&);
 	bool tabuCheck(deque<vector<vector<JobPair> > >&,vector<vector<JobPair> >&,vector<vector<JobPair> >&);
 	void addTabuList(deque<vector<vector<JobPair> > >&,vector<vector<JobPair> >&);
+	void excessiveEject(vector<vector<JobPair> >&,int);
+	void removeSolution(vector<vector<JobPair> >&,vector<Node*>&,vector<JobPair>&);
+	void bottleneckSort(vector<Node*>&);
 
 	int m_Iter;
 	int m_MaxIter;
 	int m_IterRand;
 	int m_stagLS;
 	int m_maxT;
+	int m_GESMode;
 	vector<int> m_Penalty;
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	stack<JobPair> m_EP;
