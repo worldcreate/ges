@@ -25,9 +25,6 @@ Ges::Ges(int argc,char **argv,int trial){
 	m_maxT=10;
 	m_GESMode=1;
 	fOut=stdout;
-	char outName[256]="";
-	char outArg[256]="";
-	char outFile[256];
 	int i=1;
 	struct stat stat_buf;
 	while(argc>i){
@@ -50,25 +47,30 @@ Ges::Ges(int argc,char **argv,int trial){
 					m_GESMode=atoi(arg);
 				break;
 				case 'o':
-					strcpy(outName,arg);
-				continue;
+					if(stat("./data",&stat_buf)==-1){
+						mkdir("data",0755);
+					}
+					char outName[512];
+					char outFile[512];
+					for(int i=0,j=0;i<argc;i++){
+						if(argv[i][1]=='o')
+							continue;
+						if(j==0)
+							strcpy(outName,argv[i]);
+						else
+							sprintf(outName,"%s,%s",outName,argv[i]);
+						j++;
+					}
+					sprintf(outFile,"data/%s_%d.txt",outName,trial);
+					fOut=fopen(outFile,"w");
+				break;
 				// case 's':
 				// 	m_stagLS=atoi(arg);
 				// break;
 			}
-			sprintf(outArg,"%s_%s",outArg,&argv[i][1]);
 		}
 		i++;
 	}
-	if(strcmp(outName,"")!=0){
-		sprintf(outFile,"data/%s_%d.txt",outName,trial);
-	}else{
-		sprintf(outFile,"data/%s_%d.txt",outArg,trial);
-	}
-	if(stat("./data",&stat_buf)==-1){
-		mkdir("data",0755);
-	}
-	fOut=fopen(outFile,"w");
 
 	FileReader fr(m_FileName);
 	m_SettingTable=fr.getTable();
@@ -183,6 +185,13 @@ void Ges::Routine(vector<vector<JobPair> >& solution,int L){
 		// EPより一つ作業を取得
 		JobPair tarJob=m_EP.top();
 		m_EP.pop();
+		stack<JobPair> dummy=m_EP;
+		printf("m_EP.size()=%d\n",m_EP.size());
+		while(!dummy.empty()){
+			printf("%d ",dummy.top().index);
+			dummy.pop();
+		}
+		printf("\n");
 		m_Penalty[tarJob.index]++;
 
 		// 挿入可能な場所に挿入する

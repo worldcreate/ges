@@ -18,7 +18,7 @@ void Test::test(int argc,char** argv){
 	vector<vector<JobPair> > m_Solution;	// 縦Machine 横投入順序の配列
 	vector<vector<JobPair> > m_SettingTable;	// 縦Job 横技術的順序
 
-	const char* m_FileName="FT3.txt";
+	const char* m_FileName="probrem/FT3.txt";
 	int trial=1;
 	int i=0;
 	int seed=200;
@@ -67,16 +67,16 @@ void Test::test(int argc,char** argv){
 			}
 		}
 
-		// cout<<"(m,j,t,i)"<<endl;
-		// for(int i=0;i<m_Solution.size();i++){
-		// 	for(int j=0;j<m_Solution[i].size();j++){
-		// 		cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
-		// 	}
-		// 	cout<<endl;
-		// }
+		 cout<<"(m,j,t,i)"<<endl;
+		 for(int i=0;i<m_Solution.size();i++){
+		 	for(int j=0;j<m_Solution[i].size();j++){
+		 		cout<<"("<<m_Solution[i][j].machine<<","<<m_Solution[i][j].jobIndex<<","<<m_Solution[i][j].time<<","<<m_Solution[i][j].index<<") ";
+		 	}
+		 	cout<<endl;
+		}
 		
-		Graph g(m_Solution,m_SettingTable,true);
-		g=Graph(m_Solution,m_SettingTable,true);	//
+		Graph g(m_Solution,m_SettingTable);
+		g=Graph(m_Solution,m_SettingTable);	//
 
 	// 	cout<<"start"<<endl;
 	// 	vector<Graph> array(1000,Graph(m_Solution,m_SettingTable,true));
